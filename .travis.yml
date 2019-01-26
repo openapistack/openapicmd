@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - '10'
+script:
+  - ./bin/run --version
+  - ./bin/run --help
+  - npm run lint
+  - npm test
