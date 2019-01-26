@@ -10,6 +10,13 @@ Command line tools for openapi-enabled APIs
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
+
+# Features
+- [ ] Read local and remote JSON/YAML OpenAPI specification files
+- [ ] Use as CLI client to call API operations
+- [ ] Mock APIs locally with OpenAPI specification
+- [ ] Run Swagger UI web interface
+
 # Usage
 <!-- usage -->
 ```sh-session
