@@ -7,6 +7,7 @@ OpenAPICMD
 Command line tools for openapi-enabled APIs
 
 <!-- toc -->
+* [Features](#features)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -33,28 +34,8 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`openapi hello [FILE]`](#openapi-hello-file)
 * [`openapi help [COMMAND]`](#openapi-help-command)
-
-## `openapi hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ openapi hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ openapi hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.1/src/commands/hello.ts)_
+* [`openapi mock FILE`](#openapi-mock-file)
 
 ## `openapi help [COMMAND]`
 
@@ -72,6 +53,24 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
+
+## `openapi mock FILE`
+
+describe the command here
+
+```
+USAGE
+  $ openapi mock FILE
+
+OPTIONS
+  -h, --help       show CLI help
+  -p, --port=port  [default: 9000] port
+
+EXAMPLE
+  $ openapi mock ./openapi.yml
+```
+
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.1/src/commands/mock.ts)_
 <!-- commandsstop -->
 * [`mynewcli hello [FILE]`](#mynewcli-hello-file)
 * [`mynewcli help [COMMAND]`](#mynewcli-help-command)
