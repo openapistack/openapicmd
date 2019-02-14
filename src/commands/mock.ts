@@ -1,7 +1,8 @@
 import { Command, flags } from '@oclif/command';
+import * as path from 'path';
 import * as Koa from 'koa';
 import * as bodyparser from 'koa-bodyparser';
-import OpenAPIBackend from 'openapi-backend';
+import OpenAPIBackend, { Document } from 'openapi-backend';
 
 export default class Mock extends Command {
   public static description = 'describe the command here';
@@ -21,6 +22,8 @@ export default class Mock extends Command {
   }
 
   private async startMockServer(definition: string, port: number = 9000) {
+    this.log(`Reading OpenAPI spec ${path.basename(definition)}...`);
+
     const api = new OpenAPIBackend({ definition });
     api.register({
       validationFail: (c, ctx) => {
@@ -39,6 +42,8 @@ export default class Mock extends Command {
     });
     await api.init();
 
+    this.displayRoutes(api.document);
+
     const app = new Koa();
     app.use(bodyparser());
     app.use((ctx) =>
@@ -56,6 +61,19 @@ export default class Mock extends Command {
     const server = app.listen(port);
     process.on('disconnect', () => server.close());
 
-    this.log(`Mock server running at http://localhost:${port}`);
+    this.log(`\nMock server running at http://localhost:${port}`);
+  }
+
+  private displayRoutes(document: Document) {
+    this.log('\nRoutes:');
+    for (const path in document.paths) {
+      if (document.paths[path]) {
+        for (const method in document.paths[path]) {
+          if (document.paths[path][method]) {
+            this.log(`- ${method.toUpperCase()} ${path} - ${document.paths[path][method].operationId}`);
+          }
+        }
+      }
+    }
   }
 }

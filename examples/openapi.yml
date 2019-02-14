@@ -24,7 +24,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PetRes'
-    parameters:
+      parameters:
       - name: id
         in: path
         required: true

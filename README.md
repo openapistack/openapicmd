@@ -15,7 +15,7 @@ Command line tools for openapi-enabled APIs
 # Features
 - [ ] Read local and remote JSON/YAML OpenAPI specification files
 - [ ] Use as CLI client to call API operations
-- [ ] Mock APIs locally with OpenAPI specification
+- [x] Mock APIs locally with OpenAPI specification
 - [ ] Run Swagger UI web interface
 
 # Usage
@@ -25,7 +25,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.2 darwin-x64 node-v10.12.0
+openapicmd/0.0.3 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -70,5 +70,5 @@ EXAMPLE
   $ openapi mock ./openapi.yml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.2/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.3/src/commands/mock.ts)_
 <!-- commandsstop -->
