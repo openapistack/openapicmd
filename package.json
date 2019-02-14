@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
@@ -14,7 +14,9 @@
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "openapi-backend": "^2.0.0",
-    "tslib": "^1.9.3"
+    "swagger-parser": "^6.0.5",
+    "tslib": "^1.9.3",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.21.0",
@@ -23,6 +25,7 @@
     "@types/koa": "^2.0.48",
     "@types/koa-bodyparser": "^4.2.2",
     "@types/node": "^10.12.18",
+    "@types/yamljs": "^0.2.30",
     "chai": "^4.2.0",
     "globby": "^8.0.2",
     "jest": "^23.6.0",

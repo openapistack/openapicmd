@@ -25,7 +25,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.5 darwin-x64 node-v10.12.0
+openapicmd/0.0.6 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -36,6 +36,7 @@ USAGE
 <!-- commands -->
 * [`openapi help [COMMAND]`](#openapi-help-command)
 * [`openapi mock`](#openapi-mock)
+* [`openapi read`](#openapi-read)
 
 ## `openapi help [COMMAND]`
 
@@ -68,8 +69,29 @@ OPTIONS
   -p, --port=port              [default: 9000] port
 
 EXAMPLE
-  $ openapi mock ./openapi.yml
+  $ openapi mock -d ./openapi.yml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.5/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.6/src/commands/mock.ts)_
+
+## `openapi read`
+
+```
+USAGE
+  $ openapi read
+
+OPTIONS
+  -D, --dereference             resolve $ref pointers
+  -V, --validate                validate against openapi schema
+  -d, --definition=definition   (required) openapi definition file
+  -f, --format=(json|yaml|yml)  [default: yaml] format
+  -h, --help                    show CLI help
+  --json                        format as json (short for -f json)
+  --yaml                        format as yaml (short for -f yaml)
+
+EXAMPLE
+  $ openapi read -d ./openapi.yml
+```
+
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.6/src/commands/read.ts)_
 <!-- commandsstop -->
