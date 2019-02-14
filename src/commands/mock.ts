@@ -11,18 +11,19 @@ export default class Mock extends Command {
 
   public static flags = {
     help: flags.help({ char: 'h' }),
+    definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
   };
 
-  public static args = [{ name: 'file', required: true }];
+  public static args = [];
 
   public async run() {
-    const { args, flags } = this.parse(Mock);
-    await this.startMockServer(args.file, flags.port);
+    const { flags } = this.parse(Mock);
+    await this.startMockServer(flags.definition, flags.port);
   }
 
   private async startMockServer(definition: string, port: number = 9000) {
-    this.log(`Reading OpenAPI spec ${path.basename(definition)}...`);
+    this.log(`Reading OpenAPI spec ${definition}...`);
 
     const api = new OpenAPIBackend({ definition });
     api.register({
@@ -42,7 +43,8 @@ export default class Mock extends Command {
     });
     await api.init();
 
-    this.displayRoutes(api.document);
+    this.printInfo(api.document);
+    this.printRoutes(api.document);
 
     const app = new Koa();
     app.use(bodyparser());
@@ -64,13 +66,30 @@ export default class Mock extends Command {
     this.log(`\nMock server running at http://localhost:${port}`);
   }
 
-  private displayRoutes(document: Document) {
+  private printInfo(document: Document) {
+    const { title, version, description } = document.info;
+    this.log(`\ntitle: ${title}`);
+    this.log(`version: ${version}`);
+    if (description) {
+      this.log(`description: ${description}`);
+    }
+  }
+
+  private printRoutes(document: Document) {
     this.log('\nRoutes:');
     for (const path in document.paths) {
       if (document.paths[path]) {
         for (const method in document.paths[path]) {
           if (document.paths[path][method]) {
-            this.log(`- ${method.toUpperCase()} ${path} - ${document.paths[path][method].operationId}`);
+            const { operationId, summary } = document.paths[path][method];
+            let route = `- ${method.toUpperCase()} ${path}`;
+            if (summary) {
+              route = `${route} - ${summary}`;
+            }
+            if (operationId) {
+              route = `${route} (${operationId})`;
+            }
+            this.log(route);
           }
         }
       }
