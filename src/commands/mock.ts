@@ -6,7 +6,10 @@ import OpenAPIBackend, { Document } from 'openapi-backend';
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
 
-  public static examples = [`$ openapi mock -d ./openapi.yml`];
+  public static examples = [
+    '$ openapi mock -d ./openapi.yml',
+    '$ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
+  ];
 
   public static flags = {
     help: flags.help({ char: 'h' }),

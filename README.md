@@ -27,7 +27,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.6 darwin-x64 node-v10.12.0
+openapicmd/0.0.7 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -70,13 +70,16 @@ OPTIONS
   -h, --help                   show CLI help
   -p, --port=port              [default: 9000] port
 
-EXAMPLE
+EXAMPLES
   $ openapi mock -d ./openapi.yml
+  $ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.6/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.7/src/commands/mock.ts)_
 
 ## `openapi read`
+
+read, parse and convert OpenAPI definitions
 
 ```
 USAGE
@@ -91,11 +94,12 @@ OPTIONS
   --json                        format as json (short for -f json)
   --yaml                        format as yaml (short for -f yaml)
 
-EXAMPLE
+EXAMPLES
   $ openapi read -d ./openapi.yml
+  $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.6/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.7/src/commands/read.ts)_
 <!-- commandsstop -->
 
 ## Contributing

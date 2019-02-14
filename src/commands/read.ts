@@ -3,9 +3,12 @@ import * as SwaggerParser from 'swagger-parser';
 import * as YAML from 'yamljs';
 
 export default class Read extends Command {
-  public static description = '';
+  public static description = 'read, parse and convert OpenAPI definitions';
 
-  public static examples = [`$ openapi read -d ./openapi.yml`];
+  public static examples = [
+    `$ openapi read -d ./openapi.yml`,
+    '$ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
+  ];
 
   public static flags = {
     help: flags.help({ char: 'h' }),
