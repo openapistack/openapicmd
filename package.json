@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
@@ -13,6 +13,7 @@
     "@oclif/plugin-help": "^2.1.4",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
+    "koa-mount": "^4.0.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "openapi-backend": "^2.0.0",

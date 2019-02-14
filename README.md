@@ -27,7 +27,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.8 darwin-x64 node-v10.12.0
+openapicmd/0.0.9 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -67,6 +67,7 @@ USAGE
   $ openapi mock
 
 OPTIONS
+  -S, --swaggerui=swaggerui    Swagger UI endpoint
   -d, --definition=definition  (required) openapi definition file
   -h, --help                   show CLI help
   -p, --port=port              [default: 9000] port
@@ -76,7 +77,7 @@ EXAMPLES
   $ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.8/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.9/src/commands/mock.ts)_
 
 ## `openapi read`
 
@@ -100,7 +101,7 @@ EXAMPLES
   $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.8/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.9/src/commands/read.ts)_
 
 ## `openapi swaggerui`
 
@@ -121,7 +122,7 @@ EXAMPLES
   $ openapi swaggerui -d ./openapi.yml
 ```
 
-_See code: [src/commands/swaggerui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.8/src/commands/swaggerui.ts)_
+_See code: [src/commands/swaggerui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.9/src/commands/swaggerui.ts)_
 <!-- commandsstop -->
 
 ## Contributing

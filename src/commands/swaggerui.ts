@@ -29,8 +29,6 @@ export default class SwaggerUI extends Command {
     const router = new Router();
     let document = null;
 
-    const serveOpts: serve.Options = {};
-
     if (definition) {
       router.get('/openapi.json', async (ctx) => {
         ctx.body = await SwaggerParser.parse(definition);
@@ -51,7 +49,7 @@ export default class SwaggerUI extends Command {
     }
 
     app.use(router.routes());
-    app.use(serve(swaggerUIRoot, serveOpts));
+    app.use(serve(swaggerUIRoot));
 
     const server = app.listen(port);
     process.on('disconnect', () => server.close());

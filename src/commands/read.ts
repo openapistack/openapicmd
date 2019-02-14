@@ -13,9 +13,15 @@ export default class Read extends Command {
   public static flags = {
     help: flags.help({ char: 'h' }),
     definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
-    format: flags.enum({ char: 'f', description: 'format', options: ['json', 'yaml', 'yml'], default: 'yaml' }),
-    json: flags.boolean({ description: 'format as json (short for -f json)' }),
-    yaml: flags.boolean({ description: 'format as yaml (short for -f yaml)' }),
+    format: flags.enum({
+      char: 'f',
+      description: 'format',
+      options: ['json', 'yaml', 'yml'],
+      default: 'yaml',
+      exclusive: ['json', 'yaml'],
+    }),
+    json: flags.boolean({ description: 'format as json (short for -f json)', exclusive: ['format', 'yaml'] }),
+    yaml: flags.boolean({ description: 'format as yaml (short for -f yaml)', exclusive: ['format', 'json'] }),
     dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
     validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
   };

@@ -1,7 +1,13 @@
-import { Command, flags } from '@oclif/command';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as Koa from 'koa';
 import * as bodyparser from 'koa-bodyparser';
+import * as Router from 'koa-router';
+import * as serve from 'koa-static';
+import * as mount from 'koa-mount';
 import OpenAPIBackend, { Document } from 'openapi-backend';
+import { getAbsoluteFSPath } from 'swagger-ui-dist';
+import { Command, flags } from '@oclif/command';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -15,16 +21,15 @@ export default class Mock extends Command {
     help: flags.help({ char: 'h' }),
     definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
+    swaggerui: flags.string({ char: 'S', description: 'Swagger UI endpoint' }),
   };
 
   public static args = [];
 
   public async run() {
     const { flags } = this.parse(Mock);
-    await this.startMockServer(flags.definition, flags.port);
-  }
+    const { definition, port, swaggerui } = flags;
 
-  private async startMockServer(definition: string, port: number = 9000) {
     this.log(`Reading OpenAPI spec ${definition}...`);
 
     const api = new OpenAPIBackend({ definition });
@@ -50,6 +55,36 @@ export default class Mock extends Command {
 
     const app = new Koa();
     app.use(bodyparser());
+
+    if (swaggerui) {
+      const swaggerUI = new Koa();
+      const router = new Router();
+
+      const swaggerUIRoot = getAbsoluteFSPath();
+
+      const indexHTML = fs.readFileSync(path.join(swaggerUIRoot, 'index.html')).toString('utf8');
+      router.get('/openapi.json', (ctx) => {
+        const doc = api.document;
+        doc.servers = [
+          {
+            url: `http://localhost:${port}`,
+          },
+        ];
+        ctx.body = api.document;
+      });
+      router.get('/', (ctx) => {
+        if (!ctx.originalUrl.endsWith('/')) {
+          ctx.redirect(`${ctx.originalUrl}/`);
+        } else {
+          ctx.body = indexHTML.replace('https://petstore.swagger.io/v2/swagger.json', './openapi.json');
+        }
+      });
+      swaggerUI.use(router.routes());
+      swaggerUI.use(serve(swaggerUIRoot));
+
+      app.use(mount(`/${swaggerui}`, swaggerUI));
+    }
+
     app.use((ctx) =>
       api.handleRequest(
         {
@@ -62,10 +97,14 @@ export default class Mock extends Command {
         ctx,
       ),
     );
+
     const server = app.listen(port);
     process.on('disconnect', () => server.close());
 
     this.log(`\nMock server running at http://localhost:${port}`);
+    if (swaggerui) {
+      this.log(`Swagger UI running at http://localhost:${port}/${swaggerui}`);
+    }
   }
 
   private printInfo(document: Document) {
