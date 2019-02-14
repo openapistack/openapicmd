@@ -18,7 +18,7 @@ Command line tools for openapi-enabled APIs
 - [x] Read local and remote JSON/YAML OpenAPI specification files
 - [ ] Use as CLI client to call API operations
 - [x] Mock APIs locally with OpenAPI specification
-- [ ] Run Swagger UI web interface
+- [x] Run Swagger UI web interface
 
 # Usage
 <!-- usage -->
