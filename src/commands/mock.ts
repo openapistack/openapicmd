@@ -1,11 +1,10 @@
 import { Command, flags } from '@oclif/command';
-import * as path from 'path';
 import * as Koa from 'koa';
 import * as bodyparser from 'koa-bodyparser';
 import OpenAPIBackend, { Document } from 'openapi-backend';
 
 export default class Mock extends Command {
-  public static description = 'describe the command here';
+  public static description = 'start a local mock API server';
 
   public static examples = [`$ openapi mock ./openapi.yml`];
 

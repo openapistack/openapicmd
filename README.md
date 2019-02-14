@@ -25,7 +25,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.4 darwin-x64 node-v10.12.0
+openapicmd/0.0.5 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -56,7 +56,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4
 
 ## `openapi mock`
 
-describe the command here
+start a local mock API server
 
 ```
 USAGE
@@ -71,5 +71,5 @@ EXAMPLE
   $ openapi mock ./openapi.yml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.4/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.5/src/commands/mock.ts)_
 <!-- commandsstop -->
