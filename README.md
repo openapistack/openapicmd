@@ -97,3 +97,9 @@ EXAMPLE
 
 _See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.6/src/commands/read.ts)_
 <!-- commandsstop -->
+
+## Contributing
+
+OpenAPI Backend is Free and Open Source Software. Issues and pull requests are more than welcome!
+
+[<img alt="The Chilicorn" src="http://spiceprogram.org/assets/img/chilicorn_sticker.svg" width="250" height="250">](https://spiceprogram.org/oss-sponsorship)
