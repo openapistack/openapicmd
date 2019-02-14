@@ -25,7 +25,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.1 darwin-x64 node-v10.12.0
+openapicmd/0.0.2 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -70,35 +70,5 @@ EXAMPLE
   $ openapi mock ./openapi.yml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.1/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.2/src/commands/mock.ts)_
 <!-- commandsstop -->
-* [`mynewcli hello [FILE]`](#mynewcli-hello-file)
-* [`mynewcli help [COMMAND]`](#mynewcli-help-command)
-
-## `mynewcli hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ mynewcli hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ mynewcli hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/anttiviljami/mynewcli/blob/v0.0.0/src/commands/hello.ts)_
-
-## `mynewcli help [COMMAND]`
-
-display help for mynewcli
-
-```
-USAGE
-  $ mynewcli help [COMMAND]
