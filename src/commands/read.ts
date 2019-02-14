@@ -6,7 +6,7 @@ export default class Read extends Command {
   public static description = 'read, parse and convert OpenAPI definitions';
 
   public static examples = [
-    `$ openapi read -d ./openapi.yml`,
+    `$ openapi read -d ./openapi.yml -f json > openapi.json`,
     '$ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
   ];
 
