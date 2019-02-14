@@ -15,9 +15,8 @@ export default class Read extends Command {
     definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
     format: flags.enum({
       char: 'f',
-      description: 'format',
+      description: '[default: yaml] output format',
       options: ['json', 'yaml', 'yml'],
-      default: 'yaml',
       exclusive: ['json', 'yaml'],
     }),
     json: flags.boolean({ description: 'format as json (short for -f json)', exclusive: ['format', 'yaml'] }),
