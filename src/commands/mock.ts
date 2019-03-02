@@ -19,9 +19,14 @@ export default class Mock extends Command {
 
   public static flags = {
     help: flags.help({ char: 'h' }),
-    definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
-    'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint' }),
+    definition: flags.string({
+      char: 'd',
+      description: 'openapi definition file',
+      required: true,
+      helpValue: './openapi.yml',
+    }),
+    'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
   };
 
   public static args = [];

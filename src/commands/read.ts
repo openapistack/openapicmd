@@ -12,7 +12,12 @@ export default class Read extends Command {
 
   public static flags = {
     help: flags.help({ char: 'h' }),
-    definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
+    definition: flags.string({
+      char: 'd',
+      description: 'openapi definition file',
+      required: true,
+      helpValue: './openapi.yml',
+    }),
     format: flags.enum({
       char: 'f',
       description: '[default: yaml] output format',

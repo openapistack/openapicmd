@@ -69,10 +69,10 @@ USAGE
   $ openapi mock
 
 OPTIONS
-  -U, --swagger-ui=swagger-ui  Swagger UI endpoint
-  -d, --definition=definition  (required) openapi definition file
-  -h, --help                   show CLI help
-  -p, --port=port              [default: 9000] port
+  -U, --swagger-ui=docs           Swagger UI endpoint
+  -d, --definition=./openapi.yml  (required) openapi definition file
+  -h, --help                      show CLI help
+  -p, --port=port                 [default: 9000] port
 
 EXAMPLES
   $ openapi mock -d ./openapi.yml
@@ -90,13 +90,13 @@ USAGE
   $ openapi read
 
 OPTIONS
-  -D, --dereference             resolve $ref pointers
-  -V, --validate                validate against openapi schema
-  -d, --definition=definition   (required) openapi definition file
-  -f, --format=(json|yaml|yml)  [default: yaml] output format
-  -h, --help                    show CLI help
-  --json                        format as json (short for -f json)
-  --yaml                        format as yaml (short for -f yaml)
+  -D, --dereference               resolve $ref pointers
+  -V, --validate                  validate against openapi schema
+  -d, --definition=./openapi.yml  (required) openapi definition file
+  -f, --format=(json|yaml|yml)    [default: yaml] output format
+  -h, --help                      show CLI help
+  --json                          format as json (short for -f json)
+  --yaml                          format as yaml (short for -f yaml)
 
 EXAMPLES
   $ openapi read -d ./openapi.yml -f json > openapi.json
@@ -114,9 +114,9 @@ USAGE
   $ openapi swagger-editor
 
 OPTIONS
-  -d, --definition=definition  openapi definition file
-  -h, --help                   show CLI help
-  -p, --port=port              [default: 9000] port
+  -d, --definition=./openapi.yml  (required) openapi definition file
+  -h, --help                      show CLI help
+  -p, --port=port                 [default: 9000] port
 
 EXAMPLES
   $ openapi swagger-editor
@@ -134,9 +134,9 @@ USAGE
   $ openapi swagger-ui
 
 OPTIONS
-  -d, --definition=definition  openapi definition file
-  -h, --help                   show CLI help
-  -p, --port=port              [default: 9000] port
+  -d, --definition=./openapi.yml  (required) openapi definition file
+  -h, --help                      show CLI help
+  -p, --port=port                 [default: 9000] port
 
 EXAMPLES
   $ openapi swagger-ui

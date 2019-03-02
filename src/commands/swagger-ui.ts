@@ -14,8 +14,13 @@ export default class SwaggerUI extends Command {
 
   public static flags = {
     help: flags.help({ char: 'h' }),
-    definition: flags.string({ char: 'd', description: 'openapi definition file' }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
+    definition: flags.string({
+      char: 'd',
+      description: 'openapi definition file',
+      required: true,
+      helpValue: './openapi.yml',
+    }),
   };
 
   public static args = [];
