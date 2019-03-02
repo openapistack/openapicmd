@@ -19,7 +19,7 @@ export default class Mock extends Command {
 
   public static flags = {
     help: flags.help({ char: 'h' }),
-    port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
+    port: flags.integer({ char: 'p', description: 'port', default: 9000, helpValue: '9000' }),
     definition: flags.string({
       char: 'd',
       description: 'openapi definition file',
