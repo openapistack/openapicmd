@@ -28,7 +28,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.11 darwin-x64 node-v10.12.0
+openapicmd/0.0.12 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -79,7 +79,7 @@ EXAMPLES
   $ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.12/src/commands/mock.ts)_
 
 ## `openapi read`
 
@@ -103,7 +103,7 @@ EXAMPLES
   $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.12/src/commands/read.ts)_
 
 ## `openapi swagger-editor`
 
@@ -123,7 +123,7 @@ EXAMPLES
   $ openapi swagger-editor -d ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.12/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui`
 
@@ -143,7 +143,7 @@ EXAMPLES
   $ openapi swagger-ui -d ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.12/src/commands/swagger-ui.ts)_
 <!-- commandsstop -->
 
 ## Contributing
