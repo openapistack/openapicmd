@@ -21,14 +21,14 @@ export default class Mock extends Command {
     help: flags.help({ char: 'h' }),
     definition: flags.string({ char: 'd', description: 'openapi definition file', required: true }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
-    swaggerui: flags.string({ char: 'S', description: 'Swagger UI endpoint' }),
+    'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint' }),
   };
 
   public static args = [];
 
   public async run() {
     const { flags } = this.parse(Mock);
-    const { definition, port, swaggerui } = flags;
+    const { definition, port, 'swagger-ui': swaggerui } = flags;
 
     this.log(`Reading OpenAPI spec ${definition}...`);
 

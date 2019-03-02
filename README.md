@@ -18,7 +18,8 @@ Command line tools for openapi-enabled APIs
 - [x] Read local and remote JSON/YAML OpenAPI specification files
 - [ ] Use as CLI client to call API operations
 - [x] Mock APIs locally with OpenAPI specification
-- [x] Run Swagger UI web interface
+- [x] Run [Swagger UI](https://github.com/swagger-api/swagger-ui) locally
+- [x] Run [Swagger Editor](https://github.com/swagger-api/swagger-editor) locally
 
 # Usage
 <!-- usage -->
@@ -27,7 +28,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.10 darwin-x64 node-v10.12.0
+openapicmd/0.0.11 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -39,7 +40,8 @@ USAGE
 * [`openapi help [COMMAND]`](#openapi-help-command)
 * [`openapi mock`](#openapi-mock)
 * [`openapi read`](#openapi-read)
-* [`openapi swaggerui`](#openapi-swaggerui)
+* [`openapi swagger-editor`](#openapi-swagger-editor)
+* [`openapi swagger-ui`](#openapi-swagger-ui)
 
 ## `openapi help [COMMAND]`
 
@@ -56,7 +58,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6/src/commands/help.ts)_
 
 ## `openapi mock`
 
@@ -67,7 +69,7 @@ USAGE
   $ openapi mock
 
 OPTIONS
-  -S, --swaggerui=swaggerui    Swagger UI endpoint
+  -U, --swagger-ui=swagger-ui  Swagger UI endpoint
   -d, --definition=definition  (required) openapi definition file
   -h, --help                   show CLI help
   -p, --port=port              [default: 9000] port
@@ -77,7 +79,7 @@ EXAMPLES
   $ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.10/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/mock.ts)_
 
 ## `openapi read`
 
@@ -101,28 +103,47 @@ EXAMPLES
   $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.10/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/read.ts)_
 
-## `openapi swaggerui`
+## `openapi swagger-editor`
 
 start a local Swagger UI instance
 
 ```
 USAGE
-  $ openapi swaggerui
+  $ openapi swagger-editor
 
 OPTIONS
   -d, --definition=definition  openapi definition file
   -h, --help                   show CLI help
   -p, --port=port              [default: 9000] port
-  -u, --url=url                openapi definition url
 
 EXAMPLES
-  $ openapi swaggerui
-  $ openapi swaggerui -d ./openapi.yml
+  $ openapi swagger-editor
+  $ openapi swagger-editor -d ./openapi.yml
 ```
 
-_See code: [src/commands/swaggerui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.10/src/commands/swaggerui.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/swagger-editor.ts)_
+
+## `openapi swagger-ui`
+
+start a local Swagger UI instance
+
+```
+USAGE
+  $ openapi swagger-ui
+
+OPTIONS
+  -d, --definition=definition  openapi definition file
+  -h, --help                   show CLI help
+  -p, --port=port              [default: 9000] port
+
+EXAMPLES
+  $ openapi swagger-ui
+  $ openapi swagger-ui -d ./openapi.yml
+```
+
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.11/src/commands/swagger-ui.ts)_
 <!-- commandsstop -->
 
 ## Contributing

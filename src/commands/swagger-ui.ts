@@ -10,12 +10,11 @@ import { Command, flags } from '@oclif/command';
 export default class SwaggerUI extends Command {
   public static description = 'start a local Swagger UI instance';
 
-  public static examples = ['$ openapi swaggerui', '$ openapi swaggerui -d ./openapi.yml'];
+  public static examples = ['$ openapi swagger-ui', '$ openapi swagger-ui -d ./openapi.yml'];
 
   public static flags = {
     help: flags.help({ char: 'h' }),
     definition: flags.string({ char: 'd', description: 'openapi definition file' }),
-    url: flags.string({ char: 'u', description: 'openapi definition url' }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000 }),
   };
 
@@ -23,21 +22,21 @@ export default class SwaggerUI extends Command {
 
   public async run() {
     const { flags } = this.parse(SwaggerUI);
-    const { definition, port, url } = flags;
+    const { definition, port } = flags;
 
     const app = new Koa();
     const router = new Router();
     let document = null;
 
     if (definition) {
-      router.get('/openapi.json', async (ctx) => {
-        ctx.body = await SwaggerParser.parse(definition);
-      });
-      document = './openapi.json';
-    }
-
-    if (url) {
-      document = url;
+      if (definition.match('://')) {
+        document = definition;
+      } else {
+        router.get('/openapi.json', async (ctx) => {
+          ctx.body = await SwaggerParser.parse(definition);
+        });
+        document = './openapi.json';
+      }
     }
 
     const swaggerUIRoot = getAbsoluteFSPath();

@@ -2,11 +2,11 @@ import { expect, test } from '@oclif/test';
 import * as path from 'path';
 import 'chai';
 
-describe('swaggerui', () => {
+describe('swagger-editor', () => {
   test
     .stdout()
-    .command(['swaggerui', '-d', path.join('examples', 'openapi.yml')])
-    .it('runs swaggerui', (ctx) => {
+    .command(['swagger-editor', '-d', path.join('examples', 'openapi.yml')])
+    .it('runs swagger-editor', (ctx) => {
       expect(ctx.stdout).to.contain('running');
     });
 
