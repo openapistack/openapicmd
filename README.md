@@ -42,6 +42,7 @@ USAGE
 * [`openapi read`](#openapi-read)
 * [`openapi swagger-editor`](#openapi-swagger-editor)
 * [`openapi swagger-ui`](#openapi-swagger-ui)
+* [`openapi swagger2openapi`](#openapi-swagger2openapi)
 
 ## `openapi help [COMMAND]`
 
@@ -144,6 +145,29 @@ EXAMPLES
 ```
 
 _See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.13/src/commands/swagger-ui.ts)_
+
+## `openapi swagger2openapi`
+
+convert Swagger 2.0 definitions into OpenApi 3.0.x
+
+```
+USAGE
+  $ openapi swagger2openapi
+
+OPTIONS
+  -D, --dereference               resolve $ref pointers
+  -V, --validate                  validate against openapi schema
+  -d, --definition=./openapi.yml  (required) openapi definition file
+  -f, --format=(json|yaml|yml)    [default: yaml] output format
+  -h, --help                      show CLI help
+  --json                          output as json (short for -f json)
+  --yaml                          output as yaml (short for -f yaml)
+
+EXAMPLE
+  $ openapiw swagger2openapi --yaml -d ./swagger.json > openapi.yml
+```
+
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.13/src/commands/swagger2openapi.ts)_
 <!-- commandsstop -->
 
 ## Contributing

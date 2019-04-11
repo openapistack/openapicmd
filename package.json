@@ -21,6 +21,7 @@
     "swagger-editor-dist": "^3.6.24",
     "swagger-parser": "^6.0.5",
     "swagger-ui-dist": "^3.21.0",
+    "swagger2openapi": "^5.2.5",
     "tslib": "^1.9.3",
     "yamljs": "^0.3.0"
   },
