@@ -39,7 +39,7 @@ export default class SwaggerUI extends Command {
         router.get('/openapi.json', async (ctx) => {
           ctx.body = await SwaggerParser.parse(definition);
         });
-        document = './openapi.json';
+        document = '/openapi.json';
       }
     }
 
@@ -47,7 +47,11 @@ export default class SwaggerUI extends Command {
     if (document) {
       const indexHTML = fs.readFileSync(path.join(swaggerUIRoot, 'index.html')).toString('utf8');
       router.get('/', (ctx) => {
-        ctx.body = indexHTML.replace('https://petstore.swagger.io/v2/swagger.json', document);
+        ctx.body = indexHTML
+          // use our openapi definition
+          .replace('https://petstore.swagger.io/v2/swagger.json', document)
+          // display operation ids
+          .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
       });
     }
 

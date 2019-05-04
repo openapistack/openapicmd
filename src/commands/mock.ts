@@ -61,14 +61,17 @@ export default class Mock extends Command {
     const app = new Koa();
     app.use(bodyparser());
 
-    if (swaggerui) {
-      const swaggerUI = new Koa();
-      const router = new Router();
+    // set up cors
+    app.use(async (ctx, next) => {
+      await next();
+      ctx.set('access-control-allow-origin', '*');
+    });
 
-      const swaggerUIRoot = getAbsoluteFSPath();
-
-      const indexHTML = fs.readFileSync(path.join(swaggerUIRoot, 'index.html')).toString('utf8');
-      router.get('/openapi.json', (ctx) => {
+    // serve openapi.json
+    const openapijson = '/openapi.json';
+    app.use(
+      mount(openapijson, async (ctx, next) => {
+        await next();
         const doc = api.document;
         doc.servers = [
           {
@@ -76,12 +79,28 @@ export default class Mock extends Command {
           },
         ];
         ctx.body = api.document;
-      });
+        ctx.status = 200;
+      }),
+    );
+
+    // serve swagger ui
+    if (swaggerui) {
+      const swaggerUI = new Koa();
+      const router = new Router();
+
+      const swaggerUIRoot = getAbsoluteFSPath();
+
+      const indexHTML = fs.readFileSync(path.join(swaggerUIRoot, 'index.html')).toString('utf8');
       router.get('/', (ctx) => {
         if (!ctx.originalUrl.endsWith('/')) {
           ctx.redirect(`${ctx.originalUrl}/`);
         } else {
-          ctx.body = indexHTML.replace('https://petstore.swagger.io/v2/swagger.json', './openapi.json');
+          // serve a modified index.html
+          ctx.body = indexHTML
+            // use our openapi definition
+            .replace('https://petstore.swagger.io/v2/swagger.json', openapijson)
+            // display operation ids
+            .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
         }
       });
       swaggerUI.use(router.routes());
@@ -90,6 +109,7 @@ export default class Mock extends Command {
       app.use(mount(`/${swaggerui}`, swaggerUI));
     }
 
+    // serve openapi-backend
     app.use((ctx) =>
       api.handleRequest(
         {
@@ -110,6 +130,7 @@ export default class Mock extends Command {
     if (swaggerui) {
       this.log(`Swagger UI running at http://localhost:${port}/${swaggerui}`);
     }
+    this.log(`OpenAPI definition at http://localhost:${port}${openapijson}`);
   }
 
   private printInfo(document: Document) {
