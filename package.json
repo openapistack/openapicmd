@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
@@ -17,7 +17,7 @@
     "koa-mount": "^4.0.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
-    "openapi-backend": "^2.1.0",
+    "openapi-backend": "^2.3.0",
     "swagger-editor-dist": "^3.6.24",
     "swagger-parser": "^6.0.5",
     "swagger-ui-dist": "^3.21.0",
