@@ -5,6 +5,7 @@ import * as Router from 'koa-router';
 import * as serve from 'koa-static';
 import axios from 'axios';
 import { Command, flags } from '@oclif/command';
+import { escapeStringTemplateTicks } from '../utils/common';
 
 function getAbsoluteFSPath() {
   return path.dirname(require.resolve('swagger-editor-dist'));
@@ -50,7 +51,9 @@ export default class SwaggerEditor extends Command {
       router.get('/', (ctx) => {
         ctx.body = indexHTML.replace(
           'window.editor = editor',
-          `editor.specActions.updateSpec(\`${document}\`)\n\nwindow.editor = editor`,
+          `editor.specActions.updateSpec(\`${escapeStringTemplateTicks(
+            document.toString(),
+          )}\`)\n\nwindow.editor = editor`,
         );
       });
     }
