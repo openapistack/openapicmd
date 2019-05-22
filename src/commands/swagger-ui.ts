@@ -15,6 +15,12 @@ export default class SwaggerUI extends Command {
   public static flags = {
     help: flags.help({ char: 'h' }),
     port: flags.integer({ char: 'p', description: 'port', default: 9000, helpValue: '9000' }),
+    server: flags.string({
+      char: 'S',
+      description: 'add servers to definition',
+      helpValue: 'http://localhost:9000',
+      multiple: true,
+    }),
     definition: flags.string({
       char: 'd',
       description: 'openapi definition file',
@@ -33,11 +39,16 @@ export default class SwaggerUI extends Command {
     let document = null;
 
     if (definition) {
-      if (definition.match('://')) {
+      if (definition.match('://') && !flags.server) {
         document = definition;
       } else {
         router.get('/openapi.json', async (ctx) => {
-          ctx.body = await SwaggerParser.parse(definition);
+          const def = await SwaggerParser.parse(definition);
+          if (flags.server) {
+            const addServers = flags.server.map((url) => ({ url }));
+            def.servers = def.servers ? [...def.servers, ...addServers] : addServers;
+          }
+          ctx.body = def;
         });
         document = '/openapi.json';
       }
