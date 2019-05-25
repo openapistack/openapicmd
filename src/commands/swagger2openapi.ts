@@ -9,13 +9,13 @@ import { parseDefinition, OutputFormat, stringifyDocument } from '../common/defi
 export default class Swagger2Openapi extends Command {
   public static description = 'convert Swagger 2.0 definitions into OpenApi 3.0.x';
 
-  public static examples = [`$ openapiw swagger2openapi --yaml -d ./swagger.json > openapi.yml`];
+  public static examples = [`$ openapi swagger2openapi --yaml -d ./swagger.json > openapi.yml`];
 
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.definition({ required: true }),
-    ...commonFlags.outputFormat(),
     ...commonFlags.parseOpts(),
+    ...commonFlags.outputFormat(),
   };
 
   public static args = [];

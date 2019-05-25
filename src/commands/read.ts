@@ -14,8 +14,8 @@ export default class Read extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.definition({ required: true }),
-    ...commonFlags.outputFormat(),
     ...commonFlags.parseOpts(),
+    ...commonFlags.outputFormat(),
   };
 
   public static args = [];
