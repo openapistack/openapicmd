@@ -10,6 +10,7 @@
   "dependencies": {
     "@oclif/command": "^1.5.11",
     "@oclif/config": "^1.12.9",
+    "@oclif/plugin-autocomplete": "^0.1.0",
     "@oclif/plugin-help": "^2.1.6",
     "axios": "^0.18.0",
     "cli-ux": "^5.2.1",
@@ -66,7 +67,8 @@
     "commands": "./lib/commands",
     "bin": "openapi",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-autocomplete"
     ]
   },
   "repository": "anttiviljami/openapicmd",
