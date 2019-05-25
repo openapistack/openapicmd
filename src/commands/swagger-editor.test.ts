@@ -5,7 +5,7 @@ import 'chai';
 describe('swagger-editor', () => {
   test
     .stdout()
-    .command(['swagger-editor', '-d', path.join('examples', 'openapi.yml')])
+    .command(['swagger-editor', path.join('examples', 'openapi.yml')])
     .it('runs swagger-editor', (ctx) => {
       expect(ctx.stdout).to.contain('running');
     });

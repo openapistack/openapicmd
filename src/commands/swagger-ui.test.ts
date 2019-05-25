@@ -6,14 +6,14 @@ import 'chai';
 describe('swagger-ui', () => {
   test
     .stdout()
-    .command(['swagger-ui', '-d', path.join('examples', 'openapi.yml')])
+    .command(['swagger-ui', path.join('examples', 'openapi.yml')])
     .it('runs swagger-ui', (ctx) => {
       expect(ctx.stdout).to.contain('running');
     });
 
   test
     .stdout()
-    .command(['swagger-ui', '-d', path.join('examples', 'openapi.yml'), '--bundle', 'static'])
+    .command(['swagger-ui', path.join('examples', 'openapi.yml'), '--bundle', 'static'])
     .it('bundles swagger-ui', (ctx) => {
       expect(fs.existsSync(path.join('static')));
       expect(fs.existsSync(path.join('static', 'index.html')));

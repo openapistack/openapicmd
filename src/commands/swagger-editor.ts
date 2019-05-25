@@ -16,19 +16,28 @@ function getAbsoluteFSPath() {
 export default class SwaggerEditor extends Command {
   public static description = 'serve a local Swagger UI instance';
 
-  public static examples = ['$ openapi swagger-editor', '$ openapi swagger-editor -d ./openapi.yml'];
+  public static examples = [
+    '$ openapi swagger-editor',
+    '$ openapi swagger-editor ./openapi.yml',
+    '$ openapi swagger-editor ./openapi.yml --bundle static',
+  ];
 
   public static flags = {
     ...commonFlags.help(),
-    ...commonFlags.definition(),
     ...commonFlags.port(),
   };
 
-  public static args = [];
+  public static args = [
+    {
+      name: 'definition',
+      description: 'input definition file',
+    },
+  ];
 
   public async run() {
-    const { flags } = this.parse(SwaggerEditor);
-    const { definition, port } = flags;
+    const { args, flags } = this.parse(SwaggerEditor);
+    const { definition } = args;
+    const { port } = flags;
 
     const app = new Koa();
     const router = new Router();

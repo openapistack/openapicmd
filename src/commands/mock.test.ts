@@ -5,7 +5,7 @@ import 'chai';
 describe('mock', () => {
   test
     .stdout()
-    .command(['mock', '-d', path.join('examples', 'openapi.yml')])
+    .command(['mock', path.join('examples', 'openapi.yml')])
     .it('runs mock server', (ctx) => {
       expect(ctx.stdout).to.contain('running');
     });

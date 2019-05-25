@@ -6,21 +6,21 @@ describe('read', () => {
   describe('output', () => {
     test
       .stdout()
-      .command(['read', '-d', path.join('examples', 'openapi.yml')])
+      .command(['read', path.join('examples', 'openapi.yml')])
       .it('reads yaml openapi spec', (ctx) => {
         expect(ctx.stdout).to.contain('My API');
       });
 
     test
       .stdout()
-      .command(['read', '-d', path.join('examples', 'openapi.json')])
+      .command(['read', path.join('examples', 'openapi.json')])
       .it('reads json openapi spec', (ctx) => {
         expect(ctx.stdout).to.contain('My API');
       });
 
     test
       .stdout()
-      .command(['read', '-d', path.join('examples', 'openapi.yml'), '--json'])
+      .command(['read', path.join('examples', 'openapi.yml'), '--json'])
       .it('reads openapi spec and outputs json', (ctx) => {
         expect(ctx.stdout).to.contain('My API');
         expect(ctx.stdout).to.contain('{');
@@ -30,7 +30,7 @@ describe('read', () => {
 
     test
       .stdout()
-      .command(['read', '-d', path.join('examples', 'openapi.yml'), '--yaml'])
+      .command(['read', path.join('examples', 'openapi.yml'), '--yaml'])
       .it('reads openapi spec and outputs yaml', (ctx) => {
         expect(ctx.stdout).to.contain('My API');
         expect(ctx.stdout).to.contain('openapi: 3');
@@ -40,13 +40,13 @@ describe('read', () => {
   describe('validation', () => {
     test
       .stdout()
-      .command(['read', '-d', path.join('examples', 'openapi.yml'), '--validate'])
+      .command(['read', path.join('examples', 'openapi.yml'), '--validate'])
       .it('validates correct openapi spec and outputs', (ctx) => {
         expect(ctx.stdout).to.contain('My API');
       });
 
     test
-      .command(['read', '-d', path.join('examples', 'openapi-broken.yml'), '--validate'])
+      .command(['read', path.join('examples', 'openapi-broken.yml'), '--validate'])
       .exit(1)
       .it('validates incorrect openapi spec, exits with code 1');
   });

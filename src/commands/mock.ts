@@ -15,22 +15,28 @@ export default class Mock extends Command {
   public static description = 'start a local mock API server';
 
   public static examples = [
-    '$ openapi mock -d ./openapi.yml',
-    '$ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
+    '$ openapi mock ./openapi.yml',
+    '$ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
   ];
 
   public static flags = {
     ...commonFlags.help(),
-    ...commonFlags.definition({ required: true }),
     ...commonFlags.port({ required: true }),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
   };
 
-  public static args = [];
+  public static args = [
+    {
+      name: 'definition',
+      description: 'input definition file',
+      required: true,
+    },
+  ];
 
   public async run() {
-    const { flags } = this.parse(Mock);
-    const { definition, port, 'swagger-ui': swaggerui } = flags;
+    const { args, flags } = this.parse(Mock);
+    const { definition } = args;
+    const { port, 'swagger-ui': swaggerui } = flags;
 
     const api = new OpenAPIBackend({ definition });
     api.register({

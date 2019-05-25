@@ -30,7 +30,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.23 darwin-x64 node-v10.12.0
+openapicmd/0.1.0 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -41,11 +41,11 @@ USAGE
 <!-- commands -->
 * [`openapi help [COMMAND]`](#openapi-help-command)
 * [`openapi init`](#openapi-init)
-* [`openapi mock`](#openapi-mock)
-* [`openapi read`](#openapi-read)
-* [`openapi swagger-editor`](#openapi-swagger-editor)
-* [`openapi swagger-ui`](#openapi-swagger-ui)
-* [`openapi swagger2openapi`](#openapi-swagger2openapi)
+* [`openapi mock DEFINITION`](#openapi-mock-definition)
+* [`openapi read DEFINITION`](#openapi-read-definition)
+* [`openapi swagger-editor [DEFINITION]`](#openapi-swagger-editor-definition)
+* [`openapi swagger-ui [DEFINITION]`](#openapi-swagger-ui-definition)
+* [`openapi swagger2openapi DEFINITION`](#openapi-swagger2openapi-definition)
 
 ## `openapi help [COMMAND]`
 
@@ -88,119 +88,130 @@ EXAMPLE
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/init.ts)_
 
-## `openapi mock`
+## `openapi mock DEFINITION`
 
 start a local mock API server
 
 ```
 USAGE
-  $ openapi mock
+  $ openapi mock DEFINITION
+
+ARGUMENTS
+  DEFINITION  input definition file
 
 OPTIONS
-  -U, --swagger-ui=docs           Swagger UI endpoint
-  -d, --definition=./openapi.yml  (required) openapi definition file
-  -h, --help                      show CLI help
-  -p, --port=9000                 (required) [default: 9000] port
+  -U, --swagger-ui=docs  Swagger UI endpoint
+  -h, --help             show CLI help
+  -p, --port=9000        (required) [default: 9000] port
 
 EXAMPLES
-  $ openapi mock -d ./openapi.yml
-  $ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+  $ openapi mock ./openapi.yml
+  $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/mock.ts)_
 
-## `openapi read`
+## `openapi read DEFINITION`
 
 read, parse and convert OpenAPI definitions
 
 ```
 USAGE
-  $ openapi read
+  $ openapi read DEFINITION
+
+ARGUMENTS
+  DEFINITION  input definition file
 
 OPTIONS
   -D, --dereference                   resolve $ref pointers
   -S, --server=http://localhost:9000  add servers to definition
   -V, --validate                      validate against openapi schema
-  -d, --definition=./openapi.yml      (required) openapi definition file
   -f, --format=(json|yaml|yml)        [default: yaml] output format
   -h, --help                          show CLI help
   --json                              format as json (short for -f json)
   --yaml                              format as yaml (short for -f yaml)
 
 EXAMPLES
-  $ openapi read -d ./openapi.yml -f json > openapi.json
-  $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+  $ openapi read https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+  $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/read.ts)_
 
-## `openapi swagger-editor`
+## `openapi swagger-editor [DEFINITION]`
 
 serve a local Swagger UI instance
 
 ```
 USAGE
-  $ openapi swagger-editor
+  $ openapi swagger-editor [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
 
 OPTIONS
-  -d, --definition=./openapi.yml  openapi definition file
-  -h, --help                      show CLI help
-  -p, --port=9000                 [default: 9000] port
+  -h, --help       show CLI help
+  -p, --port=9000  [default: 9000] port
 
 EXAMPLES
   $ openapi swagger-editor
-  $ openapi swagger-editor -d ./openapi.yml
+  $ openapi swagger-editor ./openapi.yml
+  $ openapi swagger-editor ./openapi.yml --bundle static
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/swagger-editor.ts)_
 
-## `openapi swagger-ui`
+## `openapi swagger-ui [DEFINITION]`
 
 serve or bundle a Swagger UI instance
 
 ```
 USAGE
-  $ openapi swagger-ui
+  $ openapi swagger-ui [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
 
 OPTIONS
   -B, --bundle=outDir                 bundle a static site to directory
   -S, --server=http://localhost:9000  add servers to definition
-  -d, --definition=./openapi.yml      openapi definition file
   -h, --help                          show CLI help
   -p, --port=9000                     [default: 9000] port
 
 EXAMPLES
   $ openapi swagger-ui
-  $ openapi swagger-ui -d ./openapi.yml
+  $ openapi swagger-ui ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/swagger-ui.ts)_
 
-## `openapi swagger2openapi`
+## `openapi swagger2openapi DEFINITION`
 
 convert Swagger 2.0 definitions into OpenApi 3.0.x
 
 ```
 USAGE
-  $ openapi swagger2openapi
+  $ openapi swagger2openapi DEFINITION
+
+ARGUMENTS
+  DEFINITION  input definition file
 
 OPTIONS
   -D, --dereference                   resolve $ref pointers
   -S, --server=http://localhost:9000  add servers to definition
   -V, --validate                      validate against openapi schema
-  -d, --definition=./openapi.yml      (required) openapi definition file
   -f, --format=(json|yaml|yml)        [default: yaml] output format
   -h, --help                          show CLI help
   --json                              format as json (short for -f json)
   --yaml                              format as yaml (short for -f yaml)
 
 EXAMPLE
-  $ openapi swagger2openapi --yaml -d ./swagger.json > openapi.yml
+  $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/swagger2openapi.ts)_
 <!-- commandsstop -->
 
 ## Contributing

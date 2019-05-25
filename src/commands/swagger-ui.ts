@@ -13,11 +13,10 @@ import { Document } from 'swagger-parser';
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
 
-  public static examples = ['$ openapi swagger-ui', '$ openapi swagger-ui -d ./openapi.yml'];
+  public static examples = ['$ openapi swagger-ui', '$ openapi swagger-ui ./openapi.yml'];
 
   public static flags = {
     ...commonFlags.help(),
-    ...commonFlags.definition(),
     ...commonFlags.port(),
     ...commonFlags.servers(),
     bundle: flags.string({
@@ -27,11 +26,17 @@ export default class SwaggerUI extends Command {
     }),
   };
 
-  public static args = [];
+  public static args = [
+    {
+      name: 'definition',
+      description: 'input definition file',
+    },
+  ];
 
   public async run() {
-    const { flags } = this.parse(SwaggerUI);
-    const { definition, port, bundle } = flags;
+    const { args, flags } = this.parse(SwaggerUI);
+    const { definition } = args;
+    const { port, bundle } = flags;
 
     const app = new Koa();
     const router = new Router();

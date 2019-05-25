@@ -9,22 +9,28 @@ import { parseDefinition, OutputFormat, stringifyDocument } from '../common/defi
 export default class Swagger2Openapi extends Command {
   public static description = 'convert Swagger 2.0 definitions into OpenApi 3.0.x';
 
-  public static examples = [`$ openapi swagger2openapi --yaml -d ./swagger.json > openapi.yml`];
+  public static examples = [`$ openapi swagger2openapi --yaml ./swagger.json > openapi.yml`];
 
   public static flags = {
     ...commonFlags.help(),
-    ...commonFlags.definition({ required: true }),
     ...commonFlags.parseOpts(),
     ...commonFlags.outputFormat(),
   };
 
-  public static args = [];
+  public static args = [
+    {
+      name: 'definition',
+      description: 'input definition file',
+      required: true,
+    },
+  ];
 
   public async run() {
-    const { flags } = this.parse(Swagger2Openapi);
+    const { args, flags } = this.parse(Swagger2Openapi);
 
     // parse definition
-    const { definition, dereference, validate } = flags;
+    const { definition } = args;
+    const { dereference, validate } = flags;
     const swagger = await parseDefinition({ definition, dereference, validate });
 
     // convert to swagger

@@ -5,15 +5,6 @@ export const help = (overrides: Partial<IBooleanFlag<boolean>> = {}) => ({
   help: flags.help({ char: 'h', ...overrides }),
 });
 
-export const definition = (overrides: Partial<IOptionFlag<string>> = {}) => ({
-  definition: flags.string({
-    char: 'd',
-    description: 'openapi definition file',
-    helpValue: './openapi.yml',
-    ...overrides,
-  }),
-});
-
 export const servers = () => ({
   server: flags.string({
     char: 'S',
