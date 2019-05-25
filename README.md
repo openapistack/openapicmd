@@ -15,11 +15,13 @@ Command line tools for openapi-enabled APIs
 <!-- tocstop -->
 
 # Features
-- [x] Read local and remote JSON/YAML OpenAPI specification files
-- [ ] Use as CLI client to call API operations
-- [x] Mock APIs locally with OpenAPI specification
+- [x] Read and convert local and remote JSON/YAML OpenAPI definition files
 - [x] Run [Swagger UI](https://github.com/swagger-api/swagger-ui) locally
+- [x] Bundle static [Swagger UI](https://github.com/swagger-api/swagger-ui) sites
 - [x] Run [Swagger Editor](https://github.com/swagger-api/swagger-editor) locally
+- [x] Convert Swagger 2.0 to OpenAPI 3.0.x
+- [x] Run Mock APIs
+- [ ] Use as CLI client to call API operations
 
 # Usage
 <!-- usage -->
