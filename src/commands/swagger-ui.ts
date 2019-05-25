@@ -8,6 +8,7 @@ import * as SwaggerUIDist from 'swagger-ui-dist';
 import * as commonFlags from '../common/flags';
 import { parseDefinition } from '../common/definition';
 import { startServer } from '../common/koa';
+import { Document } from 'swagger-parser';
 
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
@@ -19,58 +20,96 @@ export default class SwaggerUI extends Command {
     ...commonFlags.definition(),
     ...commonFlags.port(),
     ...commonFlags.servers(),
-    // @TODO
-    /*bundle: flags.string({
+    bundle: flags.string({
       char: 'B',
       description: 'bundle a static site to directory',
-      helpValue: 'swagger-ui',
-    }),*/
+      helpValue: 'outDir',
+    }),
   };
 
   public static args = [];
 
   public async run() {
     const { flags } = this.parse(SwaggerUI);
-    const { definition, port } = flags;
+    const { definition, port, bundle } = flags;
 
     const app = new Koa();
     const router = new Router();
-    let document = null;
 
+    let documentPath: string;
+    let document: Document;
+
+    const openApiFile = 'openapi.json';
     if (definition) {
       if (definition.match('://') && !flags.server) {
         // use remote definition
-        document = definition;
+        documentPath = definition;
       } else {
         // parse definition
-        router.get('/openapi.json', async (ctx) => {
-          const def = await parseDefinition({ definition });
+        document = await parseDefinition({ definition });
+        router.get(`/${openApiFile}`, async (ctx) => {
           if (flags.server) {
             const addServers = flags.server.map((url) => ({ url }));
-            def.servers = def.servers ? [...def.servers, ...addServers] : addServers;
+            document.servers = document.servers ? [...document.servers, ...addServers] : addServers;
           }
-          ctx.body = def;
+          ctx.body = document;
         });
-        document = '/openapi.json';
+        documentPath = `./${openApiFile}`;
       }
     }
 
     const swaggerUIRoot = SwaggerUIDist.getAbsoluteFSPath();
-    if (document) {
-      const indexHTML = fs.readFileSync(path.join(swaggerUIRoot, 'index.html')).toString('utf8');
-      router.get('/', (ctx) => {
-        ctx.body = indexHTML
-          // use our openapi definition
-          .replace('https://petstore.swagger.io/v2/swagger.json', document)
-          // display operation ids
-          .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
-      });
+
+    // modify index.html
+    let indexHTML = fs
+      .readFileSync(path.join(swaggerUIRoot, 'index.html'))
+      .toString('utf8')
+      // display operation ids
+      .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
+
+    if (documentPath) {
+      // use our openapi definition
+      indexHTML = indexHTML.replace('https://petstore.swagger.io/v2/swagger.json', documentPath);
     }
+
+    // serve from root
+    router.get('/', (ctx) => {
+      ctx.body = indexHTML;
+    });
 
     app.use(router.routes());
     app.use(serve(swaggerUIRoot));
 
-    const { port: portRunning } = await startServer({ app, port });
-    this.log(`Swagger UI running at http://localhost:${portRunning}`);
+    if (bundle) {
+      // bundle files to directory
+      const bundleDir = path.resolve(bundle);
+
+      // create a directory if one does not exist
+      if (!fs.existsSync(bundleDir)) {
+        fs.mkdirSync(bundleDir);
+      }
+      // copy dist files
+      for (const file of fs.readdirSync(swaggerUIRoot)) {
+        const src = path.join(swaggerUIRoot, file);
+        const target = path.join(bundleDir, file);
+        fs.copyFileSync(src, target);
+        this.log(`${target}`);
+      }
+
+      if (document) {
+        const openApiPath = path.join(bundleDir, openApiFile);
+        fs.writeFileSync(openApiPath, JSON.stringify(document));
+        this.log(`${openApiPath}`);
+      }
+
+      // write index.html
+      const indexPath = path.join(bundleDir, 'index.html');
+      fs.writeFileSync(indexPath, indexHTML);
+      this.log(`${indexPath}`);
+    } else {
+      // run server
+      const { port: portRunning } = await startServer({ app, port });
+      this.log(`Swagger UI running at http://localhost:${portRunning}`);
+    }
   }
 }

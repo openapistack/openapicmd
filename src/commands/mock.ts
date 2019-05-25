@@ -60,9 +60,9 @@ export default class Mock extends Command {
     });
 
     // serve openapi.json
-    const openapijson = '/openapi.json';
+    const openApiFile = 'openapi.json';
     app.use(
-      mount(openapijson, async (ctx, next) => {
+      mount(`/${openApiFile}`, async (ctx, next) => {
         await next();
         const doc = api.document;
         doc.servers = [
@@ -90,7 +90,7 @@ export default class Mock extends Command {
           // serve a modified index.html
           ctx.body = indexHTML
             // use our openapi definition
-            .replace('https://petstore.swagger.io/v2/swagger.json', openapijson)
+            .replace('https://petstore.swagger.io/v2/swagger.json', `./${openApiFile}`)
             // display operation ids
             .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
         }
@@ -126,7 +126,7 @@ export default class Mock extends Command {
     if (swaggerui) {
       this.log(`Swagger UI running at http://localhost:${portRunning}/${swaggerui}`);
     }
-    this.log(`OpenAPI definition at http://localhost:${portRunning}${openapijson}`);
+    this.log(`OpenAPI definition at http://localhost:${portRunning}/${openApiFile}`);
   }
 
   private printInfo(document: Document) {
