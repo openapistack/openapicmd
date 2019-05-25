@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
@@ -73,7 +73,7 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "watch-build": "tsc -w",
     "build": "tsc -b",
-    "test": "jest",
+    "test": "jest -i",
     "lint": "tslint -p . -t stylish",
     "version": "oclif-dev readme && git add README.md"
   },

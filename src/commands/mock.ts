@@ -1,3 +1,4 @@
+import { Command, flags } from '@oclif/command';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Koa from 'koa';
@@ -7,7 +8,7 @@ import * as serve from 'koa-static';
 import * as mount from 'koa-mount';
 import OpenAPIBackend, { Document } from 'openapi-backend';
 import { getAbsoluteFSPath } from 'swagger-ui-dist';
-import { Command, flags } from '@oclif/command';
+import * as commonFlags from '../common/flags';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -18,14 +19,9 @@ export default class Mock extends Command {
   ];
 
   public static flags = {
-    help: flags.help({ char: 'h' }),
-    port: flags.integer({ char: 'p', description: 'port', default: 9000, helpValue: '9000' }),
-    definition: flags.string({
-      char: 'd',
-      description: 'openapi definition file',
-      required: true,
-      helpValue: './openapi.yml',
-    }),
+    ...commonFlags.help(),
+    ...commonFlags.definition({ required: true }),
+    ...commonFlags.port({ required: true }),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
   };
 

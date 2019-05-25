@@ -1,8 +1,10 @@
 import { Command, flags } from '@oclif/command';
 import * as SwaggerParser from 'swagger-parser';
 import * as YAML from 'yamljs';
-import { convertObj } from 'swagger2openapi';
+import * as s2o from 'swagger2openapi';
 import { promisify } from 'util';
+import * as commonFlags from '../common/flags';
+import { parseDefinition, OutputFormat, stringifyDocument } from '../common/definition';
 
 export default class Swagger2Openapi extends Command {
   public static description = 'convert Swagger 2.0 definitions into OpenApi 3.0.x';
@@ -10,48 +12,33 @@ export default class Swagger2Openapi extends Command {
   public static examples = [`$ openapiw swagger2openapi --yaml -d ./swagger.json > openapi.yml`];
 
   public static flags = {
-    help: flags.help({ char: 'h' }),
-    definition: flags.string({
-      char: 'd',
-      description: 'openapi definition file',
-      required: true,
-      helpValue: './openapi.yml',
-    }),
-    format: flags.enum({
-      char: 'f',
-      description: '[default: yaml] output format',
-      options: ['json', 'yaml', 'yml'],
-      exclusive: ['json', 'yaml'],
-    }),
-    json: flags.boolean({ description: 'output as json (short for -f json)', exclusive: ['format', 'yaml'] }),
-    yaml: flags.boolean({ description: 'output as yaml (short for -f yaml)', exclusive: ['format', 'json'] }),
-    dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
-    validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
+    ...commonFlags.help(),
+    ...commonFlags.definition({ required: true }),
+    ...commonFlags.outputFormat(),
+    ...commonFlags.parseOpts(),
   };
 
   public static args = [];
 
   public async run() {
     const { flags } = this.parse(Swagger2Openapi);
-    const { definition, format, dereference, validate } = flags;
-    const options = {};
 
-    let method = SwaggerParser.parse;
-    if (dereference) {
-      method = SwaggerParser.dereference;
-    }
-    if (validate) {
-      method = SwaggerParser.validate;
+    // parse definition
+    const { definition, dereference, validate } = flags;
+    const swagger = await parseDefinition({ definition, dereference, validate });
+
+    // convert to swagger
+    let document: SwaggerParser.Document;
+    try {
+      const convertOptions = {}; // @TODO: take in some flags?
+      const converted = await promisify(s2o.convertObj)(swagger, convertOptions);
+      document = converted.openapi;
+    } catch (err) {
+      this.error(err, { exit: 1 });
     }
 
-    const swagger = await method.bind(SwaggerParser)(definition);
-    const { openapi: output } = await promisify(convertObj)(swagger, options);
-    if (format === 'json' || flags.json) {
-      // JSON output
-      this.log(JSON.stringify(output, null, 2));
-    } else {
-      // YAML output
-      this.log(YAML.stringify(output, 99, 2));
-    }
+    // output in correct format
+    const format = flags.format === 'json' || flags.json ? OutputFormat.JSON : OutputFormat.YAML;
+    this.log(stringifyDocument({ document, format }));
   }
 }

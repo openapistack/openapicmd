@@ -1,0 +1,95 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "My API",
+    "version": "1.0.0"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/pets": {
+      "get": {
+        "operationId": "getPets",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/ListPetsRes"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createPet",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "pet",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/PetRes"
+            }
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "operationId": "getPetById",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/PetRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "integer",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ListPetsRes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Odie"
+          }
+        }
+      }
+    },
+    "PetRes": {
+      "example": {
+        "garfield": {
+          "value": {
+            "id": 1,
+            "name": "Garfield"
+          }
+        }
+      }
+    }
+  }
+}

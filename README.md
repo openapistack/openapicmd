@@ -28,7 +28,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.0.17 darwin-x64 node-v10.12.0
+openapicmd/0.0.18 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -73,14 +73,14 @@ OPTIONS
   -U, --swagger-ui=docs           Swagger UI endpoint
   -d, --definition=./openapi.yml  (required) openapi definition file
   -h, --help                      show CLI help
-  -p, --port=9000                 [default: 9000] port
+  -p, --port=9000                 (required) [default: 9000] port
 
 EXAMPLES
   $ openapi mock -d ./openapi.yml
   $ openapi mock -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.17/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.18/src/commands/mock.ts)_
 
 ## `openapi read`
 
@@ -104,11 +104,11 @@ EXAMPLES
   $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.17/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.18/src/commands/read.ts)_
 
 ## `openapi swagger-editor`
 
-start a local Swagger UI instance
+serve a local Swagger UI instance
 
 ```
 USAGE
@@ -124,11 +124,11 @@ EXAMPLES
   $ openapi swagger-editor -d ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.17/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.18/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui`
 
-start a local Swagger UI instance
+serve or bundle a Swagger UI instance
 
 ```
 USAGE
@@ -145,7 +145,7 @@ EXAMPLES
   $ openapi swagger-ui -d ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.17/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.18/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi`
 
@@ -161,14 +161,14 @@ OPTIONS
   -d, --definition=./openapi.yml  (required) openapi definition file
   -f, --format=(json|yaml|yml)    [default: yaml] output format
   -h, --help                      show CLI help
-  --json                          output as json (short for -f json)
-  --yaml                          output as yaml (short for -f yaml)
+  --json                          format as json (short for -f json)
+  --yaml                          format as yaml (short for -f yaml)
 
 EXAMPLE
   $ openapiw swagger2openapi --yaml -d ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.17/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.18/src/commands/swagger2openapi.ts)_
 <!-- commandsstop -->
 
 ## Contributing

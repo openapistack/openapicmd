@@ -7,7 +7,6 @@
     "rootDir": "src",
     "target": "es2017",
     "composite": true,
-    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*"
