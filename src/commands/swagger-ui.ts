@@ -7,6 +7,7 @@ import * as serve from 'koa-static';
 import * as SwaggerUIDist from 'swagger-ui-dist';
 import * as commonFlags from '../common/flags';
 import { parseDefinition } from '../common/definition';
+import { startServer } from '../common/koa';
 
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
@@ -69,9 +70,7 @@ export default class SwaggerUI extends Command {
     app.use(router.routes());
     app.use(serve(swaggerUIRoot));
 
-    const server = app.listen(port);
-    process.on('disconnect', () => server.close());
-
-    this.log(`Swagger UI running at http://localhost:${port}`);
+    const { port: portRunning } = await startServer({ app, port });
+    this.log(`Swagger UI running at http://localhost:${portRunning}`);
   }
 }

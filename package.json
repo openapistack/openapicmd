@@ -12,6 +12,8 @@
     "@oclif/config": "^1.12.9",
     "@oclif/plugin-help": "^2.1.6",
     "axios": "^0.18.0",
+    "cli-ux": "^5.2.1",
+    "get-port": "^5.0.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-mount": "^4.0.0",

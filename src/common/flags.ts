@@ -26,6 +26,7 @@ export const servers = () => ({
 export const parseOpts = () => ({
   dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
   validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
+  ...servers(),
 });
 
 export const port = (overrides: Partial<IOptionFlag<number>> = {}) => ({

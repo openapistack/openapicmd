@@ -9,6 +9,7 @@ import * as mount from 'koa-mount';
 import OpenAPIBackend, { Document } from 'openapi-backend';
 import { getAbsoluteFSPath } from 'swagger-ui-dist';
 import * as commonFlags from '../common/flags';
+import { startServer } from '../common/koa';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -31,8 +32,6 @@ export default class Mock extends Command {
     const { flags } = this.parse(Mock);
     const { definition, port, 'swagger-ui': swaggerui } = flags;
 
-    this.log(`Reading OpenAPI spec ${definition}...`);
-
     const api = new OpenAPIBackend({ definition });
     api.register({
       validationFail: (c, ctx) => {
@@ -50,9 +49,6 @@ export default class Mock extends Command {
       },
     });
     await api.init();
-
-    this.printInfo(api.document);
-    this.printRoutes(api.document);
 
     const app = new Koa();
     app.use(bodyparser());
@@ -119,14 +115,18 @@ export default class Mock extends Command {
       ),
     );
 
-    const server = app.listen(port);
-    process.on('disconnect', () => server.close());
+    // start server
+    const { port: portRunning } = await startServer({ app, port });
 
-    this.log(`\nMock server running at http://localhost:${port}`);
+    // print metadata
+    this.printInfo(api.document);
+    this.printRoutes(api.document);
+
+    this.log(`\nMock server running at http://localhost:${portRunning}`);
     if (swaggerui) {
-      this.log(`Swagger UI running at http://localhost:${port}/${swaggerui}`);
+      this.log(`Swagger UI running at http://localhost:${portRunning}/${swaggerui}`);
     }
-    this.log(`OpenAPI definition at http://localhost:${port}${openapijson}`);
+    this.log(`OpenAPI definition at http://localhost:${portRunning}${openapijson}`);
   }
 
   private printInfo(document: Document) {

@@ -91,13 +91,14 @@ USAGE
   $ openapi read
 
 OPTIONS
-  -D, --dereference               resolve $ref pointers
-  -V, --validate                  validate against openapi schema
-  -d, --definition=./openapi.yml  (required) openapi definition file
-  -f, --format=(json|yaml|yml)    [default: yaml] output format
-  -h, --help                      show CLI help
-  --json                          format as json (short for -f json)
-  --yaml                          format as yaml (short for -f yaml)
+  -D, --dereference                   resolve $ref pointers
+  -S, --server=http://localhost:9000  add servers to definition
+  -V, --validate                      validate against openapi schema
+  -d, --definition=./openapi.yml      (required) openapi definition file
+  -f, --format=(json|yaml|yml)        [default: yaml] output format
+  -h, --help                          show CLI help
+  --json                              format as json (short for -f json)
+  --yaml                              format as yaml (short for -f yaml)
 
 EXAMPLES
   $ openapi read -d ./openapi.yml -f json > openapi.json
@@ -156,13 +157,14 @@ USAGE
   $ openapi swagger2openapi
 
 OPTIONS
-  -D, --dereference               resolve $ref pointers
-  -V, --validate                  validate against openapi schema
-  -d, --definition=./openapi.yml  (required) openapi definition file
-  -f, --format=(json|yaml|yml)    [default: yaml] output format
-  -h, --help                      show CLI help
-  --json                          format as json (short for -f json)
-  --yaml                          format as yaml (short for -f yaml)
+  -D, --dereference                   resolve $ref pointers
+  -S, --server=http://localhost:9000  add servers to definition
+  -V, --validate                      validate against openapi schema
+  -d, --definition=./openapi.yml      (required) openapi definition file
+  -f, --format=(json|yaml|yml)        [default: yaml] output format
+  -h, --help                          show CLI help
+  --json                              format as json (short for -f json)
+  --yaml                              format as yaml (short for -f yaml)
 
 EXAMPLE
   $ openapiw swagger2openapi --yaml -d ./swagger.json > openapi.yml

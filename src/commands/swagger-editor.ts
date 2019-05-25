@@ -7,6 +7,7 @@ import * as serve from 'koa-static';
 import axios from 'axios';
 import { escapeStringTemplateTicks } from '../common/utils';
 import * as commonFlags from '../common/flags';
+import { startServer } from '../common/koa';
 
 function getAbsoluteFSPath() {
   return path.dirname(require.resolve('swagger-editor-dist'));
@@ -58,9 +59,7 @@ export default class SwaggerEditor extends Command {
     app.use(router.routes());
     app.use(serve(swaggerEditorRoot));
 
-    const server = app.listen(port);
-    process.on('disconnect', () => server.close());
-
-    this.log(`Swagger Editor running at http://localhost:${port}`);
+    const { port: portRunning } = await startServer({ app, port });
+    this.log(`Swagger Editor running at http://localhost:${portRunning}`);
   }
 }
