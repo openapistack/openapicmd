@@ -84,9 +84,8 @@ OPTIONS
   --terms=terms                       A URL to the Terms of Service for the API.
   --yaml                              format as yaml (short for -f yaml)
 
-EXAMPLES
-  $ openapi read -d ./openapi.yml -f json > openapi.json
-  $ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+EXAMPLE
+  $ openapi init --title 'My API' > openapi.yml
 ```
 
 _See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.0.23/src/commands/init.ts)_

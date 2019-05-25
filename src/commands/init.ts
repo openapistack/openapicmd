@@ -7,10 +7,7 @@ import { OpenAPIV3 } from 'openapi-types';
 export default class Init extends Command {
   public static description = 'initialise an OpenAPI definition file';
 
-  public static examples = [
-    `$ openapi read -d ./openapi.yml -f json > openapi.json`,
-    '$ openapi read -d https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
-  ];
+  public static examples = [`$ openapi init --title 'My API' > openapi.yml`];
 
   public static flags = {
     ...commonFlags.help(),
