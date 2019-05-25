@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
@@ -14,6 +14,7 @@
     "axios": "^0.18.0",
     "cli-ux": "^5.2.1",
     "get-port": "^5.0.0",
+    "js-yaml": "^3.13.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-mount": "^4.0.0",
@@ -24,8 +25,7 @@
     "swagger-parser": "^6.0.5",
     "swagger-ui-dist": "^3.21.0",
     "swagger2openapi": "^5.2.5",
-    "tslib": "^1.9.3",
-    "yamljs": "^0.3.0"
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.21.2",

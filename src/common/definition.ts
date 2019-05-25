@@ -1,5 +1,5 @@
 import * as SwaggerParser from 'swagger-parser';
-import * as YAML from 'yamljs';
+import * as YAML from 'js-yaml';
 
 interface ParseOpts {
   definition: string;
@@ -45,6 +45,6 @@ export function stringifyDocument({ document, format }: OutputOpts): string {
     return JSON.stringify(document, null, 2);
   } else {
     // YAML output
-    return YAML.stringify(document, 99, 2);
+    return YAML.safeDump(document, { noRefs: true, lineWidth: 240, noArrayIndent: true });
   }
 }
