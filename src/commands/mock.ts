@@ -6,7 +6,7 @@ import OpenAPIBackend, { Document } from 'openapi-backend';
 import * as commonFlags from '../common/flags';
 import { startServer, createServer } from '../common/koa';
 import { serveSwaggerUI } from '../common/swagger-ui';
-import { resolveDefinition } from '../common/definition';
+import { resolveDefinition, printInfo, printOperations } from '../common/definition';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -98,45 +98,12 @@ export default class Mock extends Command {
     // start server
     const { port: portRunning } = await startServer({ app, port });
 
-    // print metadata
-    this.printInfo(api.document);
-    this.printRoutes(api.document);
-
-    this.log(`\nMock server running at http://localhost:${portRunning}`);
+    this.log();
+    this.log(`Mock server running at http://localhost:${portRunning}`);
     if (swaggerui) {
       this.log(`Swagger UI running at http://localhost:${portRunning}/${swaggerui}`);
     }
     this.log(`OpenAPI definition at http://localhost:${portRunning}${documentPath}`);
     this.log();
-  }
-
-  private printInfo(document: Document) {
-    const { title, version, description } = document.info;
-    this.log(`\ntitle: ${title}`);
-    this.log(`version: ${version}`);
-    if (description) {
-      this.log(`description: ${description}`);
-    }
-  }
-
-  private printRoutes(document: Document) {
-    this.log('\nRoutes:');
-    for (const path in document.paths) {
-      if (document.paths[path]) {
-        for (const method in document.paths[path]) {
-          if (document.paths[path][method]) {
-            const { operationId, summary } = document.paths[path][method];
-            let route = `- ${method.toUpperCase()} ${path}`;
-            if (summary) {
-              route = `${route} - ${summary}`;
-            }
-            if (operationId) {
-              route = `${route} (${operationId})`;
-            }
-            this.log(route);
-          }
-        }
-      }
-    }
   }
 }

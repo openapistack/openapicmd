@@ -3,6 +3,7 @@ import * as YAML from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
 import { homedir } from 'os';
+import { Command } from '@oclif/command';
 
 export const CONFIG_FILENAME = '.openapiconfig';
 
@@ -82,5 +83,74 @@ export function resolveDefinition(definitionArg: string) {
   if (configFile) {
     const config = YAML.safeLoad(fs.readFileSync(configFile));
     return config.definition;
+  }
+}
+
+export function printInfo(document: SwaggerParser.Document, ctx: Command) {
+  const { title, version, description } = document.info;
+  ctx.log(`title: ${title}`);
+  ctx.log(`version: ${version}`);
+  if (description) {
+    ctx.log(`description: ${description}`);
+  }
+}
+
+export function printOperations(document: SwaggerParser.Document, ctx: Command) {
+  const operations: { [tag: string]: { routes: string[]; description?: string } } = {};
+
+  if (document.tags) {
+    for (const tag of document.tags) {
+      const { name, description } = tag;
+      operations[name] = {
+        description,
+        routes: [],
+      };
+    }
+  }
+
+  for (const path in document.paths) {
+    if (document.paths[path]) {
+      for (const method in document.paths[path]) {
+        if (document.paths[path][method]) {
+          const { operationId, summary, description, tags } = document.paths[path][method];
+          let route = `${method.toUpperCase()} ${path}`;
+          if (summary) {
+            route = `${route} - ${summary || description}`;
+          }
+          if (operationId) {
+            route = `${route} (${operationId})`;
+          }
+          for (const tag of tags || ['default']) {
+            if (!operations[tag]) {
+              operations[tag] = { routes: [] };
+            }
+            operations[tag].routes.push(route);
+          }
+        }
+      }
+    }
+  }
+
+  ctx.log('Operations:');
+  for (const tag in operations) {
+    if (operations[tag]) {
+      const routes = operations[tag].routes;
+      for (const route of routes) {
+        ctx.log(`- ${route}`);
+      }
+    }
+  }
+}
+
+export function printSchemas(document: SwaggerParser.Document, ctx: Command) {
+  const schemas = (document.components && document.components.schemas) || {};
+  const count = Object.entries(schemas).length;
+  if (count > 0) {
+    ctx.log(`Schemas (${count}):`);
+    for (const schema in schemas) {
+      if (schemas[schema]) {
+        ctx.log(`- ${schema}`);
+      }
+    }
   }
 }
