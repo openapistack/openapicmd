@@ -10,6 +10,7 @@ import OpenAPIBackend, { Document } from 'openapi-backend';
 import { getAbsoluteFSPath } from 'swagger-ui-dist';
 import * as commonFlags from '../common/flags';
 import { startServer } from '../common/koa';
+import { serveSwaggerUI } from '../common/swagger-ui';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -59,16 +60,11 @@ export default class Mock extends Command {
     const app = new Koa();
     app.use(bodyparser());
 
-    // set up cors
-    app.use(async (ctx, next) => {
-      await next();
-      ctx.set('access-control-allow-origin', '*');
-    });
-
     // serve openapi.json
     const openApiFile = 'openapi.json';
+    const documentPath = `/${openApiFile}`;
     app.use(
-      mount(`/${openApiFile}`, async (ctx, next) => {
+      mount(documentPath, async (ctx, next) => {
         await next();
         const doc = api.document;
         doc.servers = [
@@ -83,28 +79,7 @@ export default class Mock extends Command {
 
     // serve swagger ui
     if (swaggerui) {
-      const swaggerUI = new Koa();
-      const router = new Router();
-
-      const swaggerUIRoot = getAbsoluteFSPath();
-
-      const indexHTML = fs.readFileSync(path.join(swaggerUIRoot, 'index.html')).toString('utf8');
-      router.get('/', (ctx) => {
-        if (!ctx.originalUrl.endsWith('/')) {
-          ctx.redirect(`${ctx.originalUrl}/`);
-        } else {
-          // serve a modified index.html
-          ctx.body = indexHTML
-            // use our openapi definition
-            .replace('https://petstore.swagger.io/v2/swagger.json', `./${openApiFile}`)
-            // display operation ids
-            .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
-        }
-      });
-      swaggerUI.use(router.routes());
-      swaggerUI.use(serve(swaggerUIRoot));
-
-      app.use(mount(`/${swaggerui}`, swaggerUI));
+      app.use(mount(`/${swaggerui}`, serveSwaggerUI({ documentPath })));
     }
 
     // serve openapi-backend
@@ -132,7 +107,7 @@ export default class Mock extends Command {
     if (swaggerui) {
       this.log(`Swagger UI running at http://localhost:${portRunning}/${swaggerui}`);
     }
-    this.log(`OpenAPI definition at http://localhost:${portRunning}/${openApiFile}`);
+    this.log(`OpenAPI definition at http://localhost:${portRunning}${documentPath}`);
   }
 
   private printInfo(document: Document) {

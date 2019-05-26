@@ -29,6 +29,7 @@ export default class Read extends Command {
     const { args, flags } = this.parse(Read);
     const { definition } = args;
     const { dereference, validate } = flags;
+
     let document: Document;
     try {
       document = await parseDefinition({ definition, dereference, validate });

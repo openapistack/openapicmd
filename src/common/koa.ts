@@ -19,6 +19,13 @@ export async function startServer(opts: StartServerOpts) {
     }
   }
   const { app } = opts;
+
+  // set up cors
+  app.use(async (ctx, next) => {
+    await next();
+    ctx.set('access-control-allow-origin', '*');
+  });
+
   server = app.listen(port);
   process.on('disconnect', () => server.close());
   return { server, port };

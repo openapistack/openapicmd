@@ -3,12 +3,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import * as serve from 'koa-static';
-import * as SwaggerUIDist from 'swagger-ui-dist';
+import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
 import { parseDefinition } from '../common/definition';
 import { startServer } from '../common/koa';
 import { Document } from 'swagger-parser';
+import { swaggerUIRoot, getSwaggerUIIndexHTML, serveSwaggerUI } from '../common/swagger-ui';
 
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
@@ -36,10 +36,9 @@ export default class SwaggerUI extends Command {
   public async run() {
     const { args, flags } = this.parse(SwaggerUI);
     const { definition } = args;
-    const { port, bundle } = flags;
+    const { port, bundle, server } = flags;
 
     const app = new Koa();
-    const router = new Router();
 
     let documentPath: string;
     let document: Document;
@@ -51,39 +50,10 @@ export default class SwaggerUI extends Command {
         documentPath = definition;
       } else {
         // parse definition
-        document = await parseDefinition({ definition });
-        router.get(`/${openApiFile}`, async (ctx) => {
-          if (flags.server) {
-            const addServers = flags.server.map((url) => ({ url }));
-            document.servers = document.servers ? [...document.servers, ...addServers] : addServers;
-          }
-          ctx.body = document;
-        });
+        document = await parseDefinition({ definition, servers: server });
         documentPath = `./${openApiFile}`;
       }
     }
-
-    const swaggerUIRoot = SwaggerUIDist.getAbsoluteFSPath();
-
-    // modify index.html
-    let indexHTML = fs
-      .readFileSync(path.join(swaggerUIRoot, 'index.html'))
-      .toString('utf8')
-      // display operation ids
-      .replace('layout: "StandaloneLayout"', 'layout: "StandaloneLayout", displayOperationId: true');
-
-    if (documentPath) {
-      // use our openapi definition
-      indexHTML = indexHTML.replace('https://petstore.swagger.io/v2/swagger.json', documentPath);
-    }
-
-    // serve from root
-    router.get('/', (ctx) => {
-      ctx.body = indexHTML;
-    });
-
-    app.use(router.routes());
-    app.use(serve(swaggerUIRoot));
 
     if (bundle) {
       // bundle files to directory
@@ -101,6 +71,7 @@ export default class SwaggerUI extends Command {
         this.log(`${target}`);
       }
 
+      // copy openapi definition file
       if (document) {
         const openApiPath = path.join(bundleDir, openApiFile);
         fs.writeFileSync(openApiPath, JSON.stringify(document));
@@ -109,12 +80,27 @@ export default class SwaggerUI extends Command {
 
       // write index.html
       const indexPath = path.join(bundleDir, 'index.html');
-      fs.writeFileSync(indexPath, indexHTML);
+      fs.writeFileSync(indexPath, getSwaggerUIIndexHTML({ documentPath }));
       this.log(`${indexPath}`);
     } else {
-      // run server
+      // serve swagger ui
+      app.use(mount('/', serveSwaggerUI({ documentPath })));
+
+      // serve the openapi file
+      if (document) {
+        app.use(
+          mount(`/${openApiFile}`, (ctx) => {
+            ctx.body = JSON.stringify(document);
+          }),
+        );
+      }
+
+      // start server
       const { port: portRunning } = await startServer({ app, port });
       this.log(`Swagger UI running at http://localhost:${portRunning}`);
+      if (document) {
+        this.log(`OpenAPI definition at http://localhost:${portRunning}/${openApiFile}`);
+      }
     }
   }
 }
