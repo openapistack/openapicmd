@@ -104,7 +104,7 @@ ARGUMENTS
 OPTIONS
   -U, --swagger-ui=docs  Swagger UI endpoint
   -h, --help             show CLI help
-  -p, --port=9000        (required) [default: 9000] port
+  -p, --port=9000        [default: 9000] port
 
 EXAMPLES
   $ openapi mock ./openapi.yml
