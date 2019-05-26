@@ -3,7 +3,7 @@ import * as SwaggerParser from 'swagger-parser';
 import * as s2o from 'swagger2openapi';
 import { promisify } from 'util';
 import * as commonFlags from '../common/flags';
-import { parseDefinition, OutputFormat, stringifyDocument } from '../common/definition';
+import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 
 export default class Swagger2Openapi extends Command {
   public static description = 'convert Swagger 2.0 definitions to OpenAPI 3.0.x';
@@ -20,16 +20,19 @@ export default class Swagger2Openapi extends Command {
     {
       name: 'definition',
       description: 'input definition file',
-      required: true,
     },
   ];
 
   public async run() {
     const { args, flags } = this.parse(Swagger2Openapi);
+    const { dereference, validate } = flags;
 
     // parse definition
-    const { definition } = args;
-    const { dereference, validate } = flags;
+    const definition = resolveDefinition(args.definition);
+    if (!definition) {
+      this.error('Please load a definition file', { exit: 1 });
+    }
+
     const swagger = await parseDefinition({ definition, dereference, validate });
 
     // convert to swagger

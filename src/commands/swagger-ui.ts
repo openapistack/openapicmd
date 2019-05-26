@@ -6,7 +6,7 @@ import * as Koa from 'koa';
 import * as proxy from 'koa-proxy';
 import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
-import { parseDefinition } from '../common/definition';
+import { parseDefinition, resolveDefinition } from '../common/definition';
 import { startServer, createServer } from '../common/koa';
 import { Document } from 'swagger-parser';
 import {
@@ -47,16 +47,8 @@ export default class SwaggerUI extends Command {
 
   public async run() {
     const { args, flags } = this.parse(SwaggerUI);
-    const { definition } = args;
     const { port, logger, bundle } = flags;
-    const swaggerUIOpts: SwaggerUIOpts = {
-      docExpansion: flags.expand as DocExpansion,
-      displayOperationId: flags.operationids,
-      filter: flags.filter,
-      deepLinking: flags.deeplinks,
-      withCredentials: flags.withcredentials,
-      displayRequestDuration: flags.requestduration,
-    };
+    const definition = resolveDefinition(args.definition);
 
     const app = createServer({ logger });
 
@@ -75,6 +67,16 @@ export default class SwaggerUI extends Command {
         documentPath = `./${openApiFile}`;
       }
     }
+
+    // parse opts for Swagger UI from flags
+    const swaggerUIOpts: SwaggerUIOpts = {
+      docExpansion: flags.expand as DocExpansion,
+      displayOperationId: flags.operationids,
+      filter: flags.filter,
+      deepLinking: flags.deeplinks,
+      withCredentials: flags.withcredentials,
+      displayRequestDuration: flags.requestduration,
+    };
 
     if (bundle) {
       // bundle files to directory

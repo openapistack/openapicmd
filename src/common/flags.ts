@@ -14,9 +14,13 @@ export const servers = () => ({
   }),
 });
 
+export const validate = () => ({
+  validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
+});
+
 export const parseOpts = () => ({
   dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
-  validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
+  ...validate(),
   ...servers(),
 });
 

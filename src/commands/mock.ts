@@ -6,6 +6,7 @@ import OpenAPIBackend, { Document } from 'openapi-backend';
 import * as commonFlags from '../common/flags';
 import { startServer, createServer } from '../common/koa';
 import { serveSwaggerUI } from '../common/swagger-ui';
+import { resolveDefinition } from '../common/definition';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -25,14 +26,17 @@ export default class Mock extends Command {
     {
       name: 'definition',
       description: 'input definition file',
-      required: true,
     },
   ];
 
   public async run() {
     const { args, flags } = this.parse(Mock);
-    const { definition } = args;
     const { port, logger, 'swagger-ui': swaggerui } = flags;
+
+    const definition = resolveDefinition(args.definition);
+    if (!definition) {
+      this.error('Please load a definition file', { exit: 1 });
+    }
 
     const api = new OpenAPIBackend({ definition });
     api.register({

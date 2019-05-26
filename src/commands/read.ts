@@ -1,5 +1,5 @@
 import { Command, flags } from '@oclif/command';
-import { parseDefinition, OutputFormat, stringifyDocument } from '../common/definition';
+import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from 'swagger-parser';
 
@@ -21,14 +21,17 @@ export default class Read extends Command {
     {
       name: 'definition',
       description: 'input definition file',
-      required: true,
     },
   ];
 
   public async run() {
     const { args, flags } = this.parse(Read);
-    const { definition } = args;
     const { dereference, validate } = flags;
+
+    const definition = resolveDefinition(args.definition);
+    if (!definition) {
+      this.error('Please load a definition file', { exit: 1 });
+    }
 
     let document: Document;
     try {

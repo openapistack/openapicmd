@@ -8,6 +8,7 @@ import axios from 'axios';
 import { escapeStringTemplateTicks } from '../common/utils';
 import * as commonFlags from '../common/flags';
 import { startServer, createServer } from '../common/koa';
+import { resolveDefinition } from '../common/definition';
 
 function getAbsoluteFSPath() {
   return path.dirname(require.resolve('swagger-editor-dist'));
@@ -36,8 +37,9 @@ export default class SwaggerEditor extends Command {
 
   public async run() {
     const { args, flags } = this.parse(SwaggerEditor);
-    const { definition } = args;
     const { port, logger } = flags;
+
+    const definition = resolveDefinition(args.definition);
 
     const app = createServer({ logger });
     const router = new Router();
