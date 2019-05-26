@@ -7,7 +7,7 @@ import * as proxy from 'koa-proxy';
 import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
 import { parseDefinition } from '../common/definition';
-import { startServer } from '../common/koa';
+import { startServer, createServer } from '../common/koa';
 import { Document } from 'swagger-parser';
 import {
   swaggerUIRoot,
@@ -24,7 +24,7 @@ export default class SwaggerUI extends Command {
 
   public static flags = {
     ...commonFlags.help(),
-    ...commonFlags.port(),
+    ...commonFlags.serverOpts(),
     ...commonFlags.servers(),
     ...commonFlags.swaggerUIOpts(),
     bundle: flags.string({
@@ -48,7 +48,7 @@ export default class SwaggerUI extends Command {
   public async run() {
     const { args, flags } = this.parse(SwaggerUI);
     const { definition } = args;
-    const { port, bundle } = flags;
+    const { port, logger, bundle } = flags;
     const swaggerUIOpts: SwaggerUIOpts = {
       docExpansion: flags.expand as DocExpansion,
       displayOperationId: flags.operationids,
@@ -58,7 +58,7 @@ export default class SwaggerUI extends Command {
       displayRequestDuration: flags.requestduration,
     };
 
-    const app = new Koa();
+    const app = createServer({ logger });
 
     let proxyPath: string;
     let documentPath: string;
@@ -112,7 +112,12 @@ export default class SwaggerUI extends Command {
         const api = URL.parse(document.servers[0].url);
         const proxyOpts = {
           host: URL.format({ protocol: api.protocol, host: api.host, port: api.port }),
-          map: (path: string) => `${api.pathname}${path}`,
+          map: (path: string) => {
+            if (api.pathname === '/') {
+              return path;
+            }
+            return `${api.pathname}${path}`;
+          },
           jar: flags.withcredentials,
         };
         proxyPath = '/proxy';
@@ -141,6 +146,7 @@ export default class SwaggerUI extends Command {
       if (proxyPath) {
         this.log(`Proxy running at http://localhost:${portRunning}${proxyPath}`);
       }
+      this.log();
     }
   }
 }

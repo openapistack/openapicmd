@@ -20,13 +20,17 @@ export const parseOpts = () => ({
   ...servers(),
 });
 
-export const port = (overrides: Partial<IOptionFlag<number>> = {}) => ({
+export const serverOpts = () => ({
   port: flags.integer({
     char: 'p',
     description: 'port',
     default: 9000,
     helpValue: '9000',
-    ...overrides,
+  }),
+  logger: flags.boolean({
+    description: '[default: true] log requests',
+    default: true,
+    allowNo: true,
   }),
 });
 

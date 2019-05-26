@@ -1,7 +1,26 @@
 import * as Koa from 'koa';
+import * as logger from 'koa-logger';
 import cli from 'cli-ux';
 import { Server } from 'http';
 import * as getPort from 'get-port';
+
+interface CreateServerOpts {
+  logger?: boolean;
+}
+export function createServer(opts: CreateServerOpts = {}) {
+  const app = new Koa();
+  // set up cors
+  app.use(async (ctx, next) => {
+    await next();
+    ctx.set('Access-Control-Allow-Origin', '*');
+  });
+
+  // set up logging
+  if (opts.logger || opts.logger === undefined) {
+    app.use(logger());
+  }
+  return app;
+}
 
 interface StartServerOpts {
   app: Koa;
@@ -13,19 +32,12 @@ export async function startServer(opts: StartServerOpts) {
   if (opts.port !== port) {
     if (
       !process.stdin.isTTY ||
-      !(await cli.confirm(`Something else is running on port ${port}. Use another port instead? (y/n)`))
+      !(await cli.confirm(`Something else is running on port ${opts.port}. Use another port instead? (y/n)`))
     ) {
       process.exit(1);
     }
   }
   const { app } = opts;
-
-  // set up cors
-  app.use(async (ctx, next) => {
-    await next();
-    ctx.set('access-control-allow-origin', '*');
-  });
-
   server = app.listen(port);
   process.on('disconnect', () => server.close());
   return { server, port };

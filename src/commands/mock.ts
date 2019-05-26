@@ -4,7 +4,7 @@ import * as bodyparser from 'koa-bodyparser';
 import * as mount from 'koa-mount';
 import OpenAPIBackend, { Document } from 'openapi-backend';
 import * as commonFlags from '../common/flags';
-import { startServer } from '../common/koa';
+import { startServer, createServer } from '../common/koa';
 import { serveSwaggerUI } from '../common/swagger-ui';
 
 export default class Mock extends Command {
@@ -17,7 +17,7 @@ export default class Mock extends Command {
 
   public static flags = {
     ...commonFlags.help(),
-    ...commonFlags.port(),
+    ...commonFlags.serverOpts(),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
   };
 
@@ -32,7 +32,7 @@ export default class Mock extends Command {
   public async run() {
     const { args, flags } = this.parse(Mock);
     const { definition } = args;
-    const { port, 'swagger-ui': swaggerui } = flags;
+    const { port, logger, 'swagger-ui': swaggerui } = flags;
 
     const api = new OpenAPIBackend({ definition });
     api.register({
@@ -52,7 +52,7 @@ export default class Mock extends Command {
     });
     await api.init();
 
-    const app = new Koa();
+    const app = createServer({ logger });
     app.use(bodyparser());
 
     // serve openapi.json
@@ -103,6 +103,7 @@ export default class Mock extends Command {
       this.log(`Swagger UI running at http://localhost:${portRunning}/${swaggerui}`);
     }
     this.log(`OpenAPI definition at http://localhost:${portRunning}${documentPath}`);
+    this.log();
   }
 
   private printInfo(document: Document) {
