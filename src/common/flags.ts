@@ -40,3 +40,23 @@ export const outputFormat = () => ({
   json: flags.boolean({ description: 'format as json (short for -f json)', exclusive: ['format', 'yaml'] }),
   yaml: flags.boolean({ description: 'format as yaml (short for -f yaml)', exclusive: ['format', 'json'] }),
 });
+
+export const swaggerUIOpts = () => ({
+  expand: flags.string({
+    description: '[default: list] default expansion setting for the operations and tags',
+    options: ['full', 'list', 'none'],
+  }),
+  operationids: flags.boolean({ description: '[default: true] display operationIds', default: true, allowNo: true }),
+  filter: flags.boolean({ description: '[default: true] enable filtering by tag', default: true, allowNo: true }),
+  deeplinks: flags.boolean({ description: '[default: true] allow deep linking', default: true, allowNo: true }),
+  withcredentials: flags.boolean({
+    description: '[default: true] send cookies in "try it now"',
+    default: true,
+    allowNo: true,
+  }),
+  requestduration: flags.boolean({
+    description: '[default: true] display request durations in "try it now"',
+    default: true,
+    allowNo: true,
+  }),
+});

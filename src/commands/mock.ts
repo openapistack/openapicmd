@@ -79,7 +79,7 @@ export default class Mock extends Command {
 
     // serve swagger ui
     if (swaggerui) {
-      app.use(mount(`/${swaggerui}`, serveSwaggerUI({ documentPath })));
+      app.use(mount(`/${swaggerui}`, serveSwaggerUI({ url: documentPath })));
     }
 
     // serve openapi-backend

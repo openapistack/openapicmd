@@ -2,13 +2,18 @@ import { Command, flags } from '@oclif/command';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Koa from 'koa';
-import * as Router from 'koa-router';
 import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
 import { parseDefinition } from '../common/definition';
 import { startServer } from '../common/koa';
 import { Document } from 'swagger-parser';
-import { swaggerUIRoot, getSwaggerUIIndexHTML, serveSwaggerUI } from '../common/swagger-ui';
+import {
+  swaggerUIRoot,
+  getSwaggerUIIndexHTML,
+  serveSwaggerUI,
+  SwaggerUIOpts,
+  DocExpansion,
+} from '../common/swagger-ui';
 
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
@@ -19,6 +24,7 @@ export default class SwaggerUI extends Command {
     ...commonFlags.help(),
     ...commonFlags.port(),
     ...commonFlags.servers(),
+    ...commonFlags.swaggerUIOpts(),
     bundle: flags.string({
       char: 'B',
       description: 'bundle a static site to directory',
@@ -37,6 +43,14 @@ export default class SwaggerUI extends Command {
     const { args, flags } = this.parse(SwaggerUI);
     const { definition } = args;
     const { port, bundle, server } = flags;
+    const swaggerUIOpts: SwaggerUIOpts = {
+      docExpansion: flags.expand as DocExpansion,
+      displayOperationId: flags.operationids,
+      filter: flags.filter,
+      deepLinking: flags.deeplinks,
+      withCredentials: flags.withcredentials,
+      displayRequestDuration: flags.requestduration,
+    };
 
     const app = new Koa();
 
@@ -80,11 +94,11 @@ export default class SwaggerUI extends Command {
 
       // write index.html
       const indexPath = path.join(bundleDir, 'index.html');
-      fs.writeFileSync(indexPath, getSwaggerUIIndexHTML({ documentPath }));
+      fs.writeFileSync(indexPath, getSwaggerUIIndexHTML({ url: documentPath, ...swaggerUIOpts }));
       this.log(`${indexPath}`);
     } else {
       // serve swagger ui
-      app.use(mount('/', serveSwaggerUI({ documentPath })));
+      app.use(mount('/', serveSwaggerUI({ url: documentPath, ...swaggerUIOpts })));
 
       // serve the openapi file
       if (document) {

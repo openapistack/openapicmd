@@ -30,7 +30,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.1.0 darwin-x64 node-v10.12.0
+openapicmd/0.1.1 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -88,7 +88,7 @@ EXAMPLE
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.1/src/commands/init.ts)_
 
 ## `openapi mock DEFINITION`
 
@@ -111,7 +111,7 @@ EXAMPLES
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.1/src/commands/mock.ts)_
 
 ## `openapi read DEFINITION`
 
@@ -138,7 +138,7 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.1/src/commands/read.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
@@ -161,7 +161,7 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml --bundle static
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.1/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
@@ -179,17 +179,23 @@ OPTIONS
   -S, --server=http://localhost:9000  add servers to definition
   -h, --help                          show CLI help
   -p, --port=9000                     [default: 9000] port
+  --[no-]deeplinks                    [default: true] allow deep linking
+  --expand=full|list|none             [default: list] default expansion setting for the operations and tags
+  --[no-]filter                       [default: true] enable filtering by tag
+  --[no-]operationids                 [default: true] display operationIds
+  --[no-]requestduration              [default: true] display request durations in "try it now"
+  --[no-]withcredentials              [default: true] send cookies in "try it now"
 
 EXAMPLES
   $ openapi swagger-ui
   $ openapi swagger-ui ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.1/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi DEFINITION`
 
-convert Swagger 2.0 definitions into OpenApi 3.0.x
+convert Swagger 2.0 definitions to OpenAPI 3.0.x
 
 ```
 USAGE
@@ -211,7 +217,7 @@ EXAMPLE
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.0/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.1/src/commands/swagger2openapi.ts)_
 <!-- commandsstop -->
 
 ## Contributing
