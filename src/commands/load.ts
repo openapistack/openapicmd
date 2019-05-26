@@ -28,7 +28,7 @@ export default class Load extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Load);
-    const definition = path.resolve(args.definition);
+    const definition = args.definition;
 
     // check that definition can be parsed
     try {
