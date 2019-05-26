@@ -71,13 +71,9 @@ export function getSwaggerUIIndexHTML(opts: SwaggerUIOpts = {}) {
     filter: true,
     ...opts,
   };
-
-  // modify index.html
-  let indexHTML = fs
+  return fs
     .readFileSync(path.join(swaggerUIRoot, 'index.html'))
     .toString('utf8')
-    // apply our custom opts
     .replace('window.onload', `const config = JSON.parse(\'${JSON.stringify(config)}\');window.onload`)
     .replace('layout: "StandaloneLayout"', '...config');
-  return indexHTML;
 }
