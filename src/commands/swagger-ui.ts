@@ -1,7 +1,9 @@
 import { Command, flags } from '@oclif/command';
+import * as URL from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Koa from 'koa';
+import * as proxy from 'koa-proxy';
 import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
 import { parseDefinition } from '../common/definition';
@@ -30,6 +32,10 @@ export default class SwaggerUI extends Command {
       description: 'bundle a static site to directory',
       helpValue: 'outDir',
     }),
+    proxy: flags.boolean({
+      description: 'set up a proxy for the api to avoid CORS issues',
+      exclusive: ['bundle'],
+    }),
   };
 
   public static args = [
@@ -42,7 +48,7 @@ export default class SwaggerUI extends Command {
   public async run() {
     const { args, flags } = this.parse(SwaggerUI);
     const { definition } = args;
-    const { port, bundle, server } = flags;
+    const { port, bundle } = flags;
     const swaggerUIOpts: SwaggerUIOpts = {
       docExpansion: flags.expand as DocExpansion,
       displayOperationId: flags.operationids,
@@ -54,17 +60,18 @@ export default class SwaggerUI extends Command {
 
     const app = new Koa();
 
+    let proxyPath: string;
     let documentPath: string;
     let document: Document;
 
     const openApiFile = 'openapi.json';
     if (definition) {
-      if (definition.match('://') && !flags.server) {
+      if (definition.match('://') && !flags.server && !flags.proxy) {
         // use remote definition
         documentPath = definition;
       } else {
         // parse definition
-        document = await parseDefinition({ definition, servers: server });
+        document = await parseDefinition({ definition, servers: flags.server });
         documentPath = `./${openApiFile}`;
       }
     }
@@ -97,11 +104,24 @@ export default class SwaggerUI extends Command {
       fs.writeFileSync(indexPath, getSwaggerUIIndexHTML({ url: documentPath, ...swaggerUIOpts }));
       this.log(`${indexPath}`);
     } else {
-      // serve swagger ui
-      app.use(mount('/', serveSwaggerUI({ url: documentPath, ...swaggerUIOpts })));
+      if (flags.proxy) {
+        // set up a proxy for the api
+        if (!document || !document.servers || !document.servers[0]) {
+          this.error('Unable to find server URL from definition, unable to set up proxy');
+        }
+        const api = URL.parse(document.servers[0].url);
+        const proxyOpts = {
+          host: URL.format({ protocol: api.protocol, host: api.host, port: api.port }),
+          map: (path: string) => `${api.pathname}${path}`,
+          jar: flags.withcredentials,
+        };
+        proxyPath = '/proxy';
+        document.servers[0].url = proxyPath;
+        app.use(mount(proxyPath, proxy(proxyOpts)));
+      }
 
-      // serve the openapi file
       if (document) {
+        // serve the openapi file
         app.use(
           mount(`/${openApiFile}`, (ctx) => {
             ctx.body = JSON.stringify(document);
@@ -109,11 +129,17 @@ export default class SwaggerUI extends Command {
         );
       }
 
+      // serve swagger ui
+      app.use(mount('/', serveSwaggerUI({ url: documentPath, ...swaggerUIOpts })));
+
       // start server
       const { port: portRunning } = await startServer({ app, port });
       this.log(`Swagger UI running at http://localhost:${portRunning}`);
       if (document) {
         this.log(`OpenAPI definition at http://localhost:${portRunning}/${openApiFile}`);
+      }
+      if (proxyPath) {
+        this.log(`Proxy running at http://localhost:${portRunning}${proxyPath}`);
       }
     }
   }

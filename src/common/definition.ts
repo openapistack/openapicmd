@@ -20,7 +20,7 @@ export async function parseDefinition({
   if (validate) {
     method = SwaggerParser.validate;
   }
-  const document = method.bind(SwaggerParser)(definition);
+  const document = await method.bind(SwaggerParser)(definition);
 
   // add servers
   if (servers) {
