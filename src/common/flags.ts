@@ -20,6 +20,7 @@ export const validate = () => ({
 
 export const parseOpts = () => ({
   dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
+  bundle: flags.boolean({ char: 'B', description: 'resolve remote $ref pointers' }),
   ...validate(),
   ...servers(),
 });
