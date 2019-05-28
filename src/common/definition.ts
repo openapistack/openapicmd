@@ -11,15 +11,20 @@ interface ParseOpts {
   definition: string;
   dereference?: boolean;
   validate?: boolean;
+  bundle?: boolean;
   servers?: string[];
 }
 export async function parseDefinition({
   definition,
   dereference,
   validate,
+  bundle,
   servers,
 }: ParseOpts): Promise<SwaggerParser.Document> {
   let method = SwaggerParser.parse;
+  if (bundle) {
+    method = SwaggerParser.bundle;
+  }
   if (dereference) {
     method = SwaggerParser.dereference;
   }

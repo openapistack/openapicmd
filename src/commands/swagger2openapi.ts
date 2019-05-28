@@ -25,7 +25,7 @@ export default class Swagger2Openapi extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Swagger2Openapi);
-    const { dereference, validate } = flags;
+    const { dereference, bundle, validate } = flags;
 
     // parse definition
     const definition = resolveDefinition(args.definition);
@@ -33,7 +33,7 @@ export default class Swagger2Openapi extends Command {
       this.error('Please load a definition file', { exit: 1 });
     }
 
-    const swagger = await parseDefinition({ definition, dereference, validate });
+    const swagger = await parseDefinition({ definition, dereference, bundle, validate });
 
     // convert to swagger
     let document: SwaggerParser.Document;
