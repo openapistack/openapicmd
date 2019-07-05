@@ -9,11 +9,6 @@ interface CreateServerOpts {
 }
 export function createServer(opts: CreateServerOpts = {}) {
   const app = new Koa();
-  // set up cors
-  app.use(async (ctx, next) => {
-    await next();
-    ctx.set('Access-Control-Allow-Origin', '*');
-  });
 
   // set up logging
   if (opts.logger || opts.logger === undefined) {
