@@ -1,6 +1,7 @@
 import { Command, flags } from '@oclif/command';
 import * as Koa from 'koa';
 import * as bodyparser from 'koa-bodyparser';
+import * as cors from '@koa/cors';
 import * as mount from 'koa-mount';
 import OpenAPIBackend, { Document } from 'openapi-backend';
 import * as commonFlags from '../common/flags';
@@ -58,6 +59,7 @@ export default class Mock extends Command {
 
     const app = createServer({ logger });
     app.use(bodyparser());
+    app.use(cors({ credentials: true }));
 
     // serve openapi.json
     const openApiFile = 'openapi.json';

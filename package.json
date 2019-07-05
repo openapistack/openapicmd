@@ -8,6 +8,7 @@
   },
   "bugs": "https://github.com/anttiviljami/openapicmd/issues",
   "dependencies": {
+    "@koa/cors": "^3.0.0",
     "@oclif/command": "^1.5.11",
     "@oclif/config": "^1.12.9",
     "@oclif/plugin-help": "^2.1.6",
