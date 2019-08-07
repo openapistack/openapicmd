@@ -14,6 +14,15 @@ export const servers = () => ({
   }),
 });
 
+export const overrideServers = () => ({
+  serveroverride: flags.string({
+    char: 's',
+    description: 'override servers definition',
+    helpValue: 'http://localhost:9000',
+    multiple: true,
+  }),
+});
+
 export const validate = () => ({
   validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
 });

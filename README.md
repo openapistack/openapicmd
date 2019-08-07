@@ -150,10 +150,11 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -U, --swagger-ui=docs  Swagger UI endpoint
-  -h, --help             show CLI help
-  -p, --port=9000        [default: 9000] port
-  --[no-]logger          [default: true] log requests
+  -U, --swagger-ui=docs                       Swagger UI endpoint
+  -h, --help                                  show CLI help
+  -p, --port=9000                             [default: 9000] port
+  -s, --serveroverride=http://localhost:9000  override servers definition
+  --[no-]logger                               [default: true] log requests
 
 EXAMPLES
   $ openapi mock ./openapi.yml
