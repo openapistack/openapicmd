@@ -20,6 +20,7 @@ export default class Mock extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.serverOpts(),
+    ...commonFlags.overrideServers(),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
   };
 
@@ -32,8 +33,7 @@ export default class Mock extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Mock);
-    const { port, logger, 'swagger-ui': swaggerui } = flags;
-
+    const { port, logger, 'swagger-ui': swaggerui, serveroverride } = flags;
     const definition = resolveDefinition(args.definition);
     if (!definition) {
       this.error('Please load a definition file', { exit: 1 });
@@ -61,6 +61,14 @@ export default class Mock extends Command {
     app.use(bodyparser());
     app.use(cors({ credentials: true }));
 
+    const docServers = serveroverride
+      ? serveroverride.map((url) => ({ url }))
+      : [
+          {
+            url: `http://localhost:${port}`,
+          },
+        ];
+
     // serve openapi.json
     const openApiFile = 'openapi.json';
     const documentPath = `/${openApiFile}`;
@@ -68,11 +76,7 @@ export default class Mock extends Command {
       mount(documentPath, async (ctx, next) => {
         await next();
         const doc = api.document;
-        doc.servers = [
-          {
-            url: `http://localhost:${port}`,
-          },
-        ];
+        doc.servers = docServers;
         ctx.body = api.document;
         ctx.status = 200;
       }),
