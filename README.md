@@ -30,7 +30,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/0.1.9 darwin-x64 node-v10.12.0
+openapicmd/0.1.11 darwin-x64 node-v10.12.0
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -52,7 +52,7 @@ USAGE
 
 ## `openapi help [COMMAND]`
 
-Display help for `openapi` commands.
+display help for openapi
 
 ```
 USAGE
@@ -69,7 +69,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6
 
 ## `openapi info [DEFINITION]`
 
-Print information about definition file.
+print information about definition file
 
 ```
 USAGE
@@ -88,11 +88,11 @@ EXAMPLES
   $ openapi info ./openapi.yml
 ```
 
-_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/info.ts)_
 
 ## `openapi init`
 
-Initialise an OpenAPI definition file.
+initialise an OpenAPI definition file
 
 ```
 USAGE
@@ -114,11 +114,11 @@ EXAMPLE
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/init.ts)_
 
 ## `openapi load DEFINITION`
 
-Load an OpenAPI definition file (writes to `.openapiconfig`).
+load an openapi definition file (writes to .openapiconfig)
 
 ```
 USAGE
@@ -136,11 +136,11 @@ EXAMPLES
   $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/load.ts)_
+_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/load.ts)_
 
 ## `openapi mock [DEFINITION]`
 
-Start a local mock API server.
+start a local mock API server
 
 ```
 USAGE
@@ -161,11 +161,11 @@ EXAMPLES
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/mock.ts)_
 
 ## `openapi read [DEFINITION]`
 
-Read, parse and convert OpenAPI definitions.
+read, parse and convert OpenAPI definitions
 
 ```
 USAGE
@@ -189,11 +189,11 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/read.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
-Serve a local Swagger UI instance.
+serve a local Swagger UI instance
 
 ```
 USAGE
@@ -213,11 +213,11 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml --bundle static
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
-Serve or bundle a Swagger UI instance.
+serve or bundle a Swagger UI instance
 
 ```
 USAGE
@@ -245,11 +245,11 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi [DEFINITION]`
 
-Convert Swagger `2.0` definitions to OpenAPI `3.0.x` format.
+convert Swagger 2.0 definitions to OpenAPI 3.0.x
 
 ```
 USAGE
@@ -272,11 +272,11 @@ EXAMPLE
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/swagger2openapi.ts)_
 
 ## `openapi unload`
 
-Unload an OpenAPI definition file (writes to `.openapiconfig`)
+unload an openapi definition file (writes to .openapiconfig)
 
 ```
 USAGE
@@ -289,7 +289,7 @@ EXAMPLE
   $ openapi unload
 ```
 
-_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.9/src/commands/unload.ts)_
+_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v0.1.11/src/commands/unload.ts)_
 <!-- commandsstop -->
 
 ## Contributing
