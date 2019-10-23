@@ -34,6 +34,9 @@ export default class Mock extends Command {
   public async run() {
     const { args, flags } = this.parse(Mock);
     const { port, logger, 'swagger-ui': swaggerui, serveroverride } = flags;
+
+    let portRunning = port;
+
     const definition = resolveDefinition(args.definition);
     if (!definition) {
       this.error('Please load a definition file', { exit: 1 });
@@ -61,14 +64,6 @@ export default class Mock extends Command {
     app.use(bodyparser());
     app.use(cors({ credentials: true }));
 
-    const docServers = serveroverride
-      ? serveroverride.map((url) => ({ url }))
-      : [
-          {
-            url: `http://localhost:${port}`,
-          },
-        ];
-
     // serve openapi.json
     const openApiFile = 'openapi.json';
     const documentPath = `/${openApiFile}`;
@@ -76,7 +71,13 @@ export default class Mock extends Command {
       mount(documentPath, async (ctx, next) => {
         await next();
         const doc = api.document;
-        doc.servers = docServers;
+        doc.servers = serveroverride
+          ? serveroverride.map((url) => ({ url }))
+          : [
+              {
+                url: `http://localhost:${portRunning}`,
+              },
+            ];
         ctx.body = api.document;
         ctx.status = 200;
       }),
@@ -102,7 +103,8 @@ export default class Mock extends Command {
     );
 
     // start server
-    const { port: portRunning } = await startServer({ app, port });
+    const server = await startServer({ app, port });
+    portRunning = server.port;
 
     this.log();
     this.log(`Mock server running at http://localhost:${portRunning}`);
