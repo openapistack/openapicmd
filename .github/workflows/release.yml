@@ -1,0 +1,15 @@
+name: Release
+on:
+  push:
+    tags: ['*']
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - run: npm install
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
