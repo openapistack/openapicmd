@@ -13,6 +13,7 @@ interface ParseOpts {
   validate?: boolean;
   bundle?: boolean;
   servers?: string[];
+  proxy?: boolean;
 }
 export async function parseDefinition({
   definition,
@@ -20,6 +21,7 @@ export async function parseDefinition({
   validate,
   bundle,
   servers,
+  proxy,
 }: ParseOpts): Promise<SwaggerParser.Document> {
   let method = SwaggerParser.parse;
   if (bundle) {
@@ -38,6 +40,13 @@ export async function parseDefinition({
     const serverObjects = servers.map((url) => ({ url }));
     document.servers = document.servers ? [...document.servers, ...serverObjects] : serverObjects;
   }
+
+  // add proxy
+  if (proxy) {
+    const proxyServer = { url: '/proxy' };
+    document.servers = document.servers ? [proxyServer, ...document.servers] : [proxyServer];
+  }
+
   return document;
 }
 

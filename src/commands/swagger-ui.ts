@@ -63,7 +63,7 @@ export default class SwaggerUI extends Command {
         documentPath = definition;
       } else {
         // parse definition
-        document = await parseDefinition({ definition, servers: flags.server });
+        document = await parseDefinition({ definition, servers: flags.server, proxy: flags.proxy });
         documentPath = `./${openApiFile}`;
       }
     }
@@ -133,7 +133,6 @@ export default class SwaggerUI extends Command {
           jar: flags.withcredentials,
         };
         proxyPath = '/proxy';
-        document.servers = [{ url: proxyPath }, ...(document.servers || [])];
         app.use(mount(proxyPath, proxy(proxyOpts)));
       }
 
