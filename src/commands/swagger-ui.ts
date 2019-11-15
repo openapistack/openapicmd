@@ -108,10 +108,20 @@ export default class SwaggerUI extends Command {
     } else {
       if (flags.proxy) {
         // set up a proxy for the api
-        if (!document || !document.servers || !document.servers[0]) {
-          this.error('Unable to find server URL from definition, unable to set up proxy');
+        let serverURL = null;
+        if (document && document.servers) {
+          serverURL = document.servers[0];
         }
-        const api = URL.parse(document.servers[0].url);
+        if (flags.server && typeof flags.server === 'object') {
+          serverURL = flags.server[0];
+        }
+        if (flags.server && typeof flags.server === 'string') {
+          serverURL = flags;
+        }
+        if (!serverURL) {
+          this.error('Unable to find server URL from definition, please provide a --server parameter');
+        }
+        const api = URL.parse(serverURL);
         const proxyOpts = {
           host: URL.format({ protocol: api.protocol, host: api.host, port: api.port }),
           map: (path: string) => {
