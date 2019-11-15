@@ -133,7 +133,7 @@ export default class SwaggerUI extends Command {
           jar: flags.withcredentials,
         };
         proxyPath = '/proxy';
-        document.servers[0].url = proxyPath;
+        document.servers = [{ url: proxyPath }, ...(document.servers || [])];
         app.use(mount(proxyPath, proxy(proxyOpts)));
       }
 

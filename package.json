@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "0.1.12",
+  "version": "0.1.14",
   "author": "Vilj7mi Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
@@ -44,7 +44,7 @@
     "@types/yamljs": "^0.2.30",
     "chai": "^4.2.0",
     "globby": "^8.0.2",
-    "jest": "^23.6.0",
+    "jest": "^25.0.0",
     "prettier": "^1.16.4",
     "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
