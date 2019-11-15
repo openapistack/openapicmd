@@ -109,14 +109,14 @@ export default class SwaggerUI extends Command {
       if (flags.proxy) {
         // set up a proxy for the api
         let serverURL = null;
-        if (document && document.servers) {
-          serverURL = document.servers[0];
+        if (document && document.servers && document.servers[0]) {
+          serverURL = document.servers[0].url;
         }
         if (flags.server && typeof flags.server === 'object') {
           serverURL = flags.server[0];
         }
         if (flags.server && typeof flags.server === 'string') {
-          serverURL = flags;
+          serverURL = flags.server;
         }
         if (!serverURL) {
           this.error('Unable to find server URL from definition, please provide a --server parameter');
