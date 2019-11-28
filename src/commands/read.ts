@@ -35,7 +35,7 @@ export default class Read extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, dereference, bundle, validate });
+      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server });
     } catch (err) {
       this.error(err, { exit: 1 });
     }
