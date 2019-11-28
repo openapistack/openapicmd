@@ -20,6 +20,28 @@ describe('read', () => {
 
     test
       .stdout()
+      .command(['read', path.join('examples', 'openapi.json'), '--server', 'http://localhost:9999'])
+      .it('can add a server', (ctx) => {
+        expect(ctx.stdout).to.contain('http://localhost:9999');
+      });
+
+    test
+      .stdout()
+      .command([
+        'read',
+        path.join('examples', 'openapi.json'),
+        '-S',
+        'http://localhost:9998',
+        '-S',
+        'http://localhost:9999',
+      ])
+      .it('can add multiple servers', (ctx) => {
+        expect(ctx.stdout).to.contain('http://localhost:9998');
+        expect(ctx.stdout).to.contain('http://localhost:9999');
+      });
+
+    test
+      .stdout()
       .command(['read', path.join('examples', 'openapi.yml'), '--json'])
       .it('reads openapi spec and outputs json', (ctx) => {
         expect(ctx.stdout).to.contain('My API');
