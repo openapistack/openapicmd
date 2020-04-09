@@ -22,6 +22,11 @@ export default class Mock extends Command {
     ...commonFlags.serverOpts(),
     ...commonFlags.overrideServers(),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
+    validate: flags.boolean({
+      description: '[default: true] validate requests according to schema',
+      default: true,
+      allowNo: true,
+    }),
   };
 
   public static args = [
@@ -33,7 +38,7 @@ export default class Mock extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Mock);
-    const { port, logger, 'swagger-ui': swaggerui, serveroverride } = flags;
+    const { port, logger, 'swagger-ui': swaggerui, serveroverride, validate } = flags;
 
     let portRunning = port;
 
@@ -42,7 +47,10 @@ export default class Mock extends Command {
       this.error('Please load a definition file', { exit: 1 });
     }
 
-    const api = new OpenAPIBackend({ definition });
+    const api = new OpenAPIBackend({
+      definition,
+      validate,
+    });
     api.register({
       validationFail: (c, ctx) => {
         ctx.status = 400;

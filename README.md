@@ -155,6 +155,7 @@ OPTIONS
   -p, --port=9000                             [default: 9000] port
   -s, --serveroverride=http://localhost:9000  override servers definition
   --[no-]logger                               [default: true] log requests
+  --[no-]validate                             [default: true] validate requests according to schema
 
 EXAMPLES
   $ openapi mock ./openapi.yml
