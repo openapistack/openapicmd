@@ -1,13 +1,12 @@
 import { Command, flags } from '@oclif/command';
-import * as Koa from 'koa';
 import * as bodyparser from 'koa-bodyparser';
 import * as cors from '@koa/cors';
 import * as mount from 'koa-mount';
-import OpenAPIBackend, { Document } from 'openapi-backend';
+import OpenAPIBackend from 'openapi-backend';
 import * as commonFlags from '../common/flags';
 import { startServer, createServer } from '../common/koa';
 import { serveSwaggerUI } from '../common/swagger-ui';
-import { resolveDefinition, printInfo, printOperations } from '../common/definition';
+import { resolveDefinition } from '../common/definition';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';

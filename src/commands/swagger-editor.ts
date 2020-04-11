@@ -1,7 +1,6 @@
-import { Command, flags } from '@oclif/command';
+import { Command } from '@oclif/command';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import * as serve from 'koa-static';
 import axios from 'axios';

@@ -2,7 +2,6 @@ import { Command, flags } from '@oclif/command';
 import * as URL from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as Koa from 'koa';
 import * as proxy from 'koa-proxy';
 import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';

@@ -129,7 +129,9 @@ export function printOperations(document: SwaggerParser.Document, ctx: Command) 
           const { operationId, summary, description, tags } = document.paths[path][method];
           let route = `${method.toUpperCase()} ${path}`;
           if (summary) {
-            route = `${route} - ${summary || description}`;
+            route = `${route} - ${summary}`;
+          } else if (description) {
+            route = `${route} - ${description}`;
           }
           if (operationId) {
             route = `${route} (${operationId})`;

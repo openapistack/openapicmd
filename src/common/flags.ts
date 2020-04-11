@@ -1,5 +1,5 @@
 import { flags } from '@oclif/command';
-import { IOptionFlag, IBooleanFlag } from '@oclif/parser/lib/flags';
+import { IBooleanFlag } from '@oclif/parser/lib/flags';
 
 export const help = (overrides: Partial<IBooleanFlag<boolean>> = {}) => ({
   help: flags.help({ char: 'h', ...overrides }),

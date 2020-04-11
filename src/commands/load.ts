@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Command } from '@oclif/command';
 import * as commonFlags from '../common/flags';
 import * as path from 'path';
 import * as fs from 'fs';

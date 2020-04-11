@@ -1,5 +1,5 @@
 import { Command, flags } from '@oclif/command';
-import { parseDefinition, OutputFormat, stringifyDocument } from '../common/definition';
+import { OutputFormat, stringifyDocument } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from 'swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
