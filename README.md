@@ -1,6 +1,6 @@
 OpenAPICMD
 ==========
-[![Build Status](https://travis-ci.org/anttiviljami/openapicmd.svg?branch=master)](https://travis-ci.org/anttiviljami/openapicmd)
+[![CI](https://github.com/anttiviljami/openapicmd/workflows/CI/badge.svg)](https://github.com/anttiviljami/openapicmd/actions?query=workflow%3ACI)
 [![Dependencies](https://david-dm.org/anttiviljami/openapicmd.svg)](https://david-dm.org/anttiviljami/openapicmd)
 [![npm version](https://img.shields.io/npm/v/openapicmd.svg)](https://www.npmjs.com/package/openapicmd)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/anttiviljami/openapicmd/blob/master/LICENSE)
