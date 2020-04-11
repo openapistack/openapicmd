@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-      - run: npm install
+      - run: npm ci
       - run: npm run lint
       - run: npm run build
       - run: ./bin/run --version
