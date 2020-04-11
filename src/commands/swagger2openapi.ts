@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Command } from '@oclif/command';
 import * as SwaggerParser from 'swagger-parser';
 import * as s2o from 'swagger2openapi';
 import { promisify } from 'util';
