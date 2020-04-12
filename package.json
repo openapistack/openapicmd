@@ -39,17 +39,17 @@
     "@types/koa-logger": "^3.1.1",
     "@types/koa-router": "^7.0.40",
     "@types/koa-static": "^4.0.1",
-    "@types/node": "^10.12.29",
+    "@types/node": "^13.11.1",
     "@types/swagger-ui-dist": "^3.0.0",
     "@types/yamljs": "^0.2.30",
     "chai": "^4.2.0",
-    "globby": "^8.0.2",
+    "globby": "^11.0.0",
     "jest": "^25.0.0",
-    "prettier": "^1.16.4",
-    "ts-jest": "^23.10.5",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.13.1",
-    "typescript": "^3.3.3333"
+    "prettier": "^2.0.4",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3"
   },
   "engines": {
     "node": ">=8.0.0"
