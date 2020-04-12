@@ -23,7 +23,7 @@
     "koa-proxy": "^1.0.0-alpha.0",
     "koa-router": "^8.0.8",
     "koa-static": "^5.0.0",
-    "openapi-backend": "^2.3.0",
+    "openapi-backend": "^3.0.0",
     "swagger-editor-dist": "^3.6.24",
     "swagger-parser": "^9.0.1",
     "swagger-ui-dist": "^3.21.0",
