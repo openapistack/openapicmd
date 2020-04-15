@@ -4,3 +4,4 @@ lib
 static
 node_modules
 .openapiconfig
+tsconfig.tsbuildinfo
