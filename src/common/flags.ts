@@ -8,15 +8,6 @@ export const help = (overrides: Partial<IBooleanFlag<boolean>> = {}) => ({
 export const servers = () => ({
   server: flags.string({
     char: 'S',
-    description: 'add servers to definition',
-    helpValue: 'http://localhost:9000',
-    multiple: true,
-  }),
-});
-
-export const overrideServers = () => ({
-  serveroverride: flags.string({
-    char: 's',
     description: 'override servers definition',
     helpValue: 'http://localhost:9000',
     multiple: true,

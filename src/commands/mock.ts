@@ -2,11 +2,11 @@ import { Command, flags } from '@oclif/command';
 import * as bodyparser from 'koa-bodyparser';
 import * as cors from '@koa/cors';
 import * as mount from 'koa-mount';
-import OpenAPIBackend from 'openapi-backend';
+import OpenAPIBackend, { Document } from 'openapi-backend';
 import * as commonFlags from '../common/flags';
 import { startServer, createServer } from '../common/koa';
 import { serveSwaggerUI } from '../common/swagger-ui';
-import { resolveDefinition } from '../common/definition';
+import { resolveDefinition, parseDefinition } from '../common/definition';
 
 export default class Mock extends Command {
   public static description = 'start a local mock API server';
@@ -19,8 +19,9 @@ export default class Mock extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.serverOpts(),
-    ...commonFlags.overrideServers(),
+    ...commonFlags.servers(),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
+    root: flags.string({ char: 'R', description: 'API root path', default: '/' }),
     validate: flags.boolean({
       description: '[default: true] validate requests according to schema',
       default: true,
@@ -37,7 +38,7 @@ export default class Mock extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Mock);
-    const { port, logger, 'swagger-ui': swaggerui, serveroverride, validate } = flags;
+    const { port, logger, 'swagger-ui': swaggerui, validate, root: apiRoot } = flags;
 
     let portRunning = port;
 
@@ -46,10 +47,19 @@ export default class Mock extends Command {
       this.error('Please load a definition file', { exit: 1 });
     }
 
+    let document: Document;
+    try {
+      document = await parseDefinition({ definition, validate, servers: flags.server });
+    } catch (err) {
+      this.error(err, { exit: 1 });
+    }
+
     const api = new OpenAPIBackend({
-      definition,
+      definition: document,
       validate,
+      apiRoot,
     });
+
     api.register({
       validationFail: (c, ctx) => {
         ctx.status = 400;
@@ -58,6 +68,10 @@ export default class Mock extends Command {
       notFound: (c, ctx) => {
         ctx.status = 404;
         ctx.body = { err: 'not found' };
+      },
+      methodNotAllowed: (c, ctx) => {
+        ctx.status = 405;
+        ctx.body = { err: 'method not allowed' };
       },
       notImplemented: (c, ctx) => {
         const { status, mock } = c.api.mockResponseForOperation(c.operation.operationId);
@@ -77,14 +91,6 @@ export default class Mock extends Command {
     app.use(
       mount(documentPath, async (ctx, next) => {
         await next();
-        const doc = api.document;
-        doc.servers = serveroverride
-          ? serveroverride.map((url) => ({ url }))
-          : [
-              {
-                url: `http://localhost:${portRunning}`,
-              },
-            ];
         ctx.body = api.document;
         ctx.status = 200;
       }),
