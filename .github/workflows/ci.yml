@@ -18,7 +18,7 @@ jobs:
       - run: npm run build
       - run: ./bin/run --version
       - run: ./bin/run --help
-      - run: npm test
+      - run: npm test -- --verbose
 
   publish:
     name: Publish
