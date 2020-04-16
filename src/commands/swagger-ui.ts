@@ -19,7 +19,11 @@ import {
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
 
-  public static examples = ['$ openapi swagger-ui', '$ openapi swagger-ui ./openapi.yml'];
+  public static examples = [
+    '$ openapi swagger-ui',
+    '$ openapi swagger-ui ./openapi.yml',
+    '$ openapi swagger-ui ./openapi.yml --bundle outDir',
+  ];
 
   public static flags = {
     ...commonFlags.help(),
