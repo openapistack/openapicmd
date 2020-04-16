@@ -54,10 +54,6 @@ export default class Mock extends Command {
       this.error(err, { exit: 1 });
     }
 
-    if (!document.servers || !document.servers.length) {
-      document.servers = [{ url: `http://localhost:${portRunning}` }];
-    }
-
     const api = new OpenAPIBackend({
       definition: document,
       validate,
@@ -122,6 +118,10 @@ export default class Mock extends Command {
     // start server
     const server = await startServer({ app, port });
     portRunning = server.port;
+
+    if (!document.servers || !document.servers.length) {
+      api.document.servers = [{ url: `http://localhost:${portRunning}` }];
+    }
 
     this.log();
     this.log(`Mock server running at http://localhost:${portRunning}`);
