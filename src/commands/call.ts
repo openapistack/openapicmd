@@ -1,6 +1,7 @@
 import { Command, flags } from '@oclif/command';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
+import { URL } from 'url';
 import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig } from 'openapi-client-axios';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
@@ -47,6 +48,17 @@ export default class Call extends Command {
       document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server });
     } catch (err) {
       this.error(err, { exit: 1 });
+    }
+
+    if (args.definition.startsWith('http') || args.definition.startsWith('//')) {
+      const inputURL = new URL(args.definition);
+      document.servers = document.servers || [];
+      const server = document.servers[0];
+      if (!server) {
+        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}` };
+      } else if (!server.url.startsWith('http') && !server.url.startsWith('//')) {
+        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}${server.url}` };
+      }
     }
 
     const api = new OpenAPIClientAxios({ definition: document });
@@ -109,7 +121,15 @@ export default class Call extends Command {
       debug(request);
       console.warn(`${request.method.toUpperCase()} ${request.url}`);
       const res = await client[operationId](params, data, config);
-      this.log(JSON.stringify(res.data, null, 2));
+      if (res.data && res.data.length > 0) {
+        try {
+          this.log(JSON.stringify(res.data, null, 2));
+        } catch (e) {
+          this.log(res.data);
+        }
+      } else {
+        console.warn('(empty response)');
+      }
     } catch (err) {
       this.error(err, { exit: 1 });
     }
