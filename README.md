@@ -33,7 +33,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/1.3.3 darwin-x64 node-v12.9.1
+openapicmd/1.4.1 darwin-x64 node-v12.9.1
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -73,11 +73,8 @@ OPTIONS
   -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
   -d, --data=data                     request body
-  -f, --format=(json|yaml|yml)        [default: yaml] output format
   -h, --help                          show CLI help
   -p, --param=key=value               parameter
-  --json                              format as json (short for -f json)
-  --yaml                              format as yaml (short for -f yaml)
 
 EXAMPLES
   $ openapi call -O getPets
@@ -85,7 +82,7 @@ EXAMPLES
   $ openapi call -O createPet -d '{ "name": "Garfield" }'
 ```
 
-_See code: [src/commands/call.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/call.ts)_
+_See code: [src/commands/call.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/call.ts)_
 
 ## `openapi help [COMMAND]`
 
@@ -125,7 +122,7 @@ EXAMPLES
   $ openapi info ./openapi.yml
 ```
 
-_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/info.ts)_
 
 ## `openapi init`
 
@@ -151,7 +148,7 @@ EXAMPLE
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/init.ts)_
 
 ## `openapi load DEFINITION`
 
@@ -173,7 +170,7 @@ EXAMPLES
   $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/load.ts)_
+_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/load.ts)_
 
 ## `openapi mock [DEFINITION]`
 
@@ -200,7 +197,7 @@ EXAMPLES
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/mock.ts)_
 
 ## `openapi read [DEFINITION]`
 
@@ -228,7 +225,7 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/read.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
@@ -252,7 +249,7 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml --bundle static
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
@@ -284,7 +281,7 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi [DEFINITION]`
 
@@ -311,7 +308,7 @@ EXAMPLE
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/swagger2openapi.ts)_
 
 ## `openapi unload`
 
@@ -328,7 +325,7 @@ EXAMPLE
   $ openapi unload
 ```
 
-_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/unload.ts)_
+_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.4.1/src/commands/unload.ts)_
 <!-- commandsstop -->
 
 ## Contributing

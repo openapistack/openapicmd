@@ -12,16 +12,16 @@ export default class Call extends Command {
   public static description = 'call OpenAPI operations';
 
   public static examples = [
-    `$ openapi call -O getPets`,
-    `$ openapi call -O getPet -p id=1`,
-    `$ openapi call -O createPet -d '{ "name": "Garfield" }'`,
+    `$ openapi call -o getPets`,
+    `$ openapi call -o getPet -p id=1`,
+    `$ openapi call -o createPet -d '{ "name": "Garfield" }'`,
   ];
 
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
     header: flags.string({ char: 'H', description: 'Add request headers', multiple: true }),
-    operation: flags.string({ char: 'O', description: 'operationId', helpValue: 'operationId' }),
+    operation: flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
     param: flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
     data: flags.string({ char: 'd', description: 'request body' }),
   };
