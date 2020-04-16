@@ -54,6 +54,10 @@ export default class Mock extends Command {
       this.error(err, { exit: 1 });
     }
 
+    if (!document.servers || !document.servers.length) {
+      document.servers = [{ url: `http://localhost:${portRunning}` }];
+    }
+
     const api = new OpenAPIBackend({
       definition: document,
       validate,
