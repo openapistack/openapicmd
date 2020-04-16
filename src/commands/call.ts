@@ -20,7 +20,6 @@ export default class Call extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
-    ...commonFlags.outputFormat(),
     header: flags.string({ char: 'H', description: 'Add request headers', multiple: true }),
     operation: flags.string({ char: 'O', description: 'operationId', helpValue: 'operationId' }),
     param: flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
