@@ -24,7 +24,7 @@
 - [x] Run [Swagger Editor](https://github.com/swagger-api/swagger-editor) locally
 - [x] Convert Swagger 2.0 to OpenAPI 3.0.x
 - [x] Run Mock APIs
-- [ ] Use as CLI client to call API operations
+- [x] Use as CLI client to call API operations
 
 # Usage
 <!-- usage -->
@@ -33,7 +33,7 @@ $ npm install -g openapicmd
 $ openapi COMMAND
 running command...
 $ openapi (-v|--version|version)
-openapicmd/1.2.0 darwin-x64 node-v12.9.1
+openapicmd/1.3.3 darwin-x64 node-v12.9.1
 $ openapi --help [COMMAND]
 USAGE
   $ openapi COMMAND
@@ -42,6 +42,7 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`openapi call [DEFINITION]`](#openapi-call-definition)
 * [`openapi help [COMMAND]`](#openapi-help-command)
 * [`openapi info [DEFINITION]`](#openapi-info-definition)
 * [`openapi init`](#openapi-init)
@@ -52,6 +53,39 @@ USAGE
 * [`openapi swagger-ui [DEFINITION]`](#openapi-swagger-ui-definition)
 * [`openapi swagger2openapi [DEFINITION]`](#openapi-swagger2openapi-definition)
 * [`openapi unload`](#openapi-unload)
+
+## `openapi call [DEFINITION]`
+
+call OpenAPI operations
+
+```
+USAGE
+  $ openapi call [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+OPTIONS
+  -B, --bundle                        resolve remote $ref pointers
+  -D, --dereference                   resolve $ref pointers
+  -H, --header=header                 Add request headers
+  -O, --operation=operationId         operationId
+  -S, --server=http://localhost:9000  override servers definition
+  -V, --validate                      validate against openapi schema
+  -d, --data=data                     request body
+  -f, --format=(json|yaml|yml)        [default: yaml] output format
+  -h, --help                          show CLI help
+  -p, --param=key=value               parameter
+  --json                              format as json (short for -f json)
+  --yaml                              format as yaml (short for -f yaml)
+
+EXAMPLES
+  $ openapi call -O getPets
+  $ openapi call -O getPet -p id=1
+  $ openapi call -O createPet -d '{ "name": "Garfield" }'
+```
+
+_See code: [src/commands/call.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/call.ts)_
 
 ## `openapi help [COMMAND]`
 
@@ -91,7 +125,7 @@ EXAMPLES
   $ openapi info ./openapi.yml
 ```
 
-_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/info.ts)_
 
 ## `openapi init`
 
@@ -102,7 +136,7 @@ USAGE
   $ openapi init
 
 OPTIONS
-  -S, --server=http://localhost:9000  add servers to definition
+  -S, --server=http://localhost:9000  override servers definition
   -T, --title=title                   [default: My API] The title for the API
   -d, --description=description       Description for the API
   -f, --format=(json|yaml|yml)        [default: yaml] output format
@@ -117,7 +151,7 @@ EXAMPLE
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/init.ts)_
 
 ## `openapi load DEFINITION`
 
@@ -139,7 +173,7 @@ EXAMPLES
   $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/load.ts)_
+_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/load.ts)_
 
 ## `openapi mock [DEFINITION]`
 
@@ -153,19 +187,20 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -U, --swagger-ui=docs                       Swagger UI endpoint
-  -h, --help                                  show CLI help
-  -p, --port=9000                             [default: 9000] port
-  -s, --serveroverride=http://localhost:9000  override servers definition
-  --[no-]logger                               [default: true] log requests
-  --[no-]validate                             [default: true] validate requests according to schema
+  -R, --root=root                     [default: /] API root path
+  -S, --server=http://localhost:9000  override servers definition
+  -U, --swagger-ui=docs               Swagger UI endpoint
+  -h, --help                          show CLI help
+  -p, --port=9000                     [default: 9000] port
+  --[no-]logger                       [default: true] log requests
+  --[no-]validate                     [default: true] validate requests according to schema
 
 EXAMPLES
   $ openapi mock ./openapi.yml
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/mock.ts)_
 
 ## `openapi read [DEFINITION]`
 
@@ -181,7 +216,7 @@ ARGUMENTS
 OPTIONS
   -B, --bundle                        resolve remote $ref pointers
   -D, --dereference                   resolve $ref pointers
-  -S, --server=http://localhost:9000  add servers to definition
+  -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
   -f, --format=(json|yaml|yml)        [default: yaml] output format
   -h, --help                          show CLI help
@@ -193,7 +228,7 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/read.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
@@ -217,7 +252,7 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml --bundle static
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
@@ -232,7 +267,7 @@ ARGUMENTS
 
 OPTIONS
   -B, --bundle=outDir                 bundle a static site to directory
-  -S, --server=http://localhost:9000  add servers to definition
+  -S, --server=http://localhost:9000  override servers definition
   -h, --help                          show CLI help
   -p, --port=9000                     [default: 9000] port
   --[no-]deeplinks                    [default: true] allow deep linking
@@ -249,7 +284,7 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi [DEFINITION]`
 
@@ -265,7 +300,7 @@ ARGUMENTS
 OPTIONS
   -B, --bundle                        resolve remote $ref pointers
   -D, --dereference                   resolve $ref pointers
-  -S, --server=http://localhost:9000  add servers to definition
+  -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
   -f, --format=(json|yaml|yml)        [default: yaml] output format
   -h, --help                          show CLI help
@@ -276,7 +311,7 @@ EXAMPLE
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/swagger2openapi.ts)_
 
 ## `openapi unload`
 
@@ -293,7 +328,7 @@ EXAMPLE
   $ openapi unload
 ```
 
-_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.2.0/src/commands/unload.ts)_
+_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.3.3/src/commands/unload.ts)_
 <!-- commandsstop -->
 
 ## Contributing
