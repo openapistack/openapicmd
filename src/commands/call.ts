@@ -1,5 +1,6 @@
 import { Command, flags } from '@oclif/command';
 import cli from 'cli-ux';
+import * as chalk from 'chalk';
 import * as inquirer from 'inquirer';
 import { URL } from 'url';
 import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig } from 'openapi-client-axios';
@@ -94,14 +95,10 @@ export default class Call extends Command {
 
     for (const p of operation.parameters || []) {
       const param = p as OpenAPIV3.ParameterObject;
-      const { name, required, example, description } = param;
+      const { name, required, example } = param;
 
       if (!params[name]) {
-        let prompt = name;
-        if (description) {
-          prompt = `${prompt} ${description}`;
-        }
-        const value = await cli.prompt(prompt, { required, default: example });
+        const value = await cli.prompt(name, { required, default: example });
         params[name] = value;
       }
     }
@@ -128,10 +125,14 @@ export default class Call extends Command {
           this.log(res.data);
         }
       } else {
-        console.warn('(empty response)');
+        console.warn(chalk.gray('(empty response)'));
       }
     } catch (err) {
-      this.error(err, { exit: 1 });
+      this.error(err.message, { exit: false });
+      if (err.response) {
+        console.error(JSON.stringify(err.response.data, null, 2));
+      }
+      process.exit(1);
     }
   }
 }
