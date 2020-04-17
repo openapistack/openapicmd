@@ -1,13 +1,14 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
   },
   "bugs": "https://github.com/anttiviljami/openapicmd/issues",
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^8.0.0",
     "@koa/cors": "^3.0.0",
     "@oclif/command": "^1.5.11",
     "@oclif/config": "^1.12.9",
