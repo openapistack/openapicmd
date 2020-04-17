@@ -18,11 +18,20 @@ export const validate = () => ({
   validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
 });
 
+export const header = () => ({
+  header: flags.string({ char: 'H', description: 'add request when calling remote urls', multiple: true }),
+});
+
 export const parseOpts = () => ({
   dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
   bundle: flags.boolean({ char: 'B', description: 'resolve remote $ref pointers' }),
+  ...header(),
   ...validate(),
   ...servers(),
+});
+
+export const apiRoot = () => ({
+  root: flags.string({ char: 'R', description: 'API root path', default: '/' }),
 });
 
 export const serverOpts = () => ({

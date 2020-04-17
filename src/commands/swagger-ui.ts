@@ -1,5 +1,5 @@
 import { Command, flags } from '@oclif/command';
-import * as URL from 'url';
+import { URL } from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as proxy from 'koa-proxy';
@@ -15,6 +15,7 @@ import {
   SwaggerUIOpts,
   DocExpansion,
 } from '../common/swagger-ui';
+import { parseHeaderFlag } from '../common/utils';
 
 export default class SwaggerUI extends Command {
   public static description = 'serve or bundle a Swagger UI instance';
@@ -30,6 +31,8 @@ export default class SwaggerUI extends Command {
     ...commonFlags.serverOpts(),
     ...commonFlags.servers(),
     ...commonFlags.swaggerUIOpts(),
+    ...commonFlags.header(),
+    ...commonFlags.apiRoot(),
     bundle: flags.string({
       char: 'B',
       description: 'bundle a static site to directory',
@@ -50,7 +53,7 @@ export default class SwaggerUI extends Command {
 
   public async run() {
     const { args, flags } = this.parse(SwaggerUI);
-    const { port, logger, bundle } = flags;
+    const { port, logger, bundle, header } = flags;
     const definition = resolveDefinition(args.definition);
 
     const app = createServer({ logger });
@@ -66,8 +69,20 @@ export default class SwaggerUI extends Command {
         documentPath = definition;
       } else {
         // parse definition
-        document = await parseDefinition({ definition, servers: flags.server, proxy: flags.proxy });
+        document = await parseDefinition({ definition, servers: flags.server, proxy: flags.proxy, header });
         documentPath = `./${openApiFile}`;
+      }
+    }
+
+    // induce the remote server from the definition parameter if needed
+    if (definition.startsWith('http') || definition.startsWith('//')) {
+      const inputURL = new URL(definition);
+      document.servers = document.servers || [];
+      const server = document.servers[0];
+      if (!server) {
+        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}` };
+      } else if (!server.url.startsWith('http') && !server.url.startsWith('//')) {
+        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}${server.url}` };
       }
     }
 
@@ -112,7 +127,7 @@ export default class SwaggerUI extends Command {
       if (flags.proxy) {
         // set up a proxy for the api
         let serverURL = null;
-        if (document && document.servers && document.servers[0]) {
+        if (document.servers && document.servers[0]) {
           serverURL = document.servers[0].url;
         }
         if (flags.server && typeof flags.server === 'object') {
@@ -124,19 +139,32 @@ export default class SwaggerUI extends Command {
         if (!serverURL) {
           this.error('Unable to find server URL from definition, please provide a --server parameter');
         }
-        const api = URL.parse(serverURL);
+        const apiUrl = new URL(serverURL);
         const proxyOpts = {
-          host: URL.format({ protocol: api.protocol, host: api.host, port: api.port }),
+          host: `${apiUrl.protocol}//${apiUrl.host}`,
           map: (path: string) => {
-            if (api.pathname === '/') {
+            if (flags.root) {
+              return `${flags.root}${path}`;
+            }
+            if (apiUrl.pathname === '/') {
               return path;
             }
-            return `${api.pathname}${path}`;
+            return `${apiUrl.pathname}${path}`;
           },
           jar: flags.withcredentials,
+          headers: parseHeaderFlag(header),
         };
         proxyPath = '/proxy';
-        app.use(mount(proxyPath, proxy(proxyOpts)));
+        app.use(
+          mount(proxyPath, (ctx, next) => {
+            ctx.request.header = {
+              ...ctx.request.header,
+              ...parseHeaderFlag(header),
+            };
+            return proxy(proxyOpts)(ctx, next);
+          }),
+        );
+        document.servers = [{ url: proxyPath }, ...document.servers];
       }
 
       if (document) {

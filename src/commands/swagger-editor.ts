@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as Router from 'koa-router';
 import * as serve from 'koa-static';
 import axios from 'axios';
-import { escapeStringTemplateTicks } from '../common/utils';
+import { escapeStringTemplateTicks, parseHeaderFlag } from '../common/utils';
 import * as commonFlags from '../common/flags';
 import { startServer, createServer } from '../common/koa';
 import { resolveDefinition } from '../common/definition';
@@ -21,6 +21,7 @@ export default class SwaggerEditor extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.serverOpts(),
+    ...commonFlags.header(),
   };
 
   public static args = [
@@ -32,7 +33,7 @@ export default class SwaggerEditor extends Command {
 
   public async run() {
     const { args, flags } = this.parse(SwaggerEditor);
-    const { port, logger } = flags;
+    const { port, logger, header } = flags;
 
     const definition = resolveDefinition(args.definition);
 
@@ -42,7 +43,7 @@ export default class SwaggerEditor extends Command {
 
     if (definition) {
       if (definition.match('://')) {
-        const { data } = await axios.get(definition);
+        const { data } = await axios.get(definition, { headers: parseHeaderFlag(header) });
         document = data;
       } else {
         document = fs.readFileSync(definition);

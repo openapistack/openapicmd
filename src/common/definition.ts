@@ -1,9 +1,11 @@
 import * as SwaggerParser from 'swagger-parser';
+import * as _ from 'lodash';
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
 import { homedir } from 'os';
 import { Command } from '@oclif/command';
+import { parseHeaderFlag } from './utils';
 
 export const CONFIG_FILENAME = '.openapiconfig';
 
@@ -14,6 +16,7 @@ interface ParseOpts {
   bundle?: boolean;
   servers?: string[];
   proxy?: boolean;
+  header?: string[];
 }
 export async function parseDefinition({
   definition,
@@ -21,7 +24,7 @@ export async function parseDefinition({
   validate,
   bundle,
   servers,
-  proxy,
+  header,
 }: ParseOpts): Promise<SwaggerParser.Document> {
   let method = SwaggerParser.parse;
   if (bundle) {
@@ -33,18 +36,20 @@ export async function parseDefinition({
   if (validate) {
     method = SwaggerParser.validate;
   }
-  const document = await method.bind(SwaggerParser)(definition);
+
+  const parserOpts: SwaggerParser.Options = {};
+
+  // add headers
+  if (header) {
+    _.set(parserOpts, ['resolve', 'http', 'headers'], parseHeaderFlag(header));
+  }
+
+  const document = await method.bind(SwaggerParser)(definition, parserOpts);
 
   // add servers
   if (servers) {
     const serverObjects = servers.map((url) => ({ url }));
     document.servers = document.servers ? [...document.servers, ...serverObjects] : serverObjects;
-  }
-
-  // add proxy
-  if (proxy) {
-    const proxyServer = { url: '/proxy' };
-    document.servers = document.servers ? [proxyServer, ...document.servers] : [proxyServer];
   }
 
   return document;

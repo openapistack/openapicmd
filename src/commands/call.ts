@@ -8,6 +8,7 @@ import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from 'swagger-parser';
 import d from 'debug';
+import { parseHeaderFlag } from '../common/utils';
 const debug = d('cmd');
 
 export default class Call extends Command {
@@ -22,7 +23,6 @@ export default class Call extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
-    header: flags.string({ char: 'H', description: 'Add request headers', multiple: true }),
     operation: flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
     param: flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
     data: flags.string({ char: 'd', description: 'request body' }),
@@ -38,7 +38,7 @@ export default class Call extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Call);
-    const { dereference, validate, bundle } = flags;
+    const { dereference, validate, bundle, header } = flags;
 
     const definition = resolveDefinition(args.definition);
     if (!definition) {
@@ -47,11 +47,12 @@ export default class Call extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server });
+      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server, header });
     } catch (err) {
       this.error(err, { exit: 1 });
     }
 
+    // induce the remote server from the definition parameter if needed
     if (definition.startsWith('http') || definition.startsWith('//')) {
       const inputURL = new URL(definition);
       document.servers = document.servers || [];
@@ -105,11 +106,7 @@ export default class Call extends Command {
     }
 
     // add request headers
-    const config: AxiosRequestConfig = { headers: {} };
-    for (const header of flags.header || []) {
-      const [name, value] = header.split(':');
-      config.headers[name.trim()] = value.trim();
-    }
+    const config: AxiosRequestConfig = { headers: parseHeaderFlag(header) };
 
     // handle request body
     const data = flags.data;

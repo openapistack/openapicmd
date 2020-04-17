@@ -20,8 +20,9 @@ export default class Mock extends Command {
     ...commonFlags.help(),
     ...commonFlags.serverOpts(),
     ...commonFlags.servers(),
+    ...commonFlags.header(),
+    ...commonFlags.apiRoot(),
     'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
-    root: flags.string({ char: 'R', description: 'API root path', default: '/' }),
     validate: flags.boolean({
       description: '[default: true] validate requests according to schema',
       default: true,
@@ -38,7 +39,7 @@ export default class Mock extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Mock);
-    const { port, logger, 'swagger-ui': swaggerui, validate, root: apiRoot } = flags;
+    const { port, logger, 'swagger-ui': swaggerui, validate, header, root: apiRoot } = flags;
 
     let portRunning = port;
 
@@ -49,7 +50,7 @@ export default class Mock extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, validate, servers: flags.server });
+      document = await parseDefinition({ definition, validate, servers: flags.server, header });
     } catch (err) {
       this.error(err, { exit: 1 });
     }

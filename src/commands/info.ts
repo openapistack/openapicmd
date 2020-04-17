@@ -13,6 +13,7 @@ export default class Info extends Command {
 
   public static flags = {
     ...commonFlags.help(),
+    ...commonFlags.parseOpts(),
     operations: flags.boolean({ description: 'list operations in document', default: true, allowNo: true }),
     schemas: flags.boolean({ description: 'list schemas in document', default: false, allowNo: true }),
   };
@@ -26,6 +27,7 @@ export default class Info extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Info);
+    const { dereference, bundle, validate, header } = flags;
 
     const definition = resolveDefinition(args.definition);
     if (!definition) {
@@ -34,7 +36,7 @@ export default class Info extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition });
+      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server, header });
     } catch (err) {
       this.error(err, { exit: 1 });
     }
