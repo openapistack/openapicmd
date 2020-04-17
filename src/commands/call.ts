@@ -51,8 +51,8 @@ export default class Call extends Command {
       this.error(err, { exit: 1 });
     }
 
-    if (args.definition.startsWith('http') || args.definition.startsWith('//')) {
-      const inputURL = new URL(args.definition);
+    if (definition.startsWith('http') || definition.startsWith('//')) {
+      const inputURL = new URL(definition);
       document.servers = document.servers || [];
       const server = document.servers[0];
       if (!server) {
