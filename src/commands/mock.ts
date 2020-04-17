@@ -39,7 +39,7 @@ export default class Mock extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Mock);
-    const { port, logger, 'swagger-ui': swaggerui, validate, header, root: apiRoot } = flags;
+    const { port, logger, 'swagger-ui': swaggerui, validate, header, root } = flags;
 
     let portRunning = port;
 
@@ -50,7 +50,7 @@ export default class Mock extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, validate, servers: flags.server, header });
+      document = await parseDefinition({ definition, validate, servers: flags.server, header, root });
     } catch (err) {
       this.error(err, { exit: 1 });
     }
@@ -58,7 +58,7 @@ export default class Mock extends Command {
     const api = new OpenAPIBackend({
       definition: document,
       validate,
-      apiRoot,
+      apiRoot: root,
     });
 
     api.register({

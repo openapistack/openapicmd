@@ -53,7 +53,7 @@ export default class SwaggerUI extends Command {
 
   public async run() {
     const { args, flags } = this.parse(SwaggerUI);
-    const { port, logger, bundle, header } = flags;
+    const { port, logger, bundle, header, root } = flags;
     const definition = resolveDefinition(args.definition);
 
     const app = createServer({ logger });
@@ -69,20 +69,8 @@ export default class SwaggerUI extends Command {
         documentPath = definition;
       } else {
         // parse definition
-        document = await parseDefinition({ definition, servers: flags.server, proxy: flags.proxy, header });
+        document = await parseDefinition({ definition, servers: flags.server, header, root });
         documentPath = `./${openApiFile}`;
-      }
-    }
-
-    // induce the remote server from the definition parameter if needed
-    if (definition.startsWith('http') || definition.startsWith('//')) {
-      const inputURL = new URL(definition);
-      document.servers = document.servers || [];
-      const server = document.servers[0];
-      if (!server) {
-        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}` };
-      } else if (!server.url.startsWith('http') && !server.url.startsWith('//')) {
-        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}${server.url}` };
       }
     }
 
@@ -152,7 +140,6 @@ export default class SwaggerUI extends Command {
             return `${apiUrl.pathname}${path}`;
           },
           jar: flags.withcredentials,
-          headers: parseHeaderFlag(header),
         };
         proxyPath = '/proxy';
         app.use(

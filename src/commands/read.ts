@@ -26,7 +26,7 @@ export default class Read extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Read);
-    const { dereference, validate, bundle, header } = flags;
+    const { dereference, validate, bundle, header, root } = flags;
 
     const definition = resolveDefinition(args.definition);
     if (!definition) {
@@ -35,7 +35,15 @@ export default class Read extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server, header });
+      document = await parseDefinition({
+        definition,
+        dereference,
+        bundle,
+        validate,
+        servers: flags.server,
+        header,
+        root,
+      });
     } catch (err) {
       this.error(err, { exit: 1 });
     }

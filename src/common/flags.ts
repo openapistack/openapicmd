@@ -22,16 +22,17 @@ export const header = () => ({
   header: flags.string({ char: 'H', description: 'add request when calling remote urls', multiple: true }),
 });
 
+export const apiRoot = () => ({
+  root: flags.string({ char: 'R', description: 'Override API root path', helpValue: '/' }),
+});
+
 export const parseOpts = () => ({
   dereference: flags.boolean({ char: 'D', description: 'resolve $ref pointers' }),
   bundle: flags.boolean({ char: 'B', description: 'resolve remote $ref pointers' }),
+  ...apiRoot(),
   ...header(),
   ...validate(),
   ...servers(),
-});
-
-export const apiRoot = () => ({
-  root: flags.string({ char: 'R', description: 'API root path', default: '/' }),
 });
 
 export const serverOpts = () => ({

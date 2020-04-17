@@ -1,5 +1,5 @@
 import * as SwaggerParser from 'swagger-parser';
-import * as _ from 'lodash';
+import { set } from 'lodash';
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -15,8 +15,8 @@ interface ParseOpts {
   validate?: boolean;
   bundle?: boolean;
   servers?: string[];
-  proxy?: boolean;
   header?: string[];
+  root?: string;
 }
 export async function parseDefinition({
   definition,
@@ -25,6 +25,7 @@ export async function parseDefinition({
   bundle,
   servers,
   header,
+  root,
 }: ParseOpts): Promise<SwaggerParser.Document> {
   let method = SwaggerParser.parse;
   if (bundle) {
@@ -41,7 +42,7 @@ export async function parseDefinition({
 
   // add headers
   if (header) {
-    _.set(parserOpts, ['resolve', 'http', 'headers'], parseHeaderFlag(header));
+    set(parserOpts, ['resolve', 'http', 'headers'], parseHeaderFlag(header));
   }
 
   const document = await method.bind(SwaggerParser)(definition, parserOpts);
@@ -50,6 +51,43 @@ export async function parseDefinition({
   if (servers) {
     const serverObjects = servers.map((url) => ({ url }));
     document.servers = document.servers ? [...document.servers, ...serverObjects] : serverObjects;
+  }
+
+  // induce the remote server from the definition parameter if needed
+  if (definition.startsWith('http') || definition.startsWith('//')) {
+    document.servers = document.servers || [];
+    const inputURL = new URL(definition);
+    const server = document.servers[0];
+    if (!server) {
+      document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}` };
+    } else if (!server.url.startsWith('http') && !server.url.startsWith('//')) {
+      document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}${server.url}` };
+    }
+  }
+
+  // override the api root for servers
+  if (root) {
+    if (!root.startsWith('/')) {
+      root = `$/{root}`;
+    }
+    if (document.servers) {
+      document.servers = document.servers.map((server) => {
+        try {
+          const serverURL = new URL(server.url);
+          return {
+            ...server,
+            url: `${serverURL.protocol}//${serverURL.host}${root}`,
+          };
+        } catch {
+          return {
+            ...server,
+            url: root,
+          };
+        }
+      });
+    } else {
+      document.servers = { url: root };
+    }
   }
 
   return document;

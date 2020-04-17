@@ -2,8 +2,8 @@ import { Command, flags } from '@oclif/command';
 import cli from 'cli-ux';
 import * as chalk from 'chalk';
 import * as inquirer from 'inquirer';
-import { URL } from 'url';
-import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig } from 'openapi-client-axios';
+import * as _ from 'lodash';
+import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig, AxiosResponse } from 'openapi-client-axios';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from 'swagger-parser';
@@ -23,10 +23,15 @@ export default class Call extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
+    ...commonFlags.apiRoot(),
     operation: flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
     param: flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
     data: flags.string({ char: 'd', description: 'request body' }),
-    headers: flags.boolean({ char: 'i', description: 'include response headers the output', default: false }),
+    include: flags.boolean({
+      char: 'i',
+      description: 'include status code and response headers the output',
+      default: false,
+    }),
   };
 
   public static args = [
@@ -52,18 +57,6 @@ export default class Call extends Command {
       this.error(err, { exit: 1 });
     }
 
-    // induce the remote server from the definition parameter if needed
-    if (definition.startsWith('http') || definition.startsWith('//')) {
-      const inputURL = new URL(definition);
-      document.servers = document.servers || [];
-      const server = document.servers[0];
-      if (!server) {
-        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}` };
-      } else if (!server.url.startsWith('http') && !server.url.startsWith('//')) {
-        document.servers[0] = { url: `${inputURL.protocol}//${inputURL.host}${server.url}` };
-      }
-    }
-
     const api = new OpenAPIClientAxios({ definition: document });
     const client = await api.init();
 
@@ -75,10 +68,16 @@ export default class Call extends Command {
           name: 'operation',
           message: 'select operation',
           type: 'list',
-          choices: api.getOperations().map(({ operationId: id, summary }) => {
-            let name = id;
+          choices: api.getOperations().map((op) => {
+            const { operationId: id, summary, description, method, path } = op;
+            let name = `${method.toUpperCase()} ${path}`;
             if (summary) {
               name = `${name} - ${summary}`;
+            } else if (description) {
+              name = `${name} - ${description}`;
+            }
+            if (id) {
+              name = `${name} (${id})`;
             }
             return { name, value: id };
           }),
@@ -111,29 +110,47 @@ export default class Call extends Command {
     // handle request body
     const data = flags.data;
 
+    let res: AxiosResponse;
     try {
       const request = api.getRequestConfigForOperation(operation, [params, data, config]);
       debug(request);
-      console.warn(`${request.method.toUpperCase()} ${request.url}`);
-      const res = await client[operationId](params, data, config);
-      if (flags.headers) {
-        this.log(JSON.stringify(res.headers, null, 2));
-      }
-      if (res.data && res.data.length > 0) {
-        try {
-          this.log(JSON.stringify(res.data, null, 2));
-        } catch (e) {
-          this.log(res.data);
-        }
-      } else {
-        console.warn(chalk.gray('(empty response)'));
-      }
+      if (operationId) console.warn(chalk.bold(operationId));
+      console.warn(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
+      res = await client[operationId](params, data, config);
     } catch (err) {
-      this.error(err.message, { exit: false });
       if (err.response) {
-        console.error(JSON.stringify(err.response.data, null, 2));
+        res = err.response;
+      } else {
+        this.error(err.message, { exit: false });
       }
-      process.exit(1);
+    }
+
+    // output response fields
+    if (flags.include) {
+      this.log(chalk.gray('RESPONSE META:'));
+      this.log(
+        JSON.stringify(
+          {
+            code: res.status,
+            status: res.statusText,
+            headers: res.headers,
+          },
+          null,
+          2,
+        ),
+      );
+      this.log(chalk.gray('RESPONSE BODY:'));
+    }
+
+    // output response body
+    if (res.data) {
+      try {
+        this.log(JSON.stringify(res.data, null, 2));
+      } catch (e) {
+        this.log(res.data);
+      }
+    } else {
+      console.warn(chalk.gray('(empty response)'));
     }
   }
 }
