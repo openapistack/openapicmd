@@ -6,7 +6,8 @@
     "outDir": "lib",
     "rootDir": "src",
     "target": "es2017",
-    "composite": true,
+    "skipLibCheck": true,
+    "composite": true
   },
   "include": [
     "src/**/*"

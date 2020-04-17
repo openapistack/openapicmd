@@ -5,3 +5,4 @@ static
 node_modules
 .openapiconfig
 tsconfig.tsbuildinfo
+oclif.manifest.json

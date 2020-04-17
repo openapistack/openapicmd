@@ -1,16 +1,15 @@
 {
   "name": "openapicmd",
   "description": "Command line tools for openapi-enabled APIs",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "./bin/run"
   },
   "bugs": "https://github.com/anttiviljami/openapicmd/issues",
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^8.0.0",
     "@koa/cors": "^3.0.0",
-    "@oclif/command": "^1.5.11",
+    "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.12.9",
     "@oclif/plugin-help": "^2.1.6",
     "@types/inquirer": "^6.5.0",
@@ -52,6 +51,7 @@
     "chai": "^4.2.0",
     "globby": "^11.0.0",
     "jest": "^25.3.0",
+    "nock": "^12.0.3",
     "prettier": "^2.0.4",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
