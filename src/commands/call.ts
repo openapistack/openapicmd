@@ -26,6 +26,7 @@ export default class Call extends Command {
     operation: flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
     param: flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
     data: flags.string({ char: 'd', description: 'request body' }),
+    headers: flags.boolean({ char: 'i', description: 'include response headers the output', default: false }),
   };
 
   public static args = [
@@ -118,6 +119,9 @@ export default class Call extends Command {
       debug(request);
       console.warn(`${request.method.toUpperCase()} ${request.url}`);
       const res = await client[operationId](params, data, config);
+      if (flags.headers) {
+        this.log(JSON.stringify(res.headers, null, 2));
+      }
       if (res.data && res.data.length > 0) {
         try {
           this.log(JSON.stringify(res.data, null, 2));
