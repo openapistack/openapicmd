@@ -146,11 +146,29 @@ export function resolveDefinition(definitionArg: string) {
 }
 
 export function printInfo(document: SwaggerParser.Document, ctx: Command) {
-  const { title, version, description } = document.info;
-  ctx.log(`title: ${title}`);
-  ctx.log(`version: ${version}`);
-  if (description) {
-    ctx.log(`description: ${description}`);
+  const { info, externalDocs } = document;
+  if (info) {
+    const { title, version, description, contact } = info;
+    ctx.log(`title: ${title}`);
+    ctx.log(`version: ${version}`);
+    if (description) {
+      ctx.log(`description: ${description}`);
+    }
+    if (contact) {
+      if (contact.email && contact.name) {
+        ctx.log(`contact: ${contact.name} <${contact.email}>`);
+      } else if (contact.name) {
+        ctx.log(`contact: ${contact.name}`);
+      } else if (contact.email) {
+        ctx.log(`contact: ${contact.email}`);
+      }
+      if (contact.url) {
+        ctx.log(`website: ${contact.url}`);
+      }
+    }
+  }
+  if (externalDocs) {
+    ctx.log(`docs: ${externalDocs.url}`);
   }
 }
 
