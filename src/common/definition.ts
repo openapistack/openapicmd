@@ -17,6 +17,7 @@ interface ParseOpts {
   servers?: string[];
   header?: string[];
   root?: string;
+  induceServers?: boolean;
 }
 export async function parseDefinition({
   definition,
@@ -26,6 +27,7 @@ export async function parseDefinition({
   servers,
   header,
   root,
+  induceServers,
 }: ParseOpts): Promise<SwaggerParser.Document> {
   let method = SwaggerParser.parse;
   if (bundle) {
@@ -54,7 +56,7 @@ export async function parseDefinition({
   }
 
   // induce the remote server from the definition parameter if needed
-  if (definition.startsWith('http') || definition.startsWith('//')) {
+  if ((induceServers && definition.startsWith('http')) || definition.startsWith('//')) {
     document.servers = document.servers || [];
     const inputURL = new URL(definition);
     const server = document.servers[0];

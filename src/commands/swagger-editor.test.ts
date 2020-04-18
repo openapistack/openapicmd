@@ -1,12 +1,17 @@
 import { expect, test } from '@oclif/test';
-import * as path from 'path';
+import * as waitOn from 'wait-on';
+import { resourcePath } from '../test-utils';
 import 'chai';
 
-describe('swagger-editor', () => {
+const COMMAND = 'swagger-editor';
+const TEST_PORT = 5552;
+
+describe(COMMAND, () => {
   test
     .stdout()
-    .command(['swagger-editor', path.join('examples', 'openapi.yml')])
-    .it('runs swagger-editor', (ctx) => {
+    .command([COMMAND, resourcePath('openapi.yml'), '-p', `${TEST_PORT}`])
+    .it('runs swagger-editor', async (ctx) => {
+      await waitOn({ resources: [`tcp:localhost:${TEST_PORT}`] });
       expect(ctx.stdout).to.contain('running');
     });
 

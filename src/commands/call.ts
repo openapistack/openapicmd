@@ -52,7 +52,15 @@ export default class Call extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server, header });
+      document = await parseDefinition({
+        definition,
+        dereference,
+        bundle,
+        validate,
+        servers: flags.server,
+        header,
+        induceServers: true,
+      });
     } catch (err) {
       this.error(err, { exit: 1 });
     }
@@ -86,6 +94,9 @@ export default class Call extends Command {
       operationId = res.operation;
     }
     const operation = api.getOperation(operationId);
+    if (!operation) {
+      this.error(`operationId ${operationId} not found`);
+    }
 
     // fill params
     const params: { [key: string]: any } = {};

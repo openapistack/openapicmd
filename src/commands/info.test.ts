@@ -1,11 +1,13 @@
 import { expect, test } from '@oclif/test';
-import * as path from 'path';
+import { resourcePath } from '../test-utils';
 import 'chai';
 
-describe('info', () => {
+const COMMAND = 'info';
+
+describe(COMMAND, () => {
   test
     .stdout()
-    .command(['info', path.join('examples', 'swagger.json')])
+    .command([COMMAND, resourcePath('openapi.yml')])
     .it('prints information about a definition file', (ctx) => {
       expect(ctx.stdout).to.contain('title');
       expect(ctx.stdout).to.contain('version');
@@ -13,8 +15,15 @@ describe('info', () => {
 
   test
     .stdout()
-    .command(['info', path.join('examples', 'swagger.json'), '--operations'])
+    .command([COMMAND, resourcePath('openapi.yml'), '--operations'])
     .it('lists api operations', (ctx) => {
-      expect(ctx.stdout).to.contain('Operations:');
+      expect(ctx.stdout).to.contain('Operations');
+    });
+
+  test
+    .stdout()
+    .command([COMMAND, resourcePath('openapi.yml'), '--schemas'])
+    .it('lists api schemas', (ctx) => {
+      expect(ctx.stdout).to.contain('Schemas');
     });
 });

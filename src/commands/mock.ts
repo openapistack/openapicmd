@@ -50,7 +50,14 @@ export default class Mock extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, validate, servers: flags.server, header, root });
+      document = await parseDefinition({
+        definition,
+        validate,
+        servers: flags.server,
+        header,
+        root,
+        induceServers: true,
+      });
     } catch (err) {
       this.error(err, { exit: 1 });
     }

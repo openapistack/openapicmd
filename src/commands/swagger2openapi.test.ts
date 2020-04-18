@@ -1,11 +1,13 @@
 import { expect, test } from '@oclif/test';
-import * as path from 'path';
+import { resourcePath } from '../test-utils';
 import 'chai';
 
-describe('swagger2openapi', () => {
+const COMMAND = 'swagger2openapi';
+
+describe(COMMAND, () => {
   test
     .stdout()
-    .command(['swagger2openapi', path.join('examples', 'swagger.json')])
+    .command([COMMAND, resourcePath('swagger.json')])
     .it('converts json swagger to openapi v3', (ctx) => {
       expect(ctx.stdout).to.contain('openapi: 3');
       expect(ctx.stdout).to.contain('My API');
@@ -13,7 +15,7 @@ describe('swagger2openapi', () => {
 
   test
     .stdout()
-    .command(['swagger2openapi', path.join('examples', 'swagger.yml')])
+    .command([COMMAND, resourcePath('swagger.yml')])
     .it('converts yaml swagger to openapi v3', (ctx) => {
       expect(ctx.stdout).to.contain('openapi: 3');
       expect(ctx.stdout).to.contain('My API');
@@ -21,7 +23,7 @@ describe('swagger2openapi', () => {
 
   test
     .stdout()
-    .command(['swagger2openapi', path.join('examples', 'swagger.json'), '--json'])
+    .command([COMMAND, resourcePath('swagger.json'), '--json'])
     .it('converts swagger to openapi v3 json', (ctx) => {
       expect(ctx.stdout).to.contain('{');
       expect(ctx.stdout).to.contain('"openapi": "3');

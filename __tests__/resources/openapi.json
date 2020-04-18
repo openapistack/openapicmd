@@ -51,6 +51,21 @@
     }
   },
   "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Odie"
+          }
+        }
+      }
+    },
     "responses": {
       "ListPetsRes": {
         "description": "ok",
@@ -59,17 +74,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "minimum": 1
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "Odie"
-                  }
-                }
+                "$ref": "#/components/schemas/Pet"
               }
             }
           }
@@ -79,13 +84,8 @@
         "description": "ok",
         "content": {
           "application/json": {
-            "examples": {
-              "garfield": {
-                "value": {
-                  "id": 1,
-                  "name": "Garfield"
-                }
-              }
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
             }
           }
         }

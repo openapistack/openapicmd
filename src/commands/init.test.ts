@@ -1,10 +1,12 @@
 import { expect, test } from '@oclif/test';
 import 'chai';
 
-describe('init', () => {
+const COMMAND = 'init';
+
+describe(COMMAND, () => {
   test
     .stdout()
-    .command(['init'])
+    .command([COMMAND])
     .it('outputs an openapi file', (ctx) => {
       expect(ctx.stdout).to.contain('openapi: 3');
     });
