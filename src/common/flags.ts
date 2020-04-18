@@ -19,7 +19,7 @@ export const validate = () => ({
 });
 
 export const header = () => ({
-  header: flags.string({ char: 'H', description: 'add request when calling remote urls', multiple: true }),
+  header: flags.string({ char: 'H', description: 'add request headers when calling remote urls', multiple: true }),
 });
 
 export const apiRoot = () => ({
