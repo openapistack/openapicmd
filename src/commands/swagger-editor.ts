@@ -14,7 +14,7 @@ function getAbsoluteFSPath() {
 }
 
 export default class SwaggerEditor extends Command {
-  public static description = 'serve a local Swagger UI instance';
+  public static description = 'Start a Swagger Editor instance';
 
   public static examples = ['$ openapi swagger-editor', '$ openapi swagger-editor ./openapi.yml'];
 

@@ -9,7 +9,7 @@ import { serveSwaggerUI } from '../common/swagger-ui';
 import { resolveDefinition, parseDefinition } from '../common/definition';
 
 export default class Mock extends Command {
-  public static description = 'start a local mock API server';
+  public static description = 'Start a local mock API server';
 
   public static examples = [
     '$ openapi mock ./openapi.yml',

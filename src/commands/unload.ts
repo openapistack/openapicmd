@@ -5,7 +5,7 @@ import * as YAML from 'js-yaml';
 import { resolveConfigFile } from '../common/definition';
 
 export default class Unload extends Command {
-  public static description = 'unload an openapi definition file (writes to .openapiconfig)';
+  public static description = 'Unset the default definition file for a workspace (writes to .openapiconfig)';
 
   public static examples = [`$ openapi unload`];
 

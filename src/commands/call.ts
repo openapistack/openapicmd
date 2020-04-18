@@ -12,7 +12,7 @@ import { parseHeaderFlag } from '../common/utils';
 const debug = d('cmd');
 
 export default class Call extends Command {
-  public static description = 'call OpenAPI operations';
+  public static description = 'Call API endpoints';
 
   public static examples = [
     `$ openapi call -o getPets`,

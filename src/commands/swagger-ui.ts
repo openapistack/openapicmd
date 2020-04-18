@@ -18,7 +18,7 @@ import {
 import { parseHeaderFlag } from '../common/utils';
 
 export default class SwaggerUI extends Command {
-  public static description = 'serve or bundle a Swagger UI instance';
+  public static description = 'Start or bundle a Swagger UI instance';
 
   public static examples = [
     '$ openapi swagger-ui',

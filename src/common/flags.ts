@@ -23,7 +23,7 @@ export const header = () => ({
 });
 
 export const apiRoot = () => ({
-  root: flags.string({ char: 'R', description: 'Override API root path', helpValue: '/' }),
+  root: flags.string({ char: 'R', description: 'override API root path', helpValue: '/' }),
 });
 
 export const parseOpts = () => ({

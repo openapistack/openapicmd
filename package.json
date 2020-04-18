@@ -36,7 +36,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.21.2",
+    "@oclif/dev-cli": "^1.22.2",
     "@oclif/test": "^1.2.4",
     "@oclif/tslint": "^3.1.1",
     "@types/debug": "^4.1.5",
@@ -84,7 +84,8 @@
   "repository": "anttiviljami/openapicmd",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && npm run build && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && npm run build && oclif-dev manifest && npm run readme",
+    "readme": "bin/run readme",
     "watch-build": "tsc -w",
     "build": "tsc -b",
     "test": "jest -i",

@@ -6,7 +6,7 @@ import * as commonFlags from '../common/flags';
 import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 
 export default class Swagger2Openapi extends Command {
-  public static description = 'convert Swagger 2.0 definitions to OpenAPI 3.0.x';
+  public static description = 'Convert Swagger 2.0 definitions to OpenAPI 3.0.x';
 
   public static examples = [`$ openapi swagger2openapi --yaml ./swagger.json > openapi.yml`];
 

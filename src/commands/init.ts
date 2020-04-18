@@ -5,7 +5,7 @@ import { Document } from 'swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 
 export default class Init extends Command {
-  public static description = 'initialise an OpenAPI definition file';
+  public static description = 'Initialise a definition file from scratch';
 
   public static examples = [`$ openapi init --title 'My API' > openapi.yml`];
 

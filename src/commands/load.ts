@@ -6,7 +6,7 @@ import * as YAML from 'js-yaml';
 import { resolveConfigFile, CONFIG_FILENAME, parseDefinition } from '../common/definition';
 
 export default class Load extends Command {
-  public static description = 'load an openapi definition file (writes to .openapiconfig)';
+  public static description = 'Set the default definition file for a workspace (writes to .openapiconfig)';
 
   public static examples = [
     `$ openapi load ./openapi.yml`,

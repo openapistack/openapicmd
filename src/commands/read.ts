@@ -4,7 +4,7 @@ import * as commonFlags from '../common/flags';
 import { Document } from 'swagger-parser';
 
 export default class Read extends Command {
-  public static description = 'read, parse and convert OpenAPI definitions';
+  public static description = 'Read and manipulate definition files';
 
   public static examples = [
     '$ openapi read https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml',
