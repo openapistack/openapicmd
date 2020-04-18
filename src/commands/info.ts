@@ -1,7 +1,9 @@
 import { Command, flags } from '@oclif/command';
-import { parseDefinition, resolveDefinition, printInfo, printOperations, printSchemas } from '../common/definition';
+import * as SwaggerParser from 'swagger-parser';
+import { parseDefinition, resolveDefinition, printInfo, getOperations } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from 'swagger-parser';
+import * as _ from 'lodash';
 
 export default class Info extends Command {
   public static description = 'Display API information';
@@ -14,8 +16,8 @@ export default class Info extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
-    operations: flags.boolean({ description: 'list operations in document', default: true, allowNo: true }),
-    schemas: flags.boolean({ description: 'list schemas in document', default: false, allowNo: true }),
+    operations: flags.boolean({ description: 'list operations in document', default: false }),
+    schemas: flags.boolean({ description: 'list schemas in document', default: false }),
   };
 
   public static args = [
@@ -46,11 +48,83 @@ export default class Info extends Command {
     printInfo(document, this);
     if (flags.operations) {
       this.log();
-      printOperations(document, this);
+      this.printOperations(document);
+    } else {
+      this.log();
+      this.log(`operations: ${getOperations(document).length}`);
+      this.log(`tags: ${document.tags ? document.tags.length : 0}`);
     }
     if (flags.schemas) {
       this.log();
-      printSchemas(document, this);
+      this.printSchemas(document);
+    } else {
+      this.log(
+        `schemas: ${
+          document.components && document.components.schemas ? Object.entries(document.components.schemas).length : 0
+        }`,
+      );
+    }
+  }
+
+  private printOperations(document: SwaggerParser.Document) {
+    const operations: { [tag: string]: { routes: string[]; description?: string } } = {};
+
+    if (document.tags) {
+      for (const tag of document.tags) {
+        const { name, description } = tag;
+        operations[name] = {
+          description,
+          routes: [],
+        };
+      }
+    }
+
+    for (const path in document.paths) {
+      if (document.paths[path]) {
+        for (const method in document.paths[path]) {
+          if (document.paths[path][method]) {
+            const { operationId, summary, description, tags } = document.paths[path][method];
+            let route = `${method.toUpperCase()} ${path}`;
+            if (summary) {
+              route = `${route} - ${summary}`;
+            } else if (description) {
+              route = `${route} - ${description}`;
+            }
+            if (operationId) {
+              route = `${route} (${operationId})`;
+            }
+            for (const tag of tags || ['default']) {
+              if (!operations[tag]) {
+                operations[tag] = { routes: [] };
+              }
+              operations[tag].routes.push(route);
+            }
+          }
+        }
+      }
+    }
+
+    this.log(`Operations (${getOperations(document).length}):`);
+    for (const tag in operations) {
+      if (operations[tag]) {
+        const routes = operations[tag].routes;
+        for (const route of routes) {
+          this.log(`- ${route}`);
+        }
+      }
+    }
+  }
+
+  private printSchemas(document: SwaggerParser.Document) {
+    const schemas = (document.components && document.components.schemas) || {};
+    const count = Object.entries(schemas).length;
+    if (count > 0) {
+      this.log(`Schemas (${count}):`);
+      for (const schema in schemas) {
+        if (schemas[schema]) {
+          this.log(`- ${schema}`);
+        }
+      }
     }
   }
 }

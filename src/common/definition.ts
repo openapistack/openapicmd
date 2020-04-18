@@ -1,5 +1,5 @@
 import * as SwaggerParser from 'swagger-parser';
-import { set } from 'lodash';
+import { set, uniqBy } from 'lodash';
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -170,6 +170,20 @@ export function printInfo(document: SwaggerParser.Document, ctx: Command) {
   if (externalDocs) {
     ctx.log(`docs: ${externalDocs.url}`);
   }
+}
+
+export function getOperations(document: SwaggerParser.Document) {
+  const operations = [];
+  for (const path in document.paths) {
+    if (document.paths[path]) {
+      for (const method in document.paths[path]) {
+        if (document.paths[path][method]) {
+          operations.push(document.paths[path][method]);
+        }
+      }
+    }
+  }
+  return uniqBy(operations, 'operationId');
 }
 
 export function printOperations(document: SwaggerParser.Document, ctx: Command) {
