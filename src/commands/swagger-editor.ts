@@ -43,10 +43,21 @@ export default class SwaggerEditor extends Command {
 
     if (definition) {
       if (definition.match('://')) {
-        const { data } = await axios.get(definition, { headers: parseHeaderFlag(header), responseType: 'text' });
-        document = data;
+        const { data } = await axios.get(definition, {
+          headers: parseHeaderFlag(header),
+          responseType: 'text',
+          // need to set this, unfortunately
+          // https://github.com/axios/axios/issues/907
+          transformResponse: [(data) => data.toString()],
+        });
+        try {
+          // attempt to prettify JSON
+          document = JSON.stringify(JSON.parse(data), null, 2);
+        } catch (err) {
+          document = data;
+        }
       } else {
-        document = fs.readFileSync(definition);
+        document = fs.readFileSync(definition).toString();
       }
     }
 
@@ -56,9 +67,7 @@ export default class SwaggerEditor extends Command {
       router.get('/', (ctx) => {
         ctx.body = indexHTML.replace(
           'window.editor = editor',
-          `editor.specActions.updateSpec(\`${escapeStringTemplateTicks(
-            document.toString(),
-          )}\`)\n\nwindow.editor = editor`,
+          `editor.specActions.updateSpec(\`${escapeStringTemplateTicks(document)}\`)\n\nwindow.editor = editor`,
         );
       });
     }
