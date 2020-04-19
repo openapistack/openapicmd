@@ -43,7 +43,7 @@ export default class SwaggerEditor extends Command {
 
     if (definition) {
       if (definition.match('://')) {
-        const { data } = await axios.get(definition, { headers: parseHeaderFlag(header) });
+        const { data } = await axios.get(definition, { headers: parseHeaderFlag(header), responseType: 'text' });
         document = data;
       } else {
         document = fs.readFileSync(definition);
