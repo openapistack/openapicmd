@@ -68,7 +68,7 @@ ARGUMENTS
 OPTIONS
   -B, --bundle                        resolve remote $ref pointers
   -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request when calling remote urls
+  -H, --header=header                 add request headers when calling remote urls
   -R, --root=/                        override API root path
   -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
@@ -96,7 +96,7 @@ ARGUMENTS
 OPTIONS
   -B, --bundle                        resolve remote $ref pointers
   -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request when calling remote urls
+  -H, --header=header                 add request headers when calling remote urls
   -R, --root=/                        override API root path
   -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
@@ -122,7 +122,7 @@ ARGUMENTS
 
 OPTIONS
   -B, --bundle=outDir                 bundle a static site to directory
-  -H, --header=header                 add request when calling remote urls
+  -H, --header=header                 add request headers when calling remote urls
   -R, --root=/                        override API root path
   -S, --server=http://localhost:9000  override servers definition
   -h, --help                          show CLI help
@@ -154,7 +154,7 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -H, --header=header  add request when calling remote urls
+  -H, --header=header  add request headers when calling remote urls
   -h, --help           show CLI help
   -p, --port=9000      [default: 9000] port
   --[no-]logger        [default: true] log requests
@@ -178,7 +178,7 @@ ARGUMENTS
 OPTIONS
   -B, --bundle                        resolve remote $ref pointers
   -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request when calling remote urls
+  -H, --header=header                 add request headers when calling remote urls
   -R, --root=/                        override API root path
   -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
@@ -206,7 +206,7 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -H, --header=header                 add request when calling remote urls
+  -H, --header=header                 add request headers when calling remote urls
   -R, --root=/                        override API root path
   -S, --server=http://localhost:9000  override servers definition
   -U, --swagger-ui=docs               Swagger UI endpoint
@@ -234,7 +234,7 @@ ARGUMENTS
 OPTIONS
   -B, --bundle                        resolve remote $ref pointers
   -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request when calling remote urls
+  -H, --header=header                 add request headers when calling remote urls
   -R, --root=/                        override API root path
   -S, --server=http://localhost:9000  override servers definition
   -V, --validate                      validate against openapi schema
