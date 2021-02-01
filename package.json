@@ -13,7 +13,7 @@
     "@oclif/config": "^1.12.9",
     "@oclif/plugin-help": "^2.1.6",
     "@types/inquirer": "^7.3.1",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "chalk": "^4.0.0",
     "cli-ux": "^5.4.5",
     "debug": "^4.1.1",
