@@ -52,7 +52,7 @@ export async function parseDefinition({
   // add servers
   if (servers) {
     const serverObjects = servers.map((url) => ({ url }));
-    document.servers = document.servers ? [...document.servers, ...serverObjects] : serverObjects;
+    document.servers = document.servers ? [...serverObjects, ...document.servers] : serverObjects;
   }
 
   // induce the remote server from the definition parameter if needed
