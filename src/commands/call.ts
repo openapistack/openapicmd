@@ -154,7 +154,7 @@ export default class Call extends Command {
     }
 
     // output response body
-    if (res.data) {
+    if (_.isNil(res.data)) {
       try {
         this.log(JSON.stringify(res.data, null, 2));
       } catch (e) {
