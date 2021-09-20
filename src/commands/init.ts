@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command';
 import { OutputFormat, stringifyDocument } from '../common/definition';
 import * as commonFlags from '../common/flags';
-import { Document } from 'swagger-parser';
+import { Document } from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 
 export default class Init extends Command {

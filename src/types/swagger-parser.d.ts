@@ -1,4 +1,4 @@
-declare module 'swagger-parser' {
+declare module '@apidevtools/swagger-parser' {
   type Document = import('openapi-types').OpenAPIV3.Document;
   interface Options {
     allow?: {

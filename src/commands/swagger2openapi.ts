@@ -1,5 +1,5 @@
 import { Command } from '@oclif/command';
-import * as SwaggerParser from 'swagger-parser';
+import * as SwaggerParser from '@apidevtools/swagger-parser';
 import * as s2o from 'swagger2openapi';
 import { promisify } from 'util';
 import * as commonFlags from '../common/flags';

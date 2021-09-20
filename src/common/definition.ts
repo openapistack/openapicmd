@@ -1,4 +1,4 @@
-import * as SwaggerParser from 'swagger-parser';
+import * as SwaggerParser from '@apidevtools/swagger-parser';
 import { set, uniqBy } from 'lodash';
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';

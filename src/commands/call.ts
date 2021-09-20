@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig, AxiosResponse } from 'openapi-client-axios';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
-import { Document } from 'swagger-parser';
+import { Document } from '@apidevtools/swagger-parser';
 import d from 'debug';
 import { parseHeaderFlag } from '../common/utils';
 const debug = d('cmd');

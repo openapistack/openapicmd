@@ -1,8 +1,8 @@
 import { Command, flags } from '@oclif/command';
-import * as SwaggerParser from 'swagger-parser';
+import * as SwaggerParser from '@apidevtools/swagger-parser';
 import { parseDefinition, resolveDefinition, printInfo, getOperations } from '../common/definition';
 import * as commonFlags from '../common/flags';
-import { Document } from 'swagger-parser';
+import { Document } from '@apidevtools/swagger-parser';
 import * as _ from 'lodash';
 
 export default class Info extends Command {

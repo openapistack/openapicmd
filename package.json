@@ -8,6 +8,7 @@
   },
   "bugs": "https://github.com/anttiviljami/openapicmd/issues",
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.0.2",
     "@koa/cors": "^3.0.0",
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.12.9",
@@ -30,7 +31,6 @@
     "openapi-backend": "^4.1.0",
     "openapi-client-axios": "^4.0.0",
     "swagger-editor-dist": "^3.6.24",
-    "swagger-parser": "^10.0.2",
     "swagger-ui-dist": "^3.21.0",
     "swagger2openapi": "^7.0.2",
     "tslib": "^2.0.2"

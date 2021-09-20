@@ -5,7 +5,7 @@ import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import * as serve from 'koa-static';
 import * as SwaggerUIDist from 'swagger-ui-dist';
-import { Document } from 'swagger-parser';
+import { Document } from '@apidevtools/swagger-parser';
 
 export const swaggerUIRoot = SwaggerUIDist.getAbsoluteFSPath();
 

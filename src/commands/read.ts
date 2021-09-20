@@ -1,7 +1,7 @@
 import { Command } from '@oclif/command';
 import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
-import { Document } from 'swagger-parser';
+import { Document } from '@apidevtools/swagger-parser';
 
 export default class Read extends Command {
   public static description = 'Read and manipulate definition files';

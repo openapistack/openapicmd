@@ -7,7 +7,7 @@ import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import { startServer, createServer } from '../common/koa';
-import { Document } from 'swagger-parser';
+import { Document } from '@apidevtools/swagger-parser';
 import {
   swaggerUIRoot,
   getSwaggerUIIndexHTML,
