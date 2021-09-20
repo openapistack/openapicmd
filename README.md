@@ -27,19 +27,51 @@ openapi help
 
 # Commands
 <!-- commands -->
-* [`openapi help`](#openapi-help)
-* [`openapi read`](#openapi-read)
-* [`openapi info`](#openapi-info)
-* [`openapi swagger-ui`](#openapi-swagger-ui)
-* [`openapi swagger-editor`](#openapi-swagger-editor)
-* [`openapi call`](#openapi-call)
-* [`openapi mock`](#openapi-mock)
-* [`openapi swagger2openapi`](#openapi-swagger2openapi)
+* [`openapi call [DEFINITION]`](#openapi-call-definition)
+* [`openapi help [COMMAND]`](#openapi-help-command)
+* [`openapi info [DEFINITION]`](#openapi-info-definition)
 * [`openapi init`](#openapi-init)
-* [`openapi load`](#openapi-load)
+* [`openapi load DEFINITION`](#openapi-load-definition)
+* [`openapi mock [DEFINITION]`](#openapi-mock-definition)
+* [`openapi read [DEFINITION]`](#openapi-read-definition)
+* [`openapi swagger-editor [DEFINITION]`](#openapi-swagger-editor-definition)
+* [`openapi swagger-ui [DEFINITION]`](#openapi-swagger-ui-definition)
+* [`openapi swagger2openapi [DEFINITION]`](#openapi-swagger2openapi-definition)
 * [`openapi unload`](#openapi-unload)
 
-## `openapi help`
+## `openapi call [DEFINITION]`
+
+Call API endpoints
+
+```
+USAGE
+  $ openapi call [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+OPTIONS
+  -B, --bundle                        resolve remote $ref pointers
+  -D, --dereference                   resolve $ref pointers
+  -H, --header=header                 add request headers when calling remote urls
+  -R, --root=/                        override API root path
+  -S, --server=http://localhost:9000  override servers definition
+  -V, --validate                      validate against openapi schema
+  -d, --data=data                     request body
+  -h, --help                          show CLI help
+  -i, --include                       include status code and response headers the output
+  -o, --operation=operationId         operationId
+  -p, --param=key=value               parameter
+
+EXAMPLES
+  $ openapi call -o getPets
+  $ openapi call -o getPet -p id=1
+  $ openapi call -o createPet -d '{ "name": "Garfield" }'
+```
+
+_See code: [src/commands/call.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/call.ts)_
+
+## `openapi help [COMMAND]`
 
 display help for openapi
 
@@ -54,7 +86,114 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-## `openapi read`
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+
+## `openapi info [DEFINITION]`
+
+Display API information
+
+```
+USAGE
+  $ openapi info [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+OPTIONS
+  -B, --bundle                        resolve remote $ref pointers
+  -D, --dereference                   resolve $ref pointers
+  -H, --header=header                 add request headers when calling remote urls
+  -R, --root=/                        override API root path
+  -S, --server=http://localhost:9000  override servers definition
+  -V, --validate                      validate against openapi schema
+  -h, --help                          show CLI help
+  --operations                        list operations in document
+  --schemas                           list schemas in document
+
+EXAMPLES
+  $ openapi info https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+  $ openapi info ./openapi.yml
+```
+
+_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/info.ts)_
+
+## `openapi init`
+
+Initialise a definition file from scratch
+
+```
+USAGE
+  $ openapi init
+
+OPTIONS
+  -S, --server=http://localhost:9000  override servers definition
+  -T, --title=title                   [default: My API] The title for the API
+  -d, --description=description       Description for the API
+  -f, --format=(json|yaml|yml)        [default: yaml] output format
+  -h, --help                          show CLI help
+  -v, --version=version               [default: 0.0.1] Version of the API
+  --json                              format as json (short for -f json)
+  --license=mit|apache2               The license for the API
+  --terms=terms                       A URL to the Terms of Service for the API.
+  --yaml                              format as yaml (short for -f yaml)
+
+EXAMPLE
+  $ openapi init --title 'My API' > openapi.yml
+```
+
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/init.ts)_
+
+## `openapi load DEFINITION`
+
+Set the default definition file for a workspace (writes to .openapiconfig)
+
+```
+USAGE
+  $ openapi load DEFINITION
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+OPTIONS
+  -V, --validate  validate against openapi schema
+  -h, --help      show CLI help
+
+EXAMPLES
+  $ openapi load ./openapi.yml
+  $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+```
+
+_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/load.ts)_
+
+## `openapi mock [DEFINITION]`
+
+Start a local mock API server
+
+```
+USAGE
+  $ openapi mock [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+OPTIONS
+  -H, --header=header                 add request headers when calling remote urls
+  -R, --root=/                        override API root path
+  -S, --server=http://localhost:9000  override servers definition
+  -U, --swagger-ui=docs               Swagger UI endpoint
+  -h, --help                          show CLI help
+  -p, --port=9000                     [default: 9000] port
+  --[no-]logger                       [default: true] log requests
+  --[no-]validate                     [default: true] validate requests according to schema
+
+EXAMPLES
+  $ openapi mock ./openapi.yml
+  $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
+```
+
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/mock.ts)_
+
+## `openapi read [DEFINITION]`
 
 Read and manipulate definition files
 
@@ -82,34 +221,33 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-## `openapi info`
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/read.ts)_
 
-Display API information
+## `openapi swagger-editor [DEFINITION]`
+
+Start a Swagger Editor instance
 
 ```
 USAGE
-  $ openapi info [DEFINITION]
+  $ openapi swagger-editor [DEFINITION]
 
 ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -B, --bundle                        resolve remote $ref pointers
-  -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -V, --validate                      validate against openapi schema
-  -h, --help                          show CLI help
-  --operations                        list operations in document
-  --schemas                           list schemas in document
+  -H, --header=header  add request headers when calling remote urls
+  -h, --help           show CLI help
+  -p, --port=9000      [default: 9000] port
+  --[no-]logger        [default: true] log requests
 
 EXAMPLES
-  $ openapi info https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
-  $ openapi info ./openapi.yml
+  $ openapi swagger-editor
+  $ openapi swagger-editor ./openapi.yml
 ```
 
-## `openapi swagger-ui`
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/swagger-editor.ts)_
+
+## `openapi swagger-ui [DEFINITION]`
 
 Start or bundle a Swagger UI instance
 
@@ -142,85 +280,9 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml --bundle outDir
 ```
 
-## `openapi swagger-editor`
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/swagger-ui.ts)_
 
-Start a Swagger Editor instance
-
-```
-USAGE
-  $ openapi swagger-editor [DEFINITION]
-
-ARGUMENTS
-  DEFINITION  input definition file
-
-OPTIONS
-  -H, --header=header  add request headers when calling remote urls
-  -h, --help           show CLI help
-  -p, --port=9000      [default: 9000] port
-  --[no-]logger        [default: true] log requests
-
-EXAMPLES
-  $ openapi swagger-editor
-  $ openapi swagger-editor ./openapi.yml
-```
-
-## `openapi call`
-
-Call API endpoints
-
-```
-USAGE
-  $ openapi call [DEFINITION]
-
-ARGUMENTS
-  DEFINITION  input definition file
-
-OPTIONS
-  -B, --bundle                        resolve remote $ref pointers
-  -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -V, --validate                      validate against openapi schema
-  -d, --data=data                     request body
-  -h, --help                          show CLI help
-  -i, --include                       include status code and response headers the output
-  -o, --operation=operationId         operationId
-  -p, --param=key=value               parameter
-
-EXAMPLES
-  $ openapi call -o getPets
-  $ openapi call -o getPet -p id=1
-  $ openapi call -o createPet -d '{ "name": "Garfield" }'
-```
-
-## `openapi mock`
-
-Start a local mock API server
-
-```
-USAGE
-  $ openapi mock [DEFINITION]
-
-ARGUMENTS
-  DEFINITION  input definition file
-
-OPTIONS
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -U, --swagger-ui=docs               Swagger UI endpoint
-  -h, --help                          show CLI help
-  -p, --port=9000                     [default: 9000] port
-  --[no-]logger                       [default: true] log requests
-  --[no-]validate                     [default: true] validate requests according to schema
-
-EXAMPLES
-  $ openapi mock ./openapi.yml
-  $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
-```
-
-## `openapi swagger2openapi`
+## `openapi swagger2openapi [DEFINITION]`
 
 Convert Swagger 2.0 definitions to OpenAPI 3.0.x
 
@@ -247,49 +309,7 @@ EXAMPLE
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-## `openapi init`
-
-Initialise a definition file from scratch
-
-```
-USAGE
-  $ openapi init
-
-OPTIONS
-  -S, --server=http://localhost:9000  override servers definition
-  -T, --title=title                   [default: My API] The title for the API
-  -d, --description=description       Description for the API
-  -f, --format=(json|yaml|yml)        [default: yaml] output format
-  -h, --help                          show CLI help
-  -v, --version=version               [default: 0.0.1] Version of the API
-  --json                              format as json (short for -f json)
-  --license=mit|apache2               The license for the API
-  --terms=terms                       A URL to the Terms of Service for the API.
-  --yaml                              format as yaml (short for -f yaml)
-
-EXAMPLE
-  $ openapi init --title 'My API' > openapi.yml
-```
-
-## `openapi load`
-
-Set the default definition file for a workspace (writes to .openapiconfig)
-
-```
-USAGE
-  $ openapi load DEFINITION
-
-ARGUMENTS
-  DEFINITION  input definition file
-
-OPTIONS
-  -V, --validate  validate against openapi schema
-  -h, --help      show CLI help
-
-EXAMPLES
-  $ openapi load ./openapi.yml
-  $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
-```
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/swagger2openapi.ts)_
 
 ## `openapi unload`
 
@@ -305,6 +325,8 @@ OPTIONS
 EXAMPLE
   $ openapi unload
 ```
+
+_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.0/src/commands/unload.ts)_
 <!-- commandsstop -->
 
 ## Contributing
