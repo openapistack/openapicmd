@@ -8,7 +8,7 @@ import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import d from 'debug';
-import { parseHeaderFlag } from '../common/utils';
+import { isValidJson, parseHeaderFlag } from '../common/utils';
 const debug = d('cmd');
 
 export default class Call extends Command {
@@ -120,6 +120,13 @@ export default class Call extends Command {
 
     // handle request body
     const data = flags.data;
+
+    // set content type
+    if (!config.headers['Content-Type'] && !config.headers['content-type']) {
+      const operationRequestContentType = Object.keys(operation.requestBody?.['content'] ?? {})[0];
+      const defaultContentType = isValidJson(data) ? 'application/json' : 'text/plain';
+      config.headers['Content-Type'] = operationRequestContentType ?? defaultContentType
+    }
 
     let res: AxiosResponse;
     try {

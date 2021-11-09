@@ -8,3 +8,12 @@ export const parseHeaderFlag = (headerFlag: string[]) => {
   }
   return headers;
 };
+
+export const isValidJson = (jsonString: any) => {
+  try {
+    JSON.parse(jsonString)
+    return true
+  } catch {
+    return false
+  }
+}
