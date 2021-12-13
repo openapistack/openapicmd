@@ -10,7 +10,7 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.0.2",
     "@koa/cors": "^3.0.0",
-    "@oclif/command": "^1.8.13",
+    "@oclif/command": "^1.7.0",
     "@oclif/config": "^1.12.9",
     "@oclif/plugin-help": "^2.1.6",
     "@types/inquirer": "^7.3.1",
@@ -57,7 +57,7 @@
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
     "tslint": "^6.1.1",
-    "typescript": "^4.3.5",
+    "typescript": "^4.5.3",
     "wait-on": "^4.0.2"
   },
   "engines": {
