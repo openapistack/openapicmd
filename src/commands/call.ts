@@ -109,7 +109,7 @@ export default class Call extends Command {
       const param = p as OpenAPIV3.ParameterObject;
       const { name, required, example } = param;
 
-      if (!params[name]) {
+      if (!params[name] && required) {
         const value = await cli.prompt(name, { required, default: example });
         params[name] = value;
       }
