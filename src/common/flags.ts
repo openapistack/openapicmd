@@ -14,6 +14,15 @@ export const servers = () => ({
   }),
 });
 
+export const inject = () => ({
+  inject: flags.string({
+    char: 'I',
+    description: 'inject JSON to definition with deep merge',
+    helpValue: '{"info":{"version":"1.0.0"}}',
+    multiple: true,
+  }),
+});
+
 export const validate = () => ({
   validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
 });
@@ -33,6 +42,7 @@ export const parseOpts = () => ({
   ...header(),
   ...validate(),
   ...servers(),
+  ...inject(),
 });
 
 export const serverOpts = () => ({

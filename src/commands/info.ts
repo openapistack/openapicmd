@@ -38,7 +38,15 @@ export default class Info extends Command {
 
     let document: Document;
     try {
-      document = await parseDefinition({ definition, dereference, bundle, validate, servers: flags.server, header });
+      document = await parseDefinition({
+        definition,
+        dereference,
+        bundle,
+        validate,
+        servers: flags.server,
+        inject: flags.inject,
+        header,
+      });
     } catch (err) {
       this.error(err, { exit: 1 });
     }

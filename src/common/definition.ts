@@ -1,4 +1,5 @@
 import * as SwaggerParser from '@apidevtools/swagger-parser';
+import * as deepMerge from 'deepmerge'
 import { set, uniqBy } from 'lodash';
 import * as YAML from 'js-yaml';
 import * as fs from 'fs';
@@ -15,6 +16,7 @@ interface ParseOpts {
   validate?: boolean;
   bundle?: boolean;
   servers?: string[];
+  inject?: string[];
   header?: string[];
   root?: string;
   induceServers?: boolean;
@@ -25,6 +27,7 @@ export async function parseDefinition({
   validate,
   bundle,
   servers,
+  inject,
   header,
   root,
   induceServers,
@@ -47,7 +50,20 @@ export async function parseDefinition({
     set(parserOpts, ['resolve', 'http', 'headers'], parseHeaderFlag(header));
   }
 
-  const document = await method.bind(SwaggerParser)(definition, parserOpts);
+  let document = await method.bind(SwaggerParser)(definition, parserOpts);
+
+  // merge injected JSON
+  if (inject) {
+    for (const json of inject) {
+      try {
+      const parsed = JSON.parse(json);
+      document = deepMerge(document, parsed);
+      } catch (err) {
+        console.error('Could not parse inject JSON');
+        throw err;
+      }
+    }
+  }
 
   // add servers
   if (servers) {

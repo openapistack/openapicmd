@@ -1,8 +1,9 @@
 import { Command, flags } from '@oclif/command';
-import { OutputFormat, stringifyDocument } from '../common/definition';
+import { OutputFormat, parseDefinition, stringifyDocument } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
+import * as deepMerge from 'deepmerge'
 
 export default class Init extends Command {
   public static description = 'Initialise a definition file from scratch';
@@ -17,6 +18,7 @@ export default class Init extends Command {
     terms: flags.string({ description: 'A URL to the Terms of Service for the API.' }),
     license: flags.string({ description: 'The license for the API', options: ['mit', 'apache2'] }),
     ...commonFlags.servers(),
+    ...commonFlags.inject(),
     ...commonFlags.outputFormat(),
   };
 
@@ -24,7 +26,7 @@ export default class Init extends Command {
 
   public async run() {
     const { flags } = this.parse(Init);
-    const { title, version, server, license, description, terms } = flags;
+    const { title, version, server, inject, license, description, terms } = flags;
     const OPENAPI_VERSION = '3.0.0';
 
     const info: OpenAPIV3.InfoObject = {
@@ -57,6 +59,19 @@ export default class Init extends Command {
       info,
       paths: {},
     };
+
+    // merge injected JSON
+    if (inject) {
+      for (const json of inject) {
+        try {
+        const parsed = JSON.parse(json);
+        document = deepMerge(document, parsed);
+        } catch (err) {
+          console.error('Could not parse inject JSON');
+          throw err;
+        }
+      }
+    }
 
     if (server) {
       const { paths, ...d } = document;
