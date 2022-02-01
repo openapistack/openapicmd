@@ -2,22 +2,15 @@ openapi: 3.0.1
 info:
   title: My API
   version: 1.0.0
-tags:
- - name: Pets
-   description: Petshop Operations
 paths:
   /pets:
     get:
       operationId: getPets
-      tags:
-        - Pets
       responses:
         '200':
           $ref: '#/components/responses/ListPetsRes'
     post:
       operationId: createPet
-      tags:
-        - Pets
       requestBody:
         description: Pet object to create
         content:
@@ -28,8 +21,6 @@ paths:
   '/pets/{id}':
     get:
       operationId: getPetById
-      tags:
-        - Pets
       responses:
         '200':
           $ref: '#/components/responses/PetRes'
