@@ -43,6 +43,8 @@ openapi help
 Call API endpoints
 
 ```
+Call API endpoints
+
 USAGE
   $ openapi call [DEFINITION]
 
@@ -50,17 +52,18 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -B, --bundle                        resolve remote $ref pointers
-  -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -V, --validate                      validate against openapi schema
-  -d, --data=data                     request body
-  -h, --help                          show CLI help
-  -i, --include                       include status code and response headers the output
-  -o, --operation=operationId         operationId
-  -p, --param=key=value               parameter
+  -B, --bundle                               resolve remote $ref pointers
+  -D, --dereference                          resolve $ref pointers
+  -H, --header=header                        add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -R, --root=/                               override API root path
+  -S, --server=http://localhost:9000         override servers definition
+  -V, --validate                             validate against openapi schema
+  -d, --data=data                            request body
+  -h, --help                                 show CLI help
+  -i, --include                              include status code and response headers the output
+  -o, --operation=operationId                operationId
+  -p, --param=key=value                      parameter
 
 EXAMPLES
   $ openapi call -o getPets
@@ -68,13 +71,15 @@ EXAMPLES
   $ openapi call -o createPet -d '{ "name": "Garfield" }'
 ```
 
-_See code: [src/commands/call.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/call.ts)_
+_See code: [src/commands/call.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/call.ts)_
 
 ## `openapi help [COMMAND]`
 
 display help for openapi
 
 ```
+display help for <%= config.bin %>
+
 USAGE
   $ openapi help [COMMAND]
 
@@ -85,13 +90,15 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.14/src/commands/help.ts)_
 
 ## `openapi info [DEFINITION]`
 
 Display API information
 
 ```
+Display API information
+
 USAGE
   $ openapi info [DEFINITION]
 
@@ -99,54 +106,60 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -B, --bundle                        resolve remote $ref pointers
-  -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -V, --validate                      validate against openapi schema
-  -h, --help                          show CLI help
-  --operations                        list operations in document
-  --schemas                           list schemas in document
+  -B, --bundle                               resolve remote $ref pointers
+  -D, --dereference                          resolve $ref pointers
+  -H, --header=header                        add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -R, --root=/                               override API root path
+  -S, --server=http://localhost:9000         override servers definition
+  -V, --validate                             validate against openapi schema
+  -h, --help                                 show CLI help
+  --operations                               list operations in document
+  --schemas                                  list schemas in document
 
 EXAMPLES
   $ openapi info https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
   $ openapi info ./openapi.yml
 ```
 
-_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/info.ts)_
 
 ## `openapi init`
 
 Initialise a definition file from scratch
 
 ```
+Initialise a definition file from scratch
+
 USAGE
   $ openapi init
 
 OPTIONS
-  -S, --server=http://localhost:9000  override servers definition
-  -T, --title=title                   [default: My API] The title for the API
-  -d, --description=description       Description for the API
-  -f, --format=(json|yaml|yml)        [default: yaml] output format
-  -h, --help                          show CLI help
-  -v, --version=version               [default: 0.0.1] Version of the API
-  --json                              format as json (short for -f json)
-  --license=mit|apache2               The license for the API
-  --terms=terms                       A URL to the Terms of Service for the API.
-  --yaml                              format as yaml (short for -f yaml)
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -S, --server=http://localhost:9000         override servers definition
+  -T, --title=title                          [default: My API] The title for the API
+  -d, --description=description              Description for the API
+  -f, --format=(json|yaml|yml)               [default: yaml] output format
+  -h, --help                                 show CLI help
+  -v, --version=version                      [default: 0.0.1] Version of the API
+  --json                                     format as json (short for -f json)
+  --license=mit|apache2                      The license for the API
+  --terms=terms                              A URL to the Terms of Service for the API.
+  --yaml                                     format as yaml (short for -f yaml)
 
 EXAMPLE
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/init.ts)_
 
 ## `openapi load DEFINITION`
 
 Set the default definition file for a workspace (writes to .openapiconfig)
 
 ```
+Set the default definition file for a workspace (writes to .openapiconfig)
+
 USAGE
   $ openapi load DEFINITION
 
@@ -162,13 +175,15 @@ EXAMPLES
   $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/load.ts)_
+_See code: [src/commands/load.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/load.ts)_
 
 ## `openapi mock [DEFINITION]`
 
 Start a local mock API server
 
 ```
+Start a local mock API server
+
 USAGE
   $ openapi mock [DEFINITION]
 
@@ -176,27 +191,30 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -U, --swagger-ui=docs               Swagger UI endpoint
-  -h, --help                          show CLI help
-  -p, --port=9000                     [default: 9000] port
-  --[no-]logger                       [default: true] log requests
-  --[no-]validate                     [default: true] validate requests according to schema
+  -H, --header=header                        add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -R, --root=/                               override API root path
+  -S, --server=http://localhost:9000         override servers definition
+  -U, --swagger-ui=docs                      Swagger UI endpoint
+  -h, --help                                 show CLI help
+  -p, --port=9000                            [default: 9000] port
+  --[no-]logger                              [default: true] log requests
+  --[no-]validate                            [default: true] validate requests according to schema
 
 EXAMPLES
   $ openapi mock ./openapi.yml
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/mock.ts)_
 
 ## `openapi read [DEFINITION]`
 
 Read and manipulate definition files
 
 ```
+Read and manipulate definition files
+
 USAGE
   $ openapi read [DEFINITION]
 
@@ -204,29 +222,32 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -B, --bundle                        resolve remote $ref pointers
-  -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -V, --validate                      validate against openapi schema
-  -f, --format=(json|yaml|yml)        [default: yaml] output format
-  -h, --help                          show CLI help
-  --json                              format as json (short for -f json)
-  --yaml                              format as yaml (short for -f yaml)
+  -B, --bundle                               resolve remote $ref pointers
+  -D, --dereference                          resolve $ref pointers
+  -H, --header=header                        add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -R, --root=/                               override API root path
+  -S, --server=http://localhost:9000         override servers definition
+  -V, --validate                             validate against openapi schema
+  -f, --format=(json|yaml|yml)               [default: yaml] output format
+  -h, --help                                 show CLI help
+  --json                                     format as json (short for -f json)
+  --yaml                                     format as yaml (short for -f yaml)
 
 EXAMPLES
   $ openapi read https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/read.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
 Start a Swagger Editor instance
 
 ```
+Start a Swagger Editor instance
+
 USAGE
   $ openapi swagger-editor [DEFINITION]
 
@@ -244,13 +265,15 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
 Start or bundle a Swagger UI instance
 
 ```
+Start or bundle a Swagger UI instance
+
 USAGE
   $ openapi swagger-ui [DEFINITION]
 
@@ -258,20 +281,21 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -B, --bundle=outDir                 bundle a static site to directory
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -h, --help                          show CLI help
-  -p, --port=9000                     [default: 9000] port
-  --[no-]deeplinks                    [default: true] allow deep linking
-  --expand=full|list|none             [default: list] default expansion setting for the operations and tags
-  --[no-]filter                       [default: true] enable filtering by tag
-  --[no-]logger                       [default: true] log requests
-  --[no-]operationids                 [default: true] display operationIds
-  --proxy                             set up a proxy for the api to avoid CORS issues
-  --[no-]requestduration              [default: true] display request durations in "try it now"
-  --[no-]withcredentials              [default: true] send cookies in "try it now"
+  -B, --bundle=outDir                        bundle a static site to directory
+  -H, --header=header                        add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -R, --root=/                               override API root path
+  -S, --server=http://localhost:9000         override servers definition
+  -h, --help                                 show CLI help
+  -p, --port=9000                            [default: 9000] port
+  --[no-]deeplinks                           [default: true] allow deep linking
+  --expand=full|list|none                    [default: list] default expansion setting for the operations and tags
+  --[no-]filter                              [default: true] enable filtering by tag
+  --[no-]logger                              [default: true] log requests
+  --[no-]operationids                        [default: true] display operationIds
+  --proxy                                    set up a proxy for the api to avoid CORS issues
+  --[no-]requestduration                     [default: true] display request durations in "try it now"
+  --[no-]withcredentials                     [default: true] send cookies in "try it now"
 
 EXAMPLES
   $ openapi swagger-ui
@@ -279,13 +303,15 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml --bundle outDir
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi [DEFINITION]`
 
 Convert Swagger 2.0 definitions to OpenAPI 3.0.x
 
 ```
+Convert Swagger 2.0 definitions to OpenAPI 3.0.x
+
 USAGE
   $ openapi swagger2openapi [DEFINITION]
 
@@ -293,28 +319,31 @@ ARGUMENTS
   DEFINITION  input definition file
 
 OPTIONS
-  -B, --bundle                        resolve remote $ref pointers
-  -D, --dereference                   resolve $ref pointers
-  -H, --header=header                 add request headers when calling remote urls
-  -R, --root=/                        override API root path
-  -S, --server=http://localhost:9000  override servers definition
-  -V, --validate                      validate against openapi schema
-  -f, --format=(json|yaml|yml)        [default: yaml] output format
-  -h, --help                          show CLI help
-  --json                              format as json (short for -f json)
-  --yaml                              format as yaml (short for -f yaml)
+  -B, --bundle                               resolve remote $ref pointers
+  -D, --dereference                          resolve $ref pointers
+  -H, --header=header                        add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}  inject JSON to definition with deep merge
+  -R, --root=/                               override API root path
+  -S, --server=http://localhost:9000         override servers definition
+  -V, --validate                             validate against openapi schema
+  -f, --format=(json|yaml|yml)               [default: yaml] output format
+  -h, --help                                 show CLI help
+  --json                                     format as json (short for -f json)
+  --yaml                                     format as yaml (short for -f yaml)
 
 EXAMPLE
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/swagger2openapi.ts)_
 
 ## `openapi unload`
 
 Unset the default definition file for a workspace (writes to .openapiconfig)
 
 ```
+Unset the default definition file for a workspace (writes to .openapiconfig)
+
 USAGE
   $ openapi unload
 
@@ -325,7 +354,7 @@ EXAMPLE
   $ openapi unload
 ```
 
-_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.8.2/src/commands/unload.ts)_
+_See code: [src/commands/unload.ts](https://github.com/anttiviljami/openapicmd/blob/v1.11.0/src/commands/unload.ts)_
 <!-- commandsstop -->
 
 ## Contributing
