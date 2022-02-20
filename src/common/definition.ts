@@ -146,7 +146,8 @@ export function printInfo(document: SwaggerParser.Document, ctx: Command) {
     ctx.log(`title: ${title}`);
     ctx.log(`version: ${version}`);
     if (description) {
-      ctx.log(`description: ${description}`);
+      ctx.log(`description:`);
+      ctx.log(`${description}`);
     }
     if (contact) {
       if (contact.email && contact.name) {

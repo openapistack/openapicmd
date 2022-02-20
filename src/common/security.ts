@@ -179,7 +179,7 @@ export const createSecurityRequestConfigForScheme = async (params: {
       (
         await inquirer.prompt({
           name: 'key',
-          message: `${params.schemeName}: Set API key`,
+          message: `${params.schemeName}: Set API key (${params.schemeDefinition.name})`,
           type: 'input',
         })
       ).key;

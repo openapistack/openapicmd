@@ -105,6 +105,7 @@ OPTIONS
   -h, --help                                 show CLI help
   --operations                               list operations in document
   --schemas                                  list schemas in document
+  --security                                 list security schemes in document
 
 EXAMPLES
   $ openapi info https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml

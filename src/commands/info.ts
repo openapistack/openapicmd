@@ -16,6 +16,7 @@ export default class Info extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
+    security: flags.boolean({ description: 'list security schemes in document', default: false }),
     operations: flags.boolean({ description: 'list operations in document', default: false }),
     schemas: flags.boolean({ description: 'list schemas in document', default: false }),
   };
@@ -66,9 +67,15 @@ export default class Info extends Command {
       this.log();
       this.printSchemas(document);
     } else {
+      this.log(`schemas: ${document.components?.schemas ? Object.entries(document.components.schemas).length : 0}`);
+    }
+    if (flags.security) {
+      this.log();
+      this.printSecuritySchemes(document);
+    } else {
       this.log(
-        `schemas: ${
-          document.components && document.components.schemas ? Object.entries(document.components.schemas).length : 0
+        `securitySchemes: ${
+          document.components?.securitySchemes ? Object.entries(document.components.securitySchemes).length : 0
         }`,
       );
     }
@@ -112,7 +119,7 @@ export default class Info extends Command {
       }
     }
 
-    this.log(`Operations (${getOperations(document).length}):`);
+    this.log(`operations (${getOperations(document).length}):`);
     for (const tag in operations) {
       if (operations[tag]) {
         const routes = operations[tag].routes;
@@ -127,10 +134,31 @@ export default class Info extends Command {
     const schemas = (document.components && document.components.schemas) || {};
     const count = Object.entries(schemas).length;
     if (count > 0) {
-      this.log(`Schemas (${count}):`);
+      this.log(`schemas (${count}):`);
       for (const schema in schemas) {
         if (schemas[schema]) {
           this.log(`- ${schema}`);
+        }
+      }
+    }
+  }
+
+  private printSecuritySchemes(document: SwaggerParser.Document) {
+    const securitySchemes = document.components?.securitySchemes || {};
+    const count = Object.entries(securitySchemes).length;
+    if (count > 0) {
+      this.log(`securitySchemes (${count}):`);
+      for (const scheme in securitySchemes) {
+        if (securitySchemes[scheme]) {
+          this.log(
+            `- ${scheme}: (${[
+              securitySchemes[scheme]['type'],
+              securitySchemes[scheme]['scheme'],
+              securitySchemes[scheme]['name'],
+            ]
+              .filter(Boolean)
+              .join(', ')}) ${securitySchemes[scheme]['description']}`,
+          );
         }
       }
     }
