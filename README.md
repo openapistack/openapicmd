@@ -321,7 +321,7 @@ EXAMPLE
 
 ## `openapi auth`
 
-Set the default definition file for a workspace (writes to .openapiconfig)
+Authenticate with apis (writes to .openapiconfig)
 
 ```
 USAGE

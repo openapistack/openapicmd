@@ -10,7 +10,7 @@ import { createSecurityRequestConfigForScheme, getActiveSecuritySchemes, Securit
 import { OpenAPIV3 } from 'openapi-client-axios';
 
 export default class Auth extends Command {
-  public static description = 'Set the default definition file for a workspace (writes to .openapiconfig)';
+  public static description = 'Authenticate with apis (writes to .openapiconfig)';
 
   public static examples = [
     `$ openapi auth`,
