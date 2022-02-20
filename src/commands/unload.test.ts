@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import { resourcePath } from '../test-utils';
 import 'chai';
-import { CONFIG_FILENAME } from '../common/definition';
+import { CONFIG_FILENAME } from '../common/config';
 
 const COMMAND = 'unload';
 

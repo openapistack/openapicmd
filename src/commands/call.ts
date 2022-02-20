@@ -120,13 +120,38 @@ export default class Call extends Command {
     const config: AxiosRequestConfig = { headers: parseHeaderFlag(header) };
 
     // handle request body
-    const data = flags.data;
+    let data = flags.data;
+    if (
+      !data &&
+      operation.requestBody &&
+      'content' in operation.requestBody &&
+      (await inquirer.prompt({ type: 'confirm', default: true, name: 'add request body?' }))
+    ) {
+      const contentType = Object.keys(operation.requestBody.content)[0];
+
+      let defaultValue = operation.requestBody.content?.[contentType]?.example;
+      if (!defaultValue && contentType === 'application/json') {
+        defaultValue = '{}';
+      }
+
+      data = await inquirer.prompt({
+        type: 'editor',
+        name: `${contentType || ''}`,
+        default: defaultValue,
+        validate: (value) => {
+          if (contentType === 'application/json' && !isValidJson(value)) {
+            return false;
+          }
+          return true;
+        },
+      });
+    }
 
     // set content type
     if (!config.headers['Content-Type'] && !config.headers['content-type']) {
       const operationRequestContentType = Object.keys(operation.requestBody?.['content'] ?? {})[0];
       const defaultContentType = isValidJson(data) ? 'application/json' : 'text/plain';
-      config.headers['Content-Type'] = operationRequestContentType ?? defaultContentType
+      config.headers['Content-Type'] = operationRequestContentType ?? defaultContentType;
     }
 
     let res: AxiosResponse;

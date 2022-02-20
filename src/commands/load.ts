@@ -3,7 +3,8 @@ import * as commonFlags from '../common/flags';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
-import { resolveConfigFile, CONFIG_FILENAME, parseDefinition } from '../common/definition';
+import { parseDefinition } from '../common/definition';
+import { CONFIG_FILENAME, resolveConfigFile } from '../common/config';
 
 export default class Load extends Command {
   public static description = 'Set the default definition file for a workspace (writes to .openapiconfig)';

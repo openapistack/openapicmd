@@ -1,14 +1,10 @@
 import * as SwaggerParser from '@apidevtools/swagger-parser';
-import * as deepMerge from 'deepmerge'
+import * as deepMerge from 'deepmerge';
 import { set, uniqBy } from 'lodash';
 import * as YAML from 'js-yaml';
-import * as fs from 'fs';
-import * as path from 'path';
-import { homedir } from 'os';
 import { Command } from '@oclif/command';
 import { parseHeaderFlag } from './utils';
-
-export const CONFIG_FILENAME = '.openapiconfig';
+import { getConfigValue } from './config';
 
 interface ParseOpts {
   definition: string;
@@ -56,8 +52,8 @@ export async function parseDefinition({
   if (inject) {
     for (const json of inject) {
       try {
-      const parsed = JSON.parse(json);
-      document = deepMerge(document, parsed);
+        const parsed = JSON.parse(json);
+        document = deepMerge(document, parsed);
       } catch (err) {
         console.error('Could not parse inject JSON');
         throw err;
@@ -130,20 +126,6 @@ export function stringifyDocument({ document, format }: OutputOpts): string {
   }
 }
 
-// walk backwards from cwd until homedir and check if CONFIG_FILENAME exists
-export function resolveConfigFile() {
-  let dir = path.resolve(process.cwd());
-  while (dir.length >= homedir().length) {
-    const check = path.join(dir, CONFIG_FILENAME);
-    if (fs.existsSync(check)) {
-      return path.join(dir, CONFIG_FILENAME);
-    } else {
-      // walk backwards
-      dir = path.resolve(path.join(dir, '..'));
-    }
-  }
-}
-
 export function resolveDefinition(definitionArg: string) {
   // check definitionArg
   if (definitionArg && definitionArg !== 'CURRENT') {
@@ -154,11 +136,7 @@ export function resolveDefinition(definitionArg: string) {
     return process.env.OPENAPI_DEFINITION;
   }
 
-  const configFile = resolveConfigFile();
-  if (configFile) {
-    const config = YAML.safeLoad(fs.readFileSync(configFile));
-    return config.definition;
-  }
+  return getConfigValue('definition');
 }
 
 export function printInfo(document: SwaggerParser.Document, ctx: Command) {

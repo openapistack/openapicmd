@@ -3,7 +3,7 @@ import { expect, test } from '@oclif/test';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import 'chai';
-import { CONFIG_FILENAME } from '../common/definition';
+import { CONFIG_FILENAME } from '../common/config';
 import { resourcePath, testDefinition } from '../test-utils';
 
 const COMMAND = 'load';
