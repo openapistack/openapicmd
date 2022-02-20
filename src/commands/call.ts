@@ -1,4 +1,5 @@
 import { Command, flags } from '@oclif/command';
+import { mock } from 'mock-json-schema';
 import cli from 'cli-ux';
 import * as chalk from 'chalk';
 import * as inquirer from 'inquirer';
@@ -134,21 +135,31 @@ export default class Call extends Command {
       const contentType = Object.keys(operation.requestBody.content)[0];
 
       let defaultValue = operation.requestBody.content?.[contentType]?.example;
+      if (!defaultValue && operation.requestBody.content?.[contentType]?.schema) {
+        defaultValue = JSON.stringify(
+          mock(operation.requestBody.content?.[contentType]?.schema as OpenAPIV3.SchemaObject),
+          null,
+          2,
+        );
+      }
       if (!defaultValue && contentType === 'application/json') {
         defaultValue = '{}';
       }
 
-      data = await inquirer.prompt({
-        type: 'editor',
-        name: `${contentType || ''}`,
-        default: defaultValue,
-        validate: (value) => {
-          if (contentType === 'application/json' && !isValidJson(value)) {
-            return false;
-          }
-          return true;
-        },
-      });
+      data = (
+        await inquirer.prompt({
+          type: 'editor',
+          message: contentType || '',
+          name: 'requestBody',
+          default: defaultValue,
+          validate: (value) => {
+            if (contentType === 'application/json' && !isValidJson(value)) {
+              return 'invalid json';
+            }
+            return true;
+          },
+        })
+      ).requestBody;
     }
 
     const securityRequestConfig = await createSecurityRequestConfig({
