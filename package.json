@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "OpenAPI Command Line Tool",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "bin": {
     "openapi": "bin/run"
