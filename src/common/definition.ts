@@ -219,7 +219,7 @@ export function printOperations(document: SwaggerParser.Document, ctx: Command) 
     }
   }
 
-  ctx.log('Operations:');
+  ctx.log('operations:');
   for (const tag in operations) {
     if (operations[tag]) {
       const routes = operations[tag].routes;
@@ -234,7 +234,7 @@ export function printSchemas(document: SwaggerParser.Document, ctx: Command) {
   const schemas = (document.components && document.components.schemas) || {};
   const count = Object.entries(schemas).length;
   if (count > 0) {
-    ctx.log(`Schemas (${count}):`);
+    ctx.log(`schemas (${count}):`);
     for (const schema in schemas) {
       if (schemas[schema]) {
         ctx.log(`- ${schema}`);
