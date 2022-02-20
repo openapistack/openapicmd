@@ -18,12 +18,17 @@ export function getConfigValue(key: string, defaultValue?: any): any {
 export function resolveConfigFile() {
   let dir = path.resolve(process.cwd());
   while (dir.length >= homedir().length) {
-    const check = path.join(dir, CONFIG_FILENAME);
-    if (fs.existsSync(check)) {
-      return path.join(dir, CONFIG_FILENAME);
-    } else {
-      // walk backwards
-      dir = path.resolve(path.join(dir, '..'));
+    const checks = [
+      path.join(dir, CONFIG_FILENAME),
+      path.join(dir, `${CONFIG_FILENAME}.yml`),
+      path.join(dir, `${CONFIG_FILENAME}.yaml`),
+    ];
+    for (const check of checks) {
+      if (fs.existsSync(check)) {
+        return check;
+      }
     }
+    // walk backwards
+    dir = path.resolve(path.join(dir, '..'));
   }
 }

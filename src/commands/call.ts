@@ -9,6 +9,7 @@ import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import d from 'debug';
 import { isValidJson, parseHeaderFlag } from '../common/utils';
+import { createSecurityRequestConfig } from '../common/security';
 const debug = d('cmd');
 
 export default class Call extends Command {
@@ -32,6 +33,12 @@ export default class Call extends Command {
       description: 'include status code and response headers the output',
       default: false,
     }),
+    verbose: flags.boolean({
+      char: 'v',
+      description: 'verbose mode',
+      default: false,
+    }),
+    ...commonFlags.securityOpts(),
   };
 
   public static args = [
@@ -116,16 +123,13 @@ export default class Call extends Command {
       }
     }
 
-    // add request headers
-    const config: AxiosRequestConfig = { headers: parseHeaderFlag(header) };
-
     // handle request body
     let data = flags.data;
     if (
       !data &&
       operation.requestBody &&
       'content' in operation.requestBody &&
-      (await inquirer.prompt({ type: 'confirm', default: true, name: 'add request body?' }))
+      (await inquirer.prompt({ type: 'confirm', default: true, name: 'yes', message: 'add request body?' })).yes
     ) {
       const contentType = Object.keys(operation.requestBody.content)[0];
 
@@ -147,6 +151,39 @@ export default class Call extends Command {
       });
     }
 
+    const securityRequestConfig = await createSecurityRequestConfig({
+      document,
+      operation,
+      security: flags.security,
+      header: flags.header,
+      apikey: flags.apikey,
+      token: flags.token,
+      username: flags.username,
+      password: flags.password,
+    });
+    debug('securityRequestConfig %o', securityRequestConfig);
+
+    // add cookies
+    const cookies = {
+      ...securityRequestConfig.cookie,
+    };
+    const cookieHeader = Object.keys(cookies)
+      .map((key) => `${key}=${cookies[key]}`)
+      .join('; ');
+
+    // add request headers
+    const config: AxiosRequestConfig = {
+      headers: {
+        ...securityRequestConfig.header,
+        ...parseHeaderFlag(header),
+        ...(Boolean(cookieHeader) && { cookie: cookieHeader }),
+      },
+      params: {
+        ...securityRequestConfig.query,
+      },
+      auth: securityRequestConfig.auth,
+    };
+
     // set content type
     if (!config.headers['Content-Type'] && !config.headers['content-type']) {
       const operationRequestContentType = Object.keys(operation.requestBody?.['content'] ?? {})[0];
@@ -156,8 +193,11 @@ export default class Call extends Command {
 
     let res: AxiosResponse;
     try {
-      const request = api.getRequestConfigForOperation(operation, [params, data, config]);
-      debug(request);
+      const request = api.getAxiosConfigForOperation(operation, [params, data, config]);
+      debug('request %o', request);
+      if (flags.verbose) {
+        console.warn(JSON.stringify(request, null, 2));
+      }
       if (operationId) console.warn(chalk.bold(operationId));
       console.warn(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
       res = await client[operationId](params, data, config);
@@ -170,7 +210,7 @@ export default class Call extends Command {
     }
 
     // output response fields
-    if (flags.include) {
+    if (flags.include && res?.status) {
       this.log(chalk.gray('RESPONSE META:'));
       this.log(
         JSON.stringify(
@@ -187,7 +227,7 @@ export default class Call extends Command {
     }
 
     // output response body
-    if (!_.isNil(res.data)) {
+    if (!_.isNil(res?.data)) {
       try {
         this.log(JSON.stringify(res.data, null, 2));
       } catch (e) {

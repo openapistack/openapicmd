@@ -33,7 +33,7 @@ describe(COMMAND, () => {
         }),
     )
     .stdout()
-    .command([COMMAND, 'https://myapi.com/openapi.json', '-o', 'getPets'])
+    .command([COMMAND, 'https://myapi.com/openapi.json', '-o', 'getPets', '--apikey', 'secret'])
     .it('calls GET /pets with -o getPets', (ctx) => {
       expect(endpointCalled).to.be.true;
     });
@@ -51,7 +51,7 @@ describe(COMMAND, () => {
         }),
     )
     .stdout()
-    .command([COMMAND, 'https://myapi.com/openapi.json', '-o', 'getPetById', '-p', 'id=1'])
+    .command([COMMAND, 'https://myapi.com/openapi.json', '-o', 'getPetById', '-p', 'id=1', '--apikey', 'secret'])
     .it('calls GET /pets/1 with -o getPetById -p id=1', (ctx) => {
       expect(endpointCalled).to.be.true;
     });

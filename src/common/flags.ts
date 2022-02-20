@@ -89,3 +89,11 @@ export const swaggerUIOpts = () => ({
     allowNo: true,
   }),
 });
+
+export const securityOpts = () => ({
+  security: flags.string({ char: 's', description: 'use security scheme', multiple: true }),
+  apikey: flags.string({ char: 'k', description: 'set api key' }),
+  token: flags.string({ char: 't', description: 'set bearer token' }),
+  username: flags.string({ char: 'u', description: 'set basic auth username' }),
+  password: flags.string({ char: 'p', description: 'set basic auth password' }),
+});

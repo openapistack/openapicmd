@@ -3,6 +3,6 @@
 lib
 static
 node_modules
-.openapiconfig
+.openapiconfig*
 tsconfig.tsbuildinfo
 oclif.manifest.json

@@ -56,3 +56,33 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pet'
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Basic username/password authentication sent in Authorization header
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token sent in Authorization header
+    ApiKeyHeaderAuth:
+      type: apiKey
+      in: header
+      name: x-apikey
+      description: API key sent as a header
+    ApiKeyCookieAuth:
+      type: apiKey
+      in: cookie
+      name: apikey
+      description: API key sent as a cookie
+    ApiKeyQueryAuth:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key sent as a query parameter
+security:
+  - BasicAuth: []
+  - BearerAuth: []
+  - ApiKeyHeaderAuth: []
+  - ApiKeyCookieAuth: []
+  - ApiKeyQueryAuth: []
