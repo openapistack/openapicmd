@@ -55,6 +55,9 @@ export default class Info extends Command {
     this.log(`Loaded: ${definition}`);
     this.log();
     printInfo(document, this);
+
+    this.printServers(document);
+
     if (flags.operations) {
       this.log();
       this.printOperations(document);
@@ -140,6 +143,18 @@ export default class Info extends Command {
           this.log(`- ${schema}`);
         }
       }
+    }
+  }
+
+  private printServers(document: SwaggerParser.Document) {
+    const servers = document.servers ?? [];
+    if (servers.length > 0) {
+      this.log(`servers:`);
+      for (const server of servers) {
+        this.log(`- ${server.url}${server.description ? ` (${server.description})` : ''}`);
+      }
+    } else {
+      this.log('servers: 0');
     }
   }
 

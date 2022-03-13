@@ -12,6 +12,7 @@ describe(COMMAND, () => {
       expect(ctx.stdout).to.contain('title');
       expect(ctx.stdout).to.contain('version');
       expect(ctx.stdout).to.contain('securitySchemes');
+      expect(ctx.stdout).to.contain('servers');
     });
 
   test
