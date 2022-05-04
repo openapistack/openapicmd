@@ -32,7 +32,8 @@ export function serveSwaggerUI(opts: SwaggerUIOpts = {}) {
   const app = new Koa();
   const router = new Router();
 
-  const indexHTML = getSwaggerUIIndexHTML(opts);
+  const indexHTML = getSwaggerUIIndexHTML();
+  const initializerScript = getSwaggerUIInitializerScript(opts);
 
   // serve index.html
   router.get('/', (ctx) => {
@@ -53,13 +54,26 @@ export function serveSwaggerUI(opts: SwaggerUIOpts = {}) {
     ctx.status = 200;
   });
 
+  // serve swagger-initializer.js
+  router.get('/swagger-initializer.js', (ctx) => {
+    ctx.body = initializerScript;
+    ctx.status = 200;
+  })
+
   app.use(router.routes());
   app.use(serve(swaggerUIRoot));
 
   return app;
 }
 
-export function getSwaggerUIIndexHTML(opts: SwaggerUIOpts = {}) {
+export function getSwaggerUIIndexHTML() {
+  
+  return fs
+    .readFileSync(path.join(swaggerUIRoot, 'index.html'))
+    .toString('utf8');
+}
+
+export function getSwaggerUIInitializerScript(opts: SwaggerUIOpts = {}) {
   const config: SwaggerUIOpts = {
     layout: 'StandaloneLayout',
     deepLinking: true,
@@ -71,9 +85,29 @@ export function getSwaggerUIIndexHTML(opts: SwaggerUIOpts = {}) {
     filter: true,
     ...opts,
   };
-  return fs
-    .readFileSync(path.join(swaggerUIRoot, 'index.html'))
-    .toString('utf8')
-    .replace('window.onload', `const config = JSON.parse(\'${JSON.stringify(config)}\');window.onload`)
-    .replace('layout: "StandaloneLayout"', '...config');
+
+  return `
+    const config = JSON.parse(\`${JSON.stringify(config)}\`);
+
+    window.onload = function() {
+      //<editor-fold desc="Changeable Configuration Block">
+    
+      // the following lines will be replaced by docker/configurator, when it runs in a docker-container
+      window.ui = SwaggerUIBundle({
+        url: "https://petstore.swagger.io/v2/swagger.json",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        ...config
+      });
+    
+      //</editor-fold>
+    };`
 }

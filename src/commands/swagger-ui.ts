@@ -14,6 +14,7 @@ import {
   serveSwaggerUI,
   SwaggerUIOpts,
   DocExpansion,
+  getSwaggerUIInitializerScript,
 } from '../common/swagger-ui';
 import { parseHeaderFlag } from '../common/utils';
 
@@ -108,10 +109,10 @@ export default class SwaggerUI extends Command {
         this.log(`${openApiPath}`);
       }
 
-      // write index.html
-      const indexPath = path.join(bundleDir, 'index.html');
-      fs.writeFileSync(indexPath, getSwaggerUIIndexHTML({ url: documentPath, ...swaggerUIOpts }));
-      this.log(`${indexPath}`);
+      // rewrite swagger-initializer.js
+      const scriptPath = path.join(bundleDir, 'swagger-initializer.js');
+      fs.writeFileSync(scriptPath, getSwaggerUIInitializerScript({ url: documentPath, ...swaggerUIOpts }));
+      this.log(path.join(bundleDir, 'index.html'));
     } else {
       if (flags.proxy) {
         // set up a proxy for the api
