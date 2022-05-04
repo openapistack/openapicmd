@@ -62,7 +62,7 @@ export default class Auth extends Command {
     const writeTo = path.resolve(configFile || `./${CONFIG_FILENAME}`);
 
     // write to config file
-    const oldConfig = configFile ? YAML.safeLoad(fs.readFileSync(configFile)) : {};
+    const oldConfig = configFile ? YAML.load(fs.readFileSync(configFile)) : {};
     const newConfig = {
       ...oldConfig,
       definition,
@@ -95,7 +95,7 @@ export default class Auth extends Command {
     }
 
     // write as YAML
-    fs.writeFileSync(writeTo, YAML.safeDump(newConfig));
+    fs.writeFileSync(writeTo, YAML.dump(newConfig));
     this.log(`Wrote auth config to ${writeTo}. You can now use openapi call with the following auth configs:`);
     this.log(
       `${Object.keys(newConfig.security)

@@ -8,7 +8,7 @@ export const CONFIG_FILENAME = '.openapiconfig';
 export function getConfigValue(key: string, defaultValue?: any): any {
   const configFile = resolveConfigFile();
   if (configFile) {
-    const config = YAML.safeLoad(fs.readFileSync(configFile));
+    const config = YAML.load(fs.readFileSync(configFile));
     return config[key] || defaultValue;
   }
   return defaultValue;

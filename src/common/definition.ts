@@ -122,7 +122,7 @@ export function stringifyDocument({ document, format }: OutputOpts): string {
     return JSON.stringify(document, null, 2);
   } else {
     // YAML output
-    return YAML.safeDump(document, { noRefs: true, lineWidth: 240, noArrayIndent: true });
+    return YAML.dump(document, { noRefs: true, lineWidth: 240, noArrayIndent: true });
   }
 }
 

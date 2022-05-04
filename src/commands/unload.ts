@@ -18,9 +18,9 @@ export default class Unload extends Command {
   public async run() {
     const configFile = resolveConfigFile();
     if (configFile) {
-      const oldConfig = YAML.safeLoad(fs.readFileSync(configFile));
+      const oldConfig = YAML.load(fs.readFileSync(configFile));
       const { definition, ...newConfig } = oldConfig;
-      fs.writeFileSync(configFile, YAML.safeDump(newConfig));
+      fs.writeFileSync(configFile, YAML.dump(newConfig));
       this.log(`Written to ${configFile}`);
     }
     this.log('Unloaded succesfully!');

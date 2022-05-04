@@ -41,7 +41,7 @@ export default class Load extends Command {
     const configFile = resolveConfigFile();
 
     // write to config file
-    const oldConfig = configFile ? YAML.safeLoad(fs.readFileSync(configFile)) : {};
+    const oldConfig = configFile ? YAML.load(fs.readFileSync(configFile)) : {};
     const newConfig = {
       ...oldConfig,
       definition,
@@ -51,7 +51,7 @@ export default class Load extends Command {
     const writeTo = path.resolve(configFile || `./${CONFIG_FILENAME}`);
 
     // write as YAML
-    fs.writeFileSync(writeTo, YAML.safeDump(newConfig));
+    fs.writeFileSync(writeTo, YAML.dump(newConfig));
     this.log(`Wrote to ${writeTo}`);
     this.log(`Loaded succesfully!`);
   }

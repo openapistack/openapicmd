@@ -43,7 +43,7 @@ describe(COMMAND, () => {
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
     .it(`writes the definition path to the ${CONFIG_FILENAME} file`, (ctx) => {
-      const config = YAML.safeLoad(fs.readFileSync(CONFIG_FILENAME));
+      const config = YAML.load(fs.readFileSync(CONFIG_FILENAME));
       expect(config.definition).to.match(new RegExp('openapi.yml'));
     });
 });

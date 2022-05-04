@@ -11,7 +11,7 @@ const COMMAND = 'unload';
 
 describe(COMMAND, () => {
   beforeEach(() => {
-    fs.writeFileSync(CONFIG_FILENAME, YAML.safeDump({ definition: 'openapi.json' }));
+    fs.writeFileSync(CONFIG_FILENAME, YAML.dump({ definition: 'openapi.json' }));
   });
 
   afterEach(() => {
@@ -29,7 +29,7 @@ describe(COMMAND, () => {
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
     .it(`removes the definition property from the config file`, (ctx) => {
-      const config = YAML.safeLoad(fs.readFileSync(CONFIG_FILENAME));
+      const config = YAML.load(fs.readFileSync(CONFIG_FILENAME));
       expect(config.definition).to.not.exist;
     });
 });
