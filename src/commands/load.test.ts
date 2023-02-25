@@ -8,7 +8,7 @@ import { resourcePath, testDefinition } from '../test-utils';
 
 const COMMAND = 'load';
 
-describe(COMMAND, () => {
+describe('load', () => {
   beforeEach(() => {
     fs.unlink(CONFIG_FILENAME, (err) => null);
   });
