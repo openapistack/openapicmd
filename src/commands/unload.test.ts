@@ -1,7 +1,7 @@
 import { expect, test } from '@oclif/test';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
-import { resourcePath } from '../test-utils';
+import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
 import { CONFIG_FILENAME } from '../common/config';
 

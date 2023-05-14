@@ -32,6 +32,7 @@ export default class SwaggerUI extends Command {
     ...commonFlags.serverOpts(),
     ...commonFlags.servers(),
     ...commonFlags.inject(),
+    ...commonFlags.strip(),
     ...commonFlags.swaggerUIOpts(),
     ...commonFlags.header(),
     ...commonFlags.apiRoot(),
@@ -71,7 +72,14 @@ export default class SwaggerUI extends Command {
         documentPath = definition;
       } else {
         // parse definition
-        document = await parseDefinition({ definition, servers: flags.server, inject: flags.inject, header, root });
+        document = await parseDefinition({
+          definition,
+          servers: flags.server,
+          inject: flags.inject,
+          strip: flags.strip,
+          header,
+          root,
+         });
         documentPath = `./${openApiFile}`;
       }
     }

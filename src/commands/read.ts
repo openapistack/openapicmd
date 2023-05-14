@@ -26,7 +26,7 @@ export default class Read extends Command {
 
   public async run() {
     const { args, flags } = this.parse(Read);
-    const { dereference, validate, bundle, header, root, inject } = flags;
+    const { dereference, validate, bundle, header, root } = flags;
 
     const definition = resolveDefinition(args.definition);
     if (!definition) {
@@ -40,7 +40,8 @@ export default class Read extends Command {
         dereference,
         bundle,
         validate,
-        inject,
+        inject: flags.inject,
+        strip: flags.strip,
         servers: flags.server,
         header,
         root,

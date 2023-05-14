@@ -50,6 +50,7 @@ export default class Auth extends Command {
         bundle,
         validate,
         inject,
+        strip: flags.strip,
         servers: flags.server,
         header,
       });

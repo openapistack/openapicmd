@@ -23,6 +23,14 @@ export const inject = () => ({
   }),
 });
 
+export const strip = () => ({
+  strip: flags.string({
+    char: 'C',
+    description: 'Strip optional metadata such as examples and descriptions from definition',
+    helpValue: 'default|all|openapi_client_axios|openapi_backend',
+  }),
+});
+
 export const validate = () => ({
   validate: flags.boolean({ char: 'V', description: 'validate against openapi schema' }),
 });
@@ -43,6 +51,7 @@ export const parseOpts = () => ({
   ...validate(),
   ...servers(),
   ...inject(),
+  ...strip(),
 });
 
 export const serverOpts = () => ({

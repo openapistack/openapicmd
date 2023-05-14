@@ -67,6 +67,7 @@ export default class Call extends Command {
         validate,
         servers: flags.server,
         inject: flags.inject,
+        strip: flags.strip,
         header,
         induceServers: true,
       });

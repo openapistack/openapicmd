@@ -5,6 +5,7 @@ import * as YAML from 'js-yaml';
 import { Command } from '@oclif/command';
 import { parseHeaderFlag } from './utils';
 import { getConfigValue } from './config';
+import { PRESETS, StripPreset, stripDefinition } from './strip-definition';
 
 interface ParseOpts {
   definition: string;
@@ -13,6 +14,7 @@ interface ParseOpts {
   bundle?: boolean;
   servers?: string[];
   inject?: string[];
+  strip?: string;
   header?: string[];
   root?: string;
   induceServers?: boolean;
@@ -24,6 +26,7 @@ export async function parseDefinition({
   bundle,
   servers,
   inject,
+  strip,
   header,
   root,
   induceServers,
@@ -59,6 +62,18 @@ export async function parseDefinition({
         throw err;
       }
     }
+  }
+
+  // strip optional metadata
+  if (strip) {
+    let preset: StripPreset = 'default'
+    if (Object.keys(PRESETS).includes(strip)) {
+      preset = strip as StripPreset;
+    } else {
+      throw new Error(`Unknown strip preset "${strip}"`);
+    }
+
+    document = stripDefinition(document, { preset });
   }
 
   // add servers

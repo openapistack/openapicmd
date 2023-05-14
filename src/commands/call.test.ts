@@ -1,5 +1,5 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath, testDefinition } from '../test-utils';
+import { resourcePath, testDefinition } from '../__tests__/test-utils';
 import 'chai';
 
 // tslint:disable: no-unused-expression

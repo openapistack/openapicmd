@@ -44,6 +44,7 @@ export default class Info extends Command {
         dereference,
         bundle,
         validate,
+        strip: flags.strip,
         servers: flags.server,
         inject: flags.inject,
         header,

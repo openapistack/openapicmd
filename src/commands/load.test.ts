@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import 'chai';
 import { CONFIG_FILENAME } from '../common/config';
-import { resourcePath, testDefinition } from '../test-utils';
+import { resourcePath, testDefinition } from '../__tests__/test-utils';
 
 const COMMAND = 'load';
 

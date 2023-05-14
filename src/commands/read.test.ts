@@ -1,5 +1,5 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath, testDefinition } from '../test-utils';
+import { resourcePath, testDefinition } from '../__tests__/test-utils';
 import * as SwaggerParser from '@apidevtools/swagger-parser';
 import * as YAML from 'js-yaml';
 import 'chai';

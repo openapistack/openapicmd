@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as waitOn from 'wait-on';
 import * as rimraf from 'rimraf';
-import { resourcePath } from '../test-utils';
+import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
 
 const COMMAND = 'swagger-ui';

@@ -1,5 +1,5 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath } from '../test-utils';
+import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
 
 const COMMAND = 'info';
