@@ -603,6 +603,20 @@ describe('stripDefinition', () => {
       expect(output.components.schemas['Schema1']).not.toHaveProperty('x-extension');
       expect(output.components.schemas['Schema2']['properties']['property1']).not.toHaveProperty('x-extension');
     })
+
+    it('should remove extensions from root document', () => {
+      // given
+      const document = testFixtures.createDefinition({
+        // @ts-ignore
+        'x-extension': 'extension',
+      })
+
+      // when
+      const output = stripDefinition(document, { removeExtensions: true });
+
+      // then
+      expect(output).not.toHaveProperty('x-extension');
+    })
   })
 
   describe('opts.removeReadOnly', () => {

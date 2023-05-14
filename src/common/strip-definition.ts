@@ -354,25 +354,20 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
    // remove all openapi extensions
    if (opts.removeExtensions) {
     // recursively remove nested x- fields
-    const removeExamples = (obj: any) => {
+    const removeExtensions = (obj: any) => {
       if (typeof obj !== 'object') return
 
       for (const key in obj) {
         if (key.startsWith('x-')) {
           delete obj[key]
         } else if (typeof obj[key] === 'object') {
-          removeExamples(obj[key])
+          removeExtensions(obj[key])
         }
       }
     }
 
-    // remove examples from operations
-    removeExamples(output.paths)
-
-    // remove examples from components
-    if (output.components) {
-      removeExamples(output.components)
-    }
+    // remove extensions form the whole document
+    removeExtensions(output)
   }
 
   // remove readOnly properties from document
