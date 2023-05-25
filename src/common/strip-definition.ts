@@ -48,6 +48,11 @@ interface StripOptions {
    */
   removeServers?: boolean;
   /**
+   * Only include first server from servers array
+   * @default false
+   */
+  firstServerOnly?: boolean;
+  /**
    * Replace responses with minimal valid default response
    * @default false
    */
@@ -92,6 +97,7 @@ export const PRESETS = {
   openapi_client_axios: {
     ...ALL,
     removeServers: false, // openapi-client-axios uses servers
+    firstServerOnly: true, // openapi-client-axios only uses first server
   },
   openapi_backend: {
     ...METADATA_ONLY,
@@ -202,8 +208,8 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
     }
   }
 
-   // remove servers
-   if (opts.removeServers) {
+  // remove servers
+  if (opts.removeServers) {
     // remove servers from root
     delete output.servers;
 
@@ -220,6 +226,11 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
         }
       }
     }
+  }
+
+  // only keep first server
+  if (opts.firstServerOnly && Array.isArray(output.servers)) {
+    output.servers = [output.servers[0]]
   }
 
   // replace responses with minimal default response

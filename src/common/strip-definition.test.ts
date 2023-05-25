@@ -957,6 +957,31 @@ describe('stripDefinition', () => {
     })
   })
 
+  describe('opts.firstServerOnly', () => {
+    it('should remove all but the first server', () => {
+      // given
+      const document = testFixtures.createDefinition({
+        servers: [
+          {
+            url: 'https://server1.com',
+          },
+          {
+            url: 'https://server2.com',
+          },
+        ],
+      })
+
+      // when
+      const output = stripDefinition(document, { firstServerOnly: true });
+
+      // then
+      expect(output.servers).toHaveLength(1);
+      expect(output.servers[0]).toEqual({
+        url: 'https://server1.com',
+      })
+    })
+  })
+
   describe('replaceResponses', () => {
     it('should replace responses with minimal default response', () => {
       // given
