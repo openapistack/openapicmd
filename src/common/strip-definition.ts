@@ -229,7 +229,7 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
   }
 
   // only keep first server
-  if (opts.firstServerOnly && Array.isArray(output.servers)) {
+  if (opts.firstServerOnly && Array.isArray(output.servers) && output.servers.length > 1) {
     output.servers = [output.servers[0]]
   }
 
