@@ -37,6 +37,7 @@ openapi help
 * [`openapi load`](#openapi-load)
 * [`openapi unload`](#openapi-unload)
 * [`openapi auth`](#openapi-auth)
+* [`openapi typegen`](#openapi-typegen)
 
 ## `openapi help`
 
@@ -454,6 +455,41 @@ EXAMPLES
   $ openapi auth --token eyJh...
   $ openapi auth --security ApiKeyAuth --apikey secret123
   $ openapi auth --security BasicAuth --username admin --password password
+```
+
+## `openapi typegen`
+
+Generate types from openapi definition
+
+```
+USAGE
+  $ openapi typegen [DEFINITION]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+OPTIONS
+  -B, --bundle                                                  resolve remote $ref pointers
+
+  -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
+                                                                descriptions from definition
+
+  -D, --dereference                                             resolve $ref pointers
+
+  -H, --header=header                                           add request headers when calling remote urls
+
+  -I, --inject={"info":{"version":"1.0.0"}}                     inject JSON to definition with deep merge
+
+  -R, --root=/                                                  override API root path
+
+  -S, --server=http://localhost:9000                            override servers definition
+
+  -V, --validate                                                validate against openapi schema
+
+  -h, --help                                                    show CLI help
+
+EXAMPLE
+  $ openapi typegen ./openapi.yml > openapi.d.ts
 ```
 <!-- commandsstop -->
 
