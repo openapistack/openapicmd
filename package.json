@@ -1,12 +1,12 @@
 {
   "name": "openapicmd",
   "description": "OpenAPI Command Line Tool",
-  "version": "1.17.0",
+  "version": "1.17.2",
   "author": "Viljami Kuosmanen <viljami@viljami.io>",
   "bin": {
     "openapi": "bin/run"
   },
-  "bugs": "https://github.com/anttiviljami/openapicmd/issues",
+  "bugs": "https://github.com/openapistack/openapicmd/issues",
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@koa/cors": "^4.0.0",
@@ -71,7 +71,7 @@
     "/lib",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/anttiviljami/openapicmd",
+  "homepage": "https://openapistack.co",
   "keywords": [
     "oclif"
   ],
@@ -84,7 +84,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "anttiviljami/openapicmd",
+  "repository": "openapistack/openapicmd",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && npm run build && oclif-dev manifest && npm run readme",
