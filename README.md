@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/openapistack/openapicmd/workflows/CI/badge.svg)](https://github.com/openapistack/openapicmd/actions?query=workflow%3ACI)
 [![npm version](https://img.shields.io/npm/v/openapicmd.svg)](https://www.npmjs.com/package/openapicmd)
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapicmd/blob/master/LICENSE)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapicmd/blob/main/LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 
 <p align="center">openapicmd - The CLI for all things OpenAPI and Swagger</p>
