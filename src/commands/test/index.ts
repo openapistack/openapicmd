@@ -77,7 +77,14 @@ export class Test extends Command {
       jestArgv.testNamePattern = flags.operation.map((o) => `${o} `).join('|');
     }
 
+    const testFile = require.resolve('../../tests/run-jest');
+    const testProjectDir = path.dirname(testFile)
+
+    jestArgv.rootDir = testProjectDir;
+    jestArgv.runTestsByPath = true;
+    jestArgv._ = [testFile];
+
     debug('jestArgv', jestArgv);
-    await runCLI(jestArgv, [path.dirname(require.resolve('../../tests/run-jest'))]);
+    await runCLI(jestArgv, [testProjectDir]);
   }
 }
