@@ -49,6 +49,11 @@ export class Read extends Command {
       this.error(err, { exit: 1 });
     }
     const format = flags.format === 'json' || flags.json ? OutputFormat.JSON : OutputFormat.YAML;
-    this.log(stringifyDocument({ document, format }));
+
+    if (format === OutputFormat.JSON) {
+      this.logJson(document)
+    } else {
+      this.log(stringifyDocument({ document, format }));
+    }
   }
 }

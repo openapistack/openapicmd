@@ -1,25 +1,29 @@
 import { Command, Flags, Args } from '@oclif/core';
+import { CONFIG_FILENAME, resolveConfigFile } from '../../common/config';
 import { mock } from 'mock-json-schema';
+import * as YAML from 'js-yaml';
 import cli from 'cli-ux';
-import * as chalk from 'chalk';
+import * as path from 'path';
+import * as fs from 'fs';
 import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
 import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig, AxiosResponse } from 'openapi-client-axios';
-import { parseDefinition, resolveDefinition } from '../common/definition';
-import * as commonFlags from '../common/flags';
+import { parseDefinition, resolveDefinition } from '../../common/definition';
+import * as commonFlags from '../../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import d from 'debug';
-import { isValidJson, parseHeaderFlag } from '../common/utils';
-import { createSecurityRequestConfig } from '../common/security';
+import { isValidJson, parseHeaderFlag } from '../../common/utils';
+import { createSecurityRequestConfig } from '../../common/security';
+import { TEST_CHECKS, TestCheck, TestConfig } from '../../tests/tests';
 const debug = d('cmd');
 
-export class Call extends Command {
-  public static description = 'Call API endpoints';
+export class TestAdd extends Command {
+  public static description = 'Add automated tests for API operations';
 
   public static examples = [
-    `$ openapi call -o getPets`,
-    `$ openapi call -o getPet -p id=1`,
-    `$ openapi call -o createPet -d '{ "name": "Garfield" }'`,
+    `$ openapi test add`,
+    `$ openapi test add -o getPet`,
+    `$ openapi test add -o getPet --name "with id=1"`,
   ];
 
   public static flags = {
@@ -27,13 +31,10 @@ export class Call extends Command {
     ...commonFlags.parseOpts(),
     ...commonFlags.apiRoot(),
     operation: Flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
+    name: Flags.string({ char: 'n', description: 'test name', helpValue: 'my test' }),
+    checks: Flags.string({ char: 'c', description: 'checks to include in test', helpValue: '2XXStatus', multiple: true, options: TEST_CHECKS }),
     param: Flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
     data: Flags.string({ char: 'd', description: 'request body' }),
-    include: Flags.boolean({
-      char: 'i',
-      description: 'include status code and response headers the output',
-      default: false,
-    }),
     verbose: Flags.boolean({
       char: 'v',
       description: 'verbose mode',
@@ -49,8 +50,9 @@ export class Call extends Command {
   }
 
   public async run() {
-    const { args, flags } = await this.parse(Call);
+    const { args, flags } = await this.parse(TestAdd);
     const { dereference, validate, bundle, header } = flags;
+
 
     const definition = resolveDefinition(args.definition);
     if (!definition) {
@@ -105,6 +107,27 @@ export class Call extends Command {
     const operation = api.getOperation(operationId);
     if (!operation) {
       this.error(`operationId ${operationId} not found`);
+    }
+
+    // give test name
+    let testName = flags.name;
+    if (!testName) {
+      testName = await cli.prompt('Test name', { required: true, default: 'call operation' })
+    }
+
+    // give checks
+    let checks = flags.checks as TestCheck[];
+    if (!checks?.length) {
+      checks = await inquirer.prompt({
+        name: 'checks',
+        message: 'checks to include in test',
+        type: 'checkbox',
+        choices: [{
+          name: '2XX response',
+          value: 'Success2XX' as TestCheck,
+          checked: true,
+        }]
+      }).then((res) => res.checks);
     }
 
     // fill params
@@ -202,44 +225,35 @@ export class Call extends Command {
       config.headers['Content-Type'] = operationRequestContentType ?? defaultContentType;
     }
 
-    let res: AxiosResponse;
-    try {
-      const request = api.getAxiosConfigForOperation(operation, [params, data, config]);
-      debug('request %o', request);
-      if (flags.verbose) {
-        console.warn(JSON.stringify(request, null, 2));
-      }
-      if (operationId) console.warn(chalk.bold(operationId));
-      console.warn(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
-      res = await client[operationId](params, data, config);
-    } catch (err) {
-      if (err.response) {
-        res = err.response;
-      } else {
-        this.error(err.message, { exit: false });
-      }
-    }
+    const configFile = resolveConfigFile();
 
-    // output response fields
-    if (flags.include && res?.status) {
-      this.log(chalk.gray('RESPONSE META:'));
-      this.logJson({
-        code: res.status,
-        status: res.statusText,
-        headers: res.headers,
-      });
-      this.log(chalk.gray('RESPONSE BODY:'));
-    }
+    // write to config file
+    const oldConfig = configFile ? YAML.load(fs.readFileSync(configFile)) : {};
 
-    // output response body
-    if (!_.isNil(res?.data)) {
-      try {
-        this.logJson(res.data);
-      } catch (e) {
-        this.log(res.data);
-      }
-    } else {
-      console.warn(chalk.gray('(empty response)'));
-    }
+    const newConfig = {
+      ...oldConfig,
+      definition,
+      tests: {
+        ...oldConfig.tests,
+        [operationId]: {
+          ...oldConfig.tests?.[operationId],
+          [testName]: {
+            checks,
+            request: {
+              params,
+              data,
+              config,
+            },
+          }
+        }
+      } as TestConfig
+    };
+
+    // default to current directory
+    const writeTo = path.resolve(configFile || `./${CONFIG_FILENAME}`);
+
+    // write as YAML
+    fs.writeFileSync(writeTo, YAML.dump(newConfig));
+    this.log(`Wrote to ${writeTo}`);
   }
 }

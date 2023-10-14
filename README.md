@@ -37,6 +37,8 @@ openapi help
 * [`openapi swagger-editor [DEFINITION]`](#openapi-swagger-editor-definition)
 * [`openapi swagger-ui [DEFINITION]`](#openapi-swagger-ui-definition)
 * [`openapi swagger2openapi [DEFINITION]`](#openapi-swagger2openapi-definition)
+* [`openapi test [DEFINITION]`](#openapi-test-definition)
+* [`openapi test add [DEFINITION]`](#openapi-test-add-definition)
 * [`openapi typegen [DEFINITION]`](#openapi-typegen-definition)
 * [`openapi unload`](#openapi-unload)
 
@@ -436,6 +438,91 @@ EXAMPLES
 ```
 
 _See code: [src/commands/swagger2openapi.ts](https://github.com/openapistack/openapicmd/blob/v1.17.2/src/commands/swagger2openapi.ts)_
+
+## `openapi test [DEFINITION]`
+
+Run automated tests against APIs
+
+```
+USAGE
+  $ openapi test [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
+    <value>] [-o <value>] [-v] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+FLAGS
+  -B, --bundle                                                  resolve remote $ref pointers
+  -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
+                                                                descriptions from definition
+  -D, --dereference                                             resolve $ref pointers
+  -H, --header=<value>...                                       add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -R, --root=/                                                  override API root path
+  -S, --server=http://localhost:9000...                         override servers definition
+  -V, --validate                                                validate against openapi schema
+  -h, --help                                                    Show CLI help.
+  -k, --apikey=<value>                                          set api key
+  -o, --operation=operationId                                   filter by operationId
+  -p, --password=<value>                                        set basic auth password
+  -s, --security=<value>...                                     use security scheme
+  -t, --token=<value>                                           set bearer token
+  -u, --username=<value>                                        set basic auth username
+  -v, --verbose                                                 verbose mode
+
+DESCRIPTION
+  Run automated tests against APIs
+
+EXAMPLES
+  $ openapi test
+
+  $ openapi test -o getPets
+```
+
+_See code: [src/commands/test/index.ts](https://github.com/openapistack/openapicmd/blob/v1.17.2/src/commands/test/index.ts)_
+
+## `openapi test add [DEFINITION]`
+
+Add automated tests for API operations
+
+```
+USAGE
+  $ openapi test add [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
+    <value>] [-o <value>] [-p <value>] [-d <value>] [-v] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p
+    <value>]
+
+ARGUMENTS
+  DEFINITION  input definition file
+
+FLAGS
+  -B, --bundle                                                  resolve remote $ref pointers
+  -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
+                                                                descriptions from definition
+  -D, --dereference                                             resolve $ref pointers
+  -H, --header=<value>...                                       add request headers when calling remote urls
+  -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -R, --root=/                                                  override API root path
+  -S, --server=http://localhost:9000...                         override servers definition
+  -V, --validate                                                validate against openapi schema
+  -d, --data=<value>                                            request body
+  -h, --help                                                    Show CLI help.
+  -k, --apikey=<value>                                          set api key
+  -o, --operation=operationId                                   operationId
+  -p, --param=key=value...                                      parameter
+  -p, --password=<value>                                        set basic auth password
+  -s, --security=<value>...                                     use security scheme
+  -t, --token=<value>                                           set bearer token
+  -u, --username=<value>                                        set basic auth username
+  -v, --verbose                                                 verbose mode
+
+DESCRIPTION
+  Add automated tests for API operations
+
+EXAMPLES
+  $ openapi test add -o getPets
+```
+
+_See code: [src/commands/test/add.ts](https://github.com/openapistack/openapicmd/blob/v1.17.2/src/commands/test/add.ts)_
 
 ## `openapi typegen [DEFINITION]`
 
