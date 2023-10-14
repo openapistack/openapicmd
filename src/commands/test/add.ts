@@ -126,6 +126,11 @@ export class TestAdd extends Command {
           name: '2XX response',
           value: 'Success2XX' as TestCheck,
           checked: true,
+        },
+        {
+          name: 'Validate Response Body',
+          value: 'ValidResponseBody' as TestCheck,
+          checked: true,
         }]
       }).then((res) => res.checks);
     }
