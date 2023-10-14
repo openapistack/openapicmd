@@ -1,8 +1,6 @@
 import { runCLI } from '@jest/core';
-import { Document } from '@apidevtools/swagger-parser';
 import type { Config } from '@jest/types';
-import { Command, Flags, Args } from '@oclif/core';
-import * as _ from 'lodash';
+import { Command, Flags } from '@oclif/core';
 import * as commonFlags from '../../common/flags';
 import * as path from 'path';
 import d from 'debug';
@@ -41,9 +39,8 @@ export class Test extends Command {
       this.error('Please load a definition file', { exit: 1 });
     }
 
-    let document: Document;
     try {
-      document = await parseDefinition({
+      await parseDefinition({
         definition,
         dereference,
         bundle,

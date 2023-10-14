@@ -1,10 +1,8 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath, testDefinition } from '../__tests__/test-utils';
+import { testDefinition } from '../__tests__/test-utils';
 import 'chai';
 
 // tslint:disable: no-unused-expression
-
-const testURL = 'http://api.json';
 const COMMAND = 'call';
 
 describe(COMMAND, () => {
@@ -34,7 +32,7 @@ describe(COMMAND, () => {
     )
     .stdout()
     .command([COMMAND, 'https://myapi.com/openapi.json', '-o', 'getPets', '--apikey', 'secret'])
-    .it('calls GET /pets with -o getPets', (ctx) => {
+    .it('calls GET /pets with -o getPets', (_ctx) => {
       expect(endpointCalled).to.be.true;
     });
 
@@ -52,7 +50,7 @@ describe(COMMAND, () => {
     )
     .stdout()
     .command([COMMAND, 'https://myapi.com/openapi.json', '-o', 'getPetById', '-p', 'id=1', '--apikey', 'secret'])
-    .it('calls GET /pets/1 with -o getPetById -p id=1', (ctx) => {
+    .it('calls GET /pets/1 with -o getPetById -p id=1', (_ctx) => {
       expect(endpointCalled).to.be.true;
     });
 });

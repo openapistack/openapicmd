@@ -108,6 +108,7 @@ export class Call extends Command {
     }
 
     // fill params
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: { [key: string]: any } = {};
     for (const param of flags.param || []) {
       const [key, value] = param.split('=');

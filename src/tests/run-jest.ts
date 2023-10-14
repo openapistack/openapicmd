@@ -1,5 +1,5 @@
 import yargs from 'yargs'
-import OpenAPIClientAxios, { AxiosRequestConfig, OpenAPIClient } from "openapi-client-axios";
+import OpenAPIClientAxios, { AxiosRequestConfig } from "openapi-client-axios";
 import { getConfigValue } from "../common/config";
 import { TestConfig } from "./tests";
 import { parseDefinition, resolveDefinition } from '../common/definition';

@@ -15,7 +15,7 @@ describe(COMMAND, () => {
   });
 
   afterEach(() => {
-    fs.unlink(CONFIG_FILENAME, (err) => null);
+    fs.unlink(CONFIG_FILENAME, (_err) => null);
   });
 
   test
@@ -28,7 +28,7 @@ describe(COMMAND, () => {
   test
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
-    .it(`removes the definition property from the config file`, (ctx) => {
+    .it(`removes the definition property from the config file`, (_ctx) => {
       const config = YAML.load(fs.readFileSync(CONFIG_FILENAME));
       expect(config.definition).to.not.exist;
     });

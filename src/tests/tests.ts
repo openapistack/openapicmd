@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AxiosRequestConfig } from "axios";
 
 export const TEST_CHECKS = ['Success2XX'] as const;

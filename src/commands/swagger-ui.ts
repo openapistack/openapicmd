@@ -10,7 +10,6 @@ import { startServer, createServer } from '../common/koa';
 import { Document } from '@apidevtools/swagger-parser';
 import {
   swaggerUIRoot,
-  getSwaggerUIIndexHTML,
   serveSwaggerUI,
   SwaggerUIOpts,
   DocExpansion,

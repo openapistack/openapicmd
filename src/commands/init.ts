@@ -1,5 +1,5 @@
-import { Command, Flags, Args } from '@oclif/core';
-import { OutputFormat, parseDefinition, stringifyDocument } from '../common/definition';
+import { Command, Flags } from '@oclif/core';
+import { OutputFormat, stringifyDocument } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
@@ -44,11 +44,13 @@ export class Init extends Command {
             name: 'Apache 2.0',
             url: 'http://www.apache.org/licenses/LICENSE-2.0.html',
           };
+          break;
         case 'mit':
           info.license = {
             name: 'MIT',
             url: 'https://opensource.org/licenses/MIT',
           };
+          break;
       }
     }
 

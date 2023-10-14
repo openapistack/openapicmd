@@ -1,5 +1,5 @@
 import { Command, Args } from '@oclif/core';
-import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
+import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import { generateTypesForDocument } from 'openapi-client-axios-typegen'

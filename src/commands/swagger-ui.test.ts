@@ -33,7 +33,7 @@ describe(COMMAND, () => {
     test
       .stdout()
       .command([COMMAND, resourcePath('openapi.yml'), '--bundle', bundleDir])
-      .it('bundles swagger-ui', (ctx) => {
+      .it('bundles swagger-ui', (_ctx) => {
         expect(fs.existsSync(path.join(bundleDir))).to.equal(true);
         expect(fs.existsSync(path.join(bundleDir, 'index.html'))).to.equal(true);
         expect(fs.existsSync(path.join(bundleDir, 'openapi.json'))).to.equal(true);

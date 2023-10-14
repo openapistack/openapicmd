@@ -1,7 +1,5 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath, testDefinition } from '../__tests__/test-utils';
-import * as SwaggerParser from '@apidevtools/swagger-parser';
-import * as YAML from 'js-yaml';
+import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
 
 // tslint:disable: no-unused-expression

@@ -5,7 +5,8 @@ import * as YAML from 'js-yaml';
 
 export const CONFIG_FILENAME = '.openapiconfig';
 
-export function getConfigValue(key: string, defaultValue?: any): any {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getConfigValue<T = any>(key: string, defaultValue?: T): T {
   const configFile = resolveConfigFile();
   if (configFile) {
     const config = YAML.load(fs.readFileSync(configFile));

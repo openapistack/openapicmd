@@ -3,7 +3,6 @@ import * as SwaggerParser from '@apidevtools/swagger-parser';
 import { parseDefinition, resolveDefinition, printInfo, getOperations } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
-import * as _ from 'lodash';
 
 export class Info extends Command {
   public static description = 'Display API information';

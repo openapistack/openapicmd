@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { klona } from 'klona';
 import { Definition } from '../types/types';
 

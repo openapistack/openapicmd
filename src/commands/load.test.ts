@@ -10,11 +10,11 @@ const COMMAND = 'load';
 
 describe('load', () => {
   beforeEach(() => {
-    fs.unlink(CONFIG_FILENAME, (err) => null);
+    fs.unlink(CONFIG_FILENAME, (_err) => null);
   });
 
   afterEach(() => {
-    fs.unlink(CONFIG_FILENAME, (err) => null);
+    fs.unlink(CONFIG_FILENAME, (_err) => null);
   });
 
   test
@@ -35,14 +35,14 @@ describe('load', () => {
   test
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
-    .it(`creates a ${CONFIG_FILENAME} file`, (ctx) => {
+    .it(`creates a ${CONFIG_FILENAME} file`, (_ctx) => {
       expect(fs.existsSync(CONFIG_FILENAME)).to.equal(true);
     });
 
   test
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
-    .it(`writes the definition path to the ${CONFIG_FILENAME} file`, (ctx) => {
+    .it(`writes the definition path to the ${CONFIG_FILENAME} file`, (_ctx) => {
       const config = YAML.load(fs.readFileSync(CONFIG_FILENAME));
       expect(config.definition).to.match(new RegExp('openapi.yml'));
     });

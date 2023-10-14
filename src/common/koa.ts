@@ -1,7 +1,6 @@
 import * as Koa from 'koa';
 import * as logger from 'koa-logger';
 import cli from 'cli-ux';
-import { Server } from 'http';
 import * as getPort from 'get-port';
 
 interface CreateServerOpts {
@@ -22,7 +21,6 @@ interface StartServerOpts {
   port: number;
 }
 export async function startServer(opts: StartServerOpts) {
-  let server: Server;
   const port = await getPort({ port: getPort.makeRange(opts.port, opts.port + 1000) });
   if (opts.port !== port) {
     if (
@@ -33,7 +31,7 @@ export async function startServer(opts: StartServerOpts) {
     }
   }
   const { app } = opts;
-  server = app.listen(port);
+  const server = app.listen(port);
   process.on('disconnect', () => server.close());
   return { server, port };
 }

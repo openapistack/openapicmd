@@ -6,8 +6,7 @@ import cli from 'cli-ux';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as inquirer from 'inquirer';
-import * as _ from 'lodash';
-import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig, AxiosResponse } from 'openapi-client-axios';
+import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig } from 'openapi-client-axios';
 import { parseDefinition, resolveDefinition } from '../../common/definition';
 import * as commonFlags from '../../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
@@ -77,7 +76,6 @@ export class TestAdd extends Command {
     }
 
     const api = new OpenAPIClientAxios({ definition: document });
-    const client = await api.init();
 
     // select operation
     let operationId = flags.operation;
@@ -131,6 +129,7 @@ export class TestAdd extends Command {
     }
 
     // fill params
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: { [key: string]: any } = {};
     for (const param of flags.param || []) {
       const [key, value] = param.split('=');

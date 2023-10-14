@@ -1,4 +1,4 @@
-import exp = require('constants');
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as testFixtures from '../__tests__/test-fixtures';
 import { stripDefinition } from './strip-definition';
 
