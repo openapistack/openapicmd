@@ -1,20 +1,20 @@
 name: CI
 on:
   push:
-    branches: ['main']
-    tags: ['*']
+    branches: ["main"]
+    tags: ["*"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: "18"
       - run: npm ci
       - run: npm run lint
       - run: npm run build
@@ -29,10 +29,10 @@ jobs:
     needs:
       - test
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: "18"
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm publish || true

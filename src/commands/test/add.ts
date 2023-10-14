@@ -115,7 +115,7 @@ export class TestAdd extends Command {
       testName = await cli.prompt('Test name', { required: true, default: 'call operation' })
     }
 
-    // give checks
+    // configure checks
     let checks = flags.checks as TestCheck[];
     if (!checks?.length) {
       checks = await inquirer.prompt({
