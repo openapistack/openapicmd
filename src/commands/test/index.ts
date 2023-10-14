@@ -22,7 +22,7 @@ export class Test extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
-    operation: Flags.string({ char: 'o', description: 'filter by operationId', helpValue: 'operationId' }),
+    operation: Flags.string({ char: 'o', description: 'filter by operationId', helpValue: 'operationId', multiple: true }),
     verbose: Flags.boolean({
       char: 'v',
       description: 'verbose mode',
@@ -64,13 +64,20 @@ export class Test extends Command {
       this.error('Please run `test add` first', { exit: 1 });
     }
 
-    const argv: Config.Argv = {
+    const jestArgv: Config.Argv = {
       ...flags,
       $0: 'jest',
       _: [],
       passWithNoTests: true,
       verbose: true,
     }
-    await runCLI(argv, [path.dirname(require.resolve('../../tests/run-jest'))]);
+
+    // filter tests by operation
+    if (flags.operation) {
+      jestArgv.testNamePattern = flags.operation.map((o) => `${o} `).join('|');
+    }
+
+    debug('jestArgv', jestArgv);
+    await runCLI(jestArgv, [path.dirname(require.resolve('../../tests/run-jest'))]);
   }
 }
