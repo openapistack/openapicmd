@@ -2,10 +2,8 @@ import { Command, Flags, Args } from '@oclif/core';
 import { CONFIG_FILENAME, resolveConfigFile } from '../../common/config';
 import { mock } from 'mock-json-schema';
 import * as YAML from 'js-yaml';
-import cli from 'cli-ux';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as inquirer from 'inquirer';
 import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig } from 'openapi-client-axios';
 import { parseDefinition, resolveDefinition } from '../../common/definition';
 import * as commonFlags from '../../common/flags';
@@ -14,6 +12,7 @@ import d from 'debug';
 import { isValidJson, parseHeaderFlag } from '../../common/utils';
 import { createSecurityRequestConfig } from '../../common/security';
 import { TEST_CHECKS, TestCheck, TestConfig } from '../../tests/tests';
+import { maybePrompt, maybeSimplePrompt } from '../../common/prompt';
 const debug = d('cmd');
 
 export class TestAdd extends Command {
@@ -76,11 +75,12 @@ export class TestAdd extends Command {
     }
 
     const api = new OpenAPIClientAxios({ definition: document });
+    await api.init();
 
     // select operation
     let operationId = flags.operation;
     if (!operationId) {
-      const res = await inquirer.prompt([
+      const res = await maybePrompt([
         {
           name: 'operation',
           message: 'select operation',
@@ -102,21 +102,24 @@ export class TestAdd extends Command {
       ]);
       operationId = res.operation;
     }
+    if (!operationId) {
+      this.error(`no operationId passed, please specify --operation`, { exit: 1 });
+    }
     const operation = api.getOperation(operationId);
     if (!operation) {
-      this.error(`operationId ${operationId} not found`);
+      this.error(`operationId ${operationId} not found`, { exit: 1 });
     }
 
     // give test name
     let testName = flags.name;
     if (!testName) {
-      testName = await cli.prompt('Test name', { required: true, default: 'call operation' })
+      testName = await maybeSimplePrompt('Test name', { required: true, default: 'call operation' })
     }
 
     // configure checks
     let checks = flags.checks as TestCheck[];
     if (!checks?.length) {
-      checks = await inquirer.prompt({
+      checks = await maybePrompt({
         name: 'checks',
         message: 'checks to include in test',
         type: 'checkbox',
@@ -141,7 +144,7 @@ export class TestAdd extends Command {
       const { name, required, example } = param;
 
       if (!params[name] && required) {
-        const value = await cli.prompt(name, { required, default: example });
+        const value = await maybeSimplePrompt(name, { required, default: example });
         params[name] = value;
       }
     }
@@ -152,7 +155,7 @@ export class TestAdd extends Command {
       !data &&
       operation.requestBody &&
       'content' in operation.requestBody &&
-      (await inquirer.prompt({ type: 'confirm', default: true, name: 'yes', message: 'add request body?' })).yes
+      (await maybePrompt({ type: 'confirm', default: true, name: 'yes', message: 'add request body?' })).yes
     ) {
       const contentType = Object.keys(operation.requestBody.content)[0];
 
@@ -169,7 +172,7 @@ export class TestAdd extends Command {
       }
 
       data = (
-        await inquirer.prompt({
+        await maybePrompt({
           type: 'editor',
           message: contentType || '',
           name: 'requestBody',

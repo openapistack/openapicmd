@@ -17,6 +17,7 @@ export class Load extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.validate(),
+    ...commonFlags.servers(),
   };
 
   public static args = {
@@ -46,6 +47,11 @@ export class Load extends Command {
       ...oldConfig,
       definition,
     };
+
+    // add server to config
+    if (flags.server) {
+      newConfig.server = flags.server[0];
+    }
 
     // default to current directory
     const writeTo = path.resolve(configFile || `./${CONFIG_FILENAME}`);

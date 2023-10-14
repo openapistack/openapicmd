@@ -1,8 +1,6 @@
 import { Command, Flags, Args } from '@oclif/core';
 import { mock } from 'mock-json-schema';
-import cli from 'cli-ux';
 import * as chalk from 'chalk';
-import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
 import OpenAPIClientAxios, { OpenAPIV3, AxiosRequestConfig, AxiosResponse } from 'openapi-client-axios';
 import { parseDefinition, resolveDefinition } from '../common/definition';
@@ -11,6 +9,8 @@ import { Document } from '@apidevtools/swagger-parser';
 import d from 'debug';
 import { isValidJson, parseHeaderFlag } from '../common/utils';
 import { createSecurityRequestConfig } from '../common/security';
+import { setContext } from '../common/context';
+import { maybePrompt, maybeSimplePrompt } from '../common/prompt';
 const debug = d('cmd');
 
 export class Call extends Command {
@@ -25,6 +25,7 @@ export class Call extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
+    ...commonFlags.interactive(),
     ...commonFlags.apiRoot(),
     operation: Flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
     param: Flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
@@ -52,6 +53,9 @@ export class Call extends Command {
     const { args, flags } = await this.parse(Call);
     const { dereference, validate, bundle, header } = flags;
 
+    // store flags in context
+    setContext((ctx) => ({ ...ctx, flags }))
+
     const definition = resolveDefinition(args.definition);
     if (!definition) {
       this.error('Please load a definition file', { exit: 1 });
@@ -70,9 +74,38 @@ export class Call extends Command {
         header,
         induceServers: true,
       });
+
     } catch (err) {
       this.error(err, { exit: 1 });
     }
+
+    // make sure we have a server in the document
+    if (!document.servers?.some((s) => s.url)) {
+      const res = await maybePrompt({
+        name: 'server',
+        message: 'please enter a server URL',
+        type: 'input',
+        default: 'http://localhost:9000',
+        // must be a valid URL
+        validate: (value) => {
+          try {
+            new URL(value);
+            return true;
+          } catch (err) {
+            return 'must be a valid URL';
+          }
+        }
+      });
+
+      if (res.server) {
+        document.servers = [{ url: res.server }];
+      } else {
+        this.error('no server URL provided, use --server or modify your API spec', { exit: 1 });
+      }
+    }
+      
+    // store document in context
+    setContext((ctx) => ({ ...ctx, document }))
 
     const api = new OpenAPIClientAxios({ definition: document });
     const client = await api.init();
@@ -80,7 +113,7 @@ export class Call extends Command {
     // select operation
     let operationId = flags.operation;
     if (!operationId) {
-      const res = await inquirer.prompt([
+      const res = await maybePrompt([
         {
           name: 'operation',
           message: 'select operation',
@@ -102,9 +135,12 @@ export class Call extends Command {
       ]);
       operationId = res.operation;
     }
+    if (!operationId) {
+      this.error(`no operationId passed, please specify --operation`, { exit: 1 });
+    }
     const operation = api.getOperation(operationId);
     if (!operation) {
-      this.error(`operationId ${operationId} not found`);
+      this.error(`operationId ${operationId} not found`, { exit: 1 });
     }
 
     // fill params
@@ -120,7 +156,7 @@ export class Call extends Command {
       const { name, required, example } = param;
 
       if (!params[name] && required) {
-        const value = await cli.prompt(name, { required, default: example });
+        const value = await maybeSimplePrompt(name, { required, default: example });
         params[name] = value;
       }
     }
@@ -131,7 +167,7 @@ export class Call extends Command {
       !data &&
       operation.requestBody &&
       'content' in operation.requestBody &&
-      (await inquirer.prompt({ type: 'confirm', default: true, name: 'yes', message: 'add request body?' })).yes
+      (await maybePrompt({ type: 'confirm', default: true, name: 'yes', message: 'add request body?' })).yes
     ) {
       const contentType = Object.keys(operation.requestBody.content)[0];
 
@@ -148,7 +184,7 @@ export class Call extends Command {
       }
 
       data = (
-        await inquirer.prompt({
+        await maybePrompt({
           type: 'editor',
           message: contentType || '',
           name: 'requestBody',

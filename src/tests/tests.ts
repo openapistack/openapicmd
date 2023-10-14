@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AxiosRequestConfig } from "axios";
 
-export const TEST_CHECKS = ['Success2XX'] as const;
+export const TEST_CHECKS = [
+  'all',
+  'default',
+  'Success2XX',
+  'ValidResponse'
+] as const;
 export type TestCheck = typeof TEST_CHECKS[number];
 
 export interface TestConfig {

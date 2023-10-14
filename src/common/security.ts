@@ -3,8 +3,9 @@ import * as deepMerge from 'deepmerge';
 import { OpenAPIV3, Operation } from 'openapi-client-axios';
 import { getConfigValue } from './config';
 import { Document } from '@apidevtools/swagger-parser';
-import inquirer = require('inquirer');
 import { parseHeaderFlag } from './utils';
+import { maybePrompt } from './prompt';
+import { getContext } from './context';
 
 const debug = d('cmd');
 
@@ -39,7 +40,6 @@ export const createSecurityRequestConfig = async (params: {
   apikey?: string;
   username?: string;
   password?: string;
-  noInteractive?: boolean
 }): Promise<RequestSecurityConfig> => {
   let requestSecurityConfig: RequestSecurityConfig = {
     header: {},
@@ -86,7 +86,6 @@ export const createSecurityRequestConfig = async (params: {
           apikey: params.apikey,
           username: params.apikey,
           password: params.password,
-          noInteractive: params.noInteractive,
         }),
       );
     }
@@ -106,6 +105,8 @@ export const getActiveSecuritySchemes = async (params: {
   password?: string;
   noInteractive?: boolean
 }) => {
+  const context = getContext();
+
   // choose security scheme
   const availableSecuritySchemes = getAvailableSecuritySchemes(params.document, params.operation);
   debug('availableSecuritySchemes %o', availableSecuritySchemes);
@@ -146,9 +147,9 @@ export const getActiveSecuritySchemes = async (params: {
   }
 
   // prompt security scheme choice unless it's obvious
-  if (!params.noInteractive && (securitySchemes.has('PROMPT') || (securitySchemes.size !== 1 && availableSecuritySchemes.length > 1))) {
-    return (
-      await inquirer.prompt({
+  if (securitySchemes.has('PROMPT') || (securitySchemes.size !== 1 && availableSecuritySchemes.length > 1)) {
+    const explicitSecurityScheme = (
+      await maybePrompt({
         name: 'securityScheme',
         message: 'use security scheme',
         type: 'checkbox',
@@ -159,12 +160,14 @@ export const getActiveSecuritySchemes = async (params: {
         })),
       })
     ).securityScheme;
+
+    if (explicitSecurityScheme) {
+      return explicitSecurityScheme;
+    }
   }
 
   return [...securitySchemes];
 };
-
-const maybePrompt = (opts: Parameters<typeof inquirer.prompt>[0] & { noInteractive: boolean }) => inquirer.prompt(opts)
 
 export const createSecurityRequestConfigForScheme = async (params: {
   schemeName: string;
@@ -187,7 +190,6 @@ export const createSecurityRequestConfigForScheme = async (params: {
           name: 'key',
           message: `${params.schemeName}: Set API key (${params.schemeDefinition.name})`,
           type: 'input',
-          noInteractive: params.noInteractive,
         })
       )?.['key'];
 
@@ -207,7 +209,6 @@ export const createSecurityRequestConfigForScheme = async (params: {
           name: 'token',
           message: `${params.schemeName}: Set auth token`,
           type: 'input',
-          noInteractive: params.noInteractive,
         })
       )?.['token'];
 
@@ -227,7 +228,6 @@ export const createSecurityRequestConfigForScheme = async (params: {
           name: 'username',
           message: `${params.schemeName}: username`,
           type: 'input',
-          noInteractive: params.noInteractive,
         })
       )?.['username'];
     const password =
@@ -237,7 +237,6 @@ export const createSecurityRequestConfigForScheme = async (params: {
           name: 'password',
           message: `${params.schemeName}: password`,
           type: 'password',
-          noInteractive: params.noInteractive,
         })
       ) ?.['password'];
 

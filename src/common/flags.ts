@@ -5,6 +5,14 @@ export const help = (overrides: Partial<BooleanFlag<boolean>> = {}) => ({
   help: Flags.help({ char: 'h', ...overrides }),
 });
 
+export const interactive = () => ({
+  interactive: Flags.boolean({
+    description: '[default: true] enable CLI interactive mode',
+    default: true,
+    allowNo: true,
+  }),
+})
+
 export const servers = () => ({
   server: Flags.string({
     char: 'S',
