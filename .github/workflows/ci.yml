@@ -18,8 +18,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
-      - run: ./bin/run --version
-      - run: ./bin/run --help
+      - run: ./bin/run.js --version
+      - run: ./bin/run.js --help
       - run: npm test -- --verbose
 
   publish:
