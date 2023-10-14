@@ -39,6 +39,7 @@ export const createSecurityRequestConfig = async (params: {
   apikey?: string;
   username?: string;
   password?: string;
+  noInteractive?: boolean
 }): Promise<RequestSecurityConfig> => {
   let requestSecurityConfig: RequestSecurityConfig = {
     header: {},
@@ -85,6 +86,7 @@ export const createSecurityRequestConfig = async (params: {
           apikey: params.apikey,
           username: params.apikey,
           password: params.password,
+          noInteractive: params.noInteractive,
         }),
       );
     }
@@ -102,6 +104,7 @@ export const getActiveSecuritySchemes = async (params: {
   apikey?: string;
   username?: string;
   password?: string;
+  noInteractive?: boolean
 }) => {
   // choose security scheme
   const availableSecuritySchemes = getAvailableSecuritySchemes(params.document, params.operation);
@@ -143,7 +146,7 @@ export const getActiveSecuritySchemes = async (params: {
   }
 
   // prompt security scheme choice unless it's obvious
-  if (securitySchemes.has('PROMPT') || (securitySchemes.size !== 1 && availableSecuritySchemes.length > 1)) {
+  if (!params.noInteractive && (securitySchemes.has('PROMPT') || (securitySchemes.size !== 1 && availableSecuritySchemes.length > 1))) {
     return (
       await inquirer.prompt({
         name: 'securityScheme',
@@ -161,6 +164,8 @@ export const getActiveSecuritySchemes = async (params: {
   return [...securitySchemes];
 };
 
+const maybePrompt = (opts: Parameters<typeof inquirer.prompt>[0] & { noInteractive: boolean }) => inquirer.prompt(opts)
+
 export const createSecurityRequestConfigForScheme = async (params: {
   schemeName: string;
   schemeDefinition: OpenAPIV3.SecuritySchemeObject;
@@ -168,6 +173,7 @@ export const createSecurityRequestConfigForScheme = async (params: {
   apikey?: string;
   username?: string;
   password?: string;
+  noInteractive?: boolean
 }): Promise<RequestSecurityConfig> => {
   let requestSecurityConfig: RequestSecurityConfig = {};
 
@@ -177,12 +183,13 @@ export const createSecurityRequestConfigForScheme = async (params: {
       params.apikey ??
       params.token ??
       (
-        await inquirer.prompt({
+        await maybePrompt({
           name: 'key',
           message: `${params.schemeName}: Set API key (${params.schemeDefinition.name})`,
           type: 'input',
+          noInteractive: params.noInteractive,
         })
-      ).key;
+      )?.['key'];
 
     requestSecurityConfig = {
       [params.schemeDefinition.in]: {
@@ -196,12 +203,13 @@ export const createSecurityRequestConfigForScheme = async (params: {
     const token =
       params.token ??
       (
-        await inquirer.prompt({
+        await maybePrompt({
           name: 'token',
           message: `${params.schemeName}: Set auth token`,
           type: 'input',
+          noInteractive: params.noInteractive,
         })
-      ).token;
+      )?.['token'];
 
     requestSecurityConfig = {
       header: {
@@ -215,21 +223,23 @@ export const createSecurityRequestConfigForScheme = async (params: {
     const username =
       params.username ??
       (
-        await inquirer.prompt({
+        await maybePrompt({
           name: 'username',
           message: `${params.schemeName}: username`,
           type: 'input',
+          noInteractive: params.noInteractive,
         })
-      ).username;
+      )?.['username'];
     const password =
       params.password ??
       (
-        await inquirer.prompt({
+        await maybePrompt({
           name: 'password',
           message: `${params.schemeName}: password`,
           type: 'password',
+          noInteractive: params.noInteractive,
         })
-      ).password;
+      ) ?.['password'];
 
     requestSecurityConfig = {
       auth: { username, password },

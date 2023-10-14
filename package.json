@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "OpenAPI Command Line Tool",
-  "version": "1.17.2",
+  "version": "2.0.0-rc1",
   "author": "Viljami Kuosmanen <viljami@viljami.io>",
   "bin": {
     "openapi": "./bin/run.js"
@@ -96,7 +96,7 @@
   "repository": "openapistack/openapicmd",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && npm run build && oclif-dev manifest && npm run readme",
+    "prepack": "rm -rf lib && npm run build && oclif manifest && oclif readme",
     "readme": "npm run build && oclif readme",
     "watch-build": "tsc -w",
     "build": "tsc -b",

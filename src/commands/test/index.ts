@@ -28,6 +28,7 @@ export class Test extends Command {
       description: 'verbose mode',
       default: false,
     }),
+    ...commonFlags.securityOpts(),
   };
 
   public async run() {
