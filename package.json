@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "OpenAPI Command Line Tool",
-  "version": "2.0.0-rc8",
+  "version": "2.0.0-rc10",
   "author": "Viljami Kuosmanen <viljami@viljami.io>",
   "bin": {
     "openapi": "./bin/run.js"
@@ -26,6 +26,7 @@
     "get-port": "^5.0.0",
     "inquirer": "^7.1.0",
     "jest": "^29.7.0",
+    "jest-json-schema": "^6.1.0",
     "js-yaml": "^4.1.0",
     "klona": "^2.0.6",
     "koa": "^2.14.1",
@@ -49,6 +50,7 @@
     "@oclif/test": "^3",
     "@types/debug": "^4.1.7",
     "@types/jest": "^29.5.1",
+    "@types/jest-json-schema": "^6.1.2",
     "@types/koa": "^2.13.5",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-logger": "^3.1.2",

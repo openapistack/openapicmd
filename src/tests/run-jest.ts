@@ -1,16 +1,21 @@
-import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse } from "openapi-client-axios";
+import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse, Operation } from "openapi-client-axios";
 import { getConfigValue } from "../common/config";
 import { TestCheck, TestConfig } from "./tests";
 import { createSecurityRequestConfig } from '../common/security';
 import { parseHeaderFlag } from '../common/utils';
 import { getContext } from "../common/context";
+import { matchers as jsonSchemaMatchers } from 'jest-json-schema';
 import d from 'debug';
 const debug = d('cmd');
 
-const context = getContext()
+expect.extend(jsonSchemaMatchers);
 
+const context = getContext()
 const api = new OpenAPIClientAxios({ definition: context.document });
-debug('jest context %o', context);
+
+beforeAll(async () => {
+  await api.init()
+});
 
 const testConfig: TestConfig = getConfigValue('tests');
 for (const operationId of Object.keys(testConfig)) {
@@ -20,7 +25,7 @@ for (const operationId of Object.keys(testConfig)) {
         const testDefinition = testConfig[operationId][testName];
 
         let res: AxiosResponse;
-        beforeAll(async () => {
+        test(`request ${operationId}`, async () => {
           const client = await getClientForTest({ operationId, requestConfig: testDefinition.request.config })
           res = await client[operationId](testDefinition.request.params, testDefinition.request.data);
         })
@@ -32,10 +37,12 @@ for (const operationId of Object.keys(testConfig)) {
           })
         }
 
-        if ((['ValidResponse', 'default', 'all'] satisfies TestCheck[]).some((check) => testDefinition.checks.includes(check))) {
-          test('should match response schema', async () => {
-            expect(res.status).toBeGreaterThanOrEqual(300);
-            expect(res.status).toBeLessThan(400);
+        if ((['ValidResponseBody', 'default', 'all'] satisfies TestCheck[]).some((check) => testDefinition.checks.includes(check))) {
+          test('response body should match schema', async () => {
+            const operation = api.getOperation(operationId);
+            const responseObject = operation.responses[res.status] || operation.responses[`${res.status}`] || operation.responses.default;
+            const schema = responseObject?.['content']?.['application/json']?.schema;
+            expect(res.data).toMatchSchema(schema)
           })
         }
       })
@@ -85,6 +92,9 @@ const getClientForTest = async (params: { operationId: string, requestConfig: Ax
     ...params.requestConfig.auth,
     ...securityRequestConfig.auth,
   };
+
+  // don't throw on error statuses
+  client.defaults.validateStatus = () => true;
 
   return client;
 }

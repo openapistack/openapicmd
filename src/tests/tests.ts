@@ -5,7 +5,7 @@ export const TEST_CHECKS = [
   'all',
   'default',
   'Success2XX',
-  'ValidResponse'
+  'ValidResponseBody'
 ] as const;
 export type TestCheck = typeof TEST_CHECKS[number];
 

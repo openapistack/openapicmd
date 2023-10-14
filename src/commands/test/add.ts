@@ -20,8 +20,7 @@ export class TestAdd extends Command {
 
   public static examples = [
     `$ openapi test add`,
-    `$ openapi test add -o getPet`,
-    `$ openapi test add -o getPet --name "with id=1"`,
+    `$ openapi test add -o getPet --checks all`,
   ];
 
   public static flags = {
