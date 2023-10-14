@@ -1,31 +1,29 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, Args } from '@oclif/core';
 import { OutputFormat, parseDefinition, stringifyDocument } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 import * as deepMerge from 'deepmerge'
 
-export default class Init extends Command {
+export class Init extends Command {
   public static description = 'Initialise a definition file from scratch';
 
   public static examples = [`$ openapi init --title 'My API' > openapi.yml`];
 
   public static flags = {
     ...commonFlags.help(),
-    title: flags.string({ char: 'T', description: 'The title for the API', default: 'My API' }),
-    description: flags.string({ char: 'd', description: 'Description for the API' }),
-    version: flags.string({ char: 'v', description: 'Version of the API', default: '0.0.1' }),
-    terms: flags.string({ description: 'A URL to the Terms of Service for the API.' }),
-    license: flags.string({ description: 'The license for the API', options: ['mit', 'apache2'] }),
+    title: Flags.string({ char: 'T', description: 'The title for the API', default: 'My API' }),
+    description: Flags.string({ char: 'd', description: 'Description for the API' }),
+    version: Flags.string({ char: 'v', description: 'Version of the API', default: '0.0.1' }),
+    terms: Flags.string({ description: 'A URL to the Terms of Service for the API.' }),
+    license: Flags.string({ description: 'The license for the API', options: ['mit', 'apache2'] }),
     ...commonFlags.servers(),
     ...commonFlags.inject(),
     ...commonFlags.outputFormat(),
   };
 
-  public static args = [];
-
   public async run() {
-    const { flags } = this.parse(Init);
+    const { flags } = await this.parse(Init);
     const { title, version, server, inject, license, description, terms } = flags;
     const OPENAPI_VERSION = '3.0.0';
 

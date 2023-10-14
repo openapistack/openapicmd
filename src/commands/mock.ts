@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, Args } from '@oclif/core';
 import * as bodyparser from 'koa-bodyparser';
 import * as cors from '@koa/cors';
 import * as mount from 'koa-mount';
@@ -8,7 +8,7 @@ import { startServer, createServer } from '../common/koa';
 import { serveSwaggerUI } from '../common/swagger-ui';
 import { resolveDefinition, parseDefinition } from '../common/definition';
 
-export default class Mock extends Command {
+export class Mock extends Command {
   public static description = 'Start a local mock API server';
 
   public static examples = [
@@ -24,23 +24,22 @@ export default class Mock extends Command {
     ...commonFlags.strip(),
     ...commonFlags.header(),
     ...commonFlags.apiRoot(),
-    'swagger-ui': flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
-    validate: flags.boolean({
+    'swagger-ui': Flags.string({ char: 'U', description: 'Swagger UI endpoint', helpValue: 'docs' }),
+    validate: Flags.boolean({
       description: '[default: true] validate requests according to schema',
       default: true,
       allowNo: true,
     }),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Mock);
+    const { args, flags } = await this.parse(Mock);
     const { port, logger, 'swagger-ui': swaggerui, validate, header, root } = flags;
 
     let portRunning = port;

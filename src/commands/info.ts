@@ -1,11 +1,11 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, Args } from '@oclif/core';
 import * as SwaggerParser from '@apidevtools/swagger-parser';
 import { parseDefinition, resolveDefinition, printInfo, getOperations } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import * as _ from 'lodash';
 
-export default class Info extends Command {
+export class Info extends Command {
   public static description = 'Display API information';
 
   public static examples = [
@@ -16,20 +16,19 @@ export default class Info extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
-    security: flags.boolean({ description: 'list security schemes in document', default: false }),
-    operations: flags.boolean({ description: 'list operations in document', default: false }),
-    schemas: flags.boolean({ description: 'list schemas in document', default: false }),
+    security: Flags.boolean({ description: 'list security schemes in document', default: false }),
+    operations: Flags.boolean({ description: 'list operations in document', default: false }),
+    schemas: Flags.boolean({ description: 'list schemas in document', default: false }),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Info);
+    const { args, flags } = await this.parse(Info);
     const { dereference, bundle, validate, header } = flags;
 
     const definition = resolveDefinition(args.definition);

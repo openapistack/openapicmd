@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, Args } from '@oclif/core';
 import { mock } from 'mock-json-schema';
 import cli from 'cli-ux';
 import * as chalk from 'chalk';
@@ -13,7 +13,7 @@ import { isValidJson, parseHeaderFlag } from '../common/utils';
 import { createSecurityRequestConfig } from '../common/security';
 const debug = d('cmd');
 
-export default class Call extends Command {
+export class Call extends Command {
   public static description = 'Call API endpoints';
 
   public static examples = [
@@ -26,15 +26,15 @@ export default class Call extends Command {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
     ...commonFlags.apiRoot(),
-    operation: flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
-    param: flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
-    data: flags.string({ char: 'd', description: 'request body' }),
-    include: flags.boolean({
+    operation: Flags.string({ char: 'o', description: 'operationId', helpValue: 'operationId' }),
+    param: Flags.string({ char: 'p', description: 'parameter', helpValue: 'key=value', multiple: true }),
+    data: Flags.string({ char: 'd', description: 'request body' }),
+    include: Flags.boolean({
       char: 'i',
       description: 'include status code and response headers the output',
       default: false,
     }),
-    verbose: flags.boolean({
+    verbose: Flags.boolean({
       char: 'v',
       description: 'verbose mode',
       default: false,
@@ -42,15 +42,14 @@ export default class Call extends Command {
     ...commonFlags.securityOpts(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Call);
+    const { args, flags } = await this.parse(Call);
     const { dereference, validate, bundle, header } = flags;
 
     const definition = resolveDefinition(args.definition);

@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, Args } from '@oclif/core';
 import { URL } from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -18,7 +18,7 @@ import {
 } from '../common/swagger-ui';
 import { parseHeaderFlag } from '../common/utils';
 
-export default class SwaggerUI extends Command {
+export class SwaggerUI extends Command {
   public static description = 'Start or bundle a Swagger UI instance';
 
   public static examples = [
@@ -36,26 +36,25 @@ export default class SwaggerUI extends Command {
     ...commonFlags.swaggerUIOpts(),
     ...commonFlags.header(),
     ...commonFlags.apiRoot(),
-    bundle: flags.string({
+    bundle: Flags.string({
       char: 'B',
       description: 'bundle a static site to directory',
       helpValue: 'outDir',
     }),
-    proxy: flags.boolean({
+    proxy: Flags.boolean({
       description: 'set up a proxy for the api to avoid CORS issues',
       exclusive: ['bundle'],
     }),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(SwaggerUI);
+    const { args, flags } = await this.parse(SwaggerUI);
     const { port, logger, bundle, header, root } = flags;
     const definition = resolveDefinition(args.definition);
 

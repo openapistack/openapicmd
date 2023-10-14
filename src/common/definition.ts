@@ -2,7 +2,7 @@ import * as SwaggerParser from '@apidevtools/swagger-parser';
 import * as deepMerge from 'deepmerge';
 import { set, uniqBy } from 'lodash';
 import * as YAML from 'js-yaml';
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import { parseHeaderFlag } from './utils';
 import { getConfigValue } from './config';
 import { PRESETS, StripPreset, stripDefinition } from './strip-definition';

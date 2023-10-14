@@ -1,4 +1,4 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Router from 'koa-router';
@@ -13,7 +13,7 @@ function getAbsoluteFSPath() {
   return path.dirname(require.resolve('swagger-editor-dist'));
 }
 
-export default class SwaggerEditor extends Command {
+export class SwaggerEditor extends Command {
   public static description = 'Start a Swagger Editor instance';
 
   public static examples = ['$ openapi swagger-editor', '$ openapi swagger-editor ./openapi.yml'];
@@ -24,15 +24,14 @@ export default class SwaggerEditor extends Command {
     ...commonFlags.header(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(SwaggerEditor);
+    const { args, flags } = await this.parse(SwaggerEditor);
     const { port, logger, header } = flags;
 
     const definition = resolveDefinition(args.definition);

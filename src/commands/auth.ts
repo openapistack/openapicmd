@@ -1,4 +1,4 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import * as path from 'path';
@@ -9,7 +9,7 @@ import { CONFIG_FILENAME, resolveConfigFile } from '../common/config';
 import { createSecurityRequestConfigForScheme, getActiveSecuritySchemes, SecurityConfig } from '../common/security';
 import { OpenAPIV3 } from 'openapi-client-axios';
 
-export default class Auth extends Command {
+export class Auth extends Command {
   public static description = 'Authenticate with apis (writes to .openapiconfig)';
 
   public static examples = [
@@ -27,15 +27,14 @@ export default class Auth extends Command {
     ...commonFlags.inject(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Auth);
+    const { args, flags } = await this.parse(Auth);
     const { dereference, validate, bundle, header, inject, token, apikey, username, password } = flags;
     const definition = resolveDefinition(args.definition);
     if (!definition) {

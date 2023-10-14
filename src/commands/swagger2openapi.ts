@@ -1,11 +1,11 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import * as SwaggerParser from '@apidevtools/swagger-parser';
 import * as s2o from 'swagger2openapi';
 import { promisify } from 'util';
 import * as commonFlags from '../common/flags';
 import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 
-export default class Swagger2Openapi extends Command {
+export class Swagger2Openapi extends Command {
   public static description = 'Convert Swagger 2.0 definitions to OpenAPI 3.0.x';
 
   public static examples = [`$ openapi swagger2openapi --yaml ./swagger.json > openapi.yml`];
@@ -16,15 +16,14 @@ export default class Swagger2Openapi extends Command {
     ...commonFlags.outputFormat(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Swagger2Openapi);
+    const { args, flags } = await this.parse(Swagger2Openapi);
     const { dereference, bundle, validate, header, root, strip } = flags;
 
     // parse definition

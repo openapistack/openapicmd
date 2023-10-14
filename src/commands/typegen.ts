@@ -1,10 +1,10 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import { generateTypesForDocument } from 'openapi-client-axios-typegen'
 
-export default class Typegen extends Command {
+export class Typegen extends Command {
   public static description = 'Generate types from openapi definition';
 
   public static examples = [
@@ -16,15 +16,14 @@ export default class Typegen extends Command {
     ...commonFlags.parseOpts(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Typegen);
+    const { args, flags } = await this.parse(Typegen);
     const { dereference, validate, bundle, header, root } = flags;
 
     const definition = resolveDefinition(args.definition);

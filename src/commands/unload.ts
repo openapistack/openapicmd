@@ -1,10 +1,10 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import * as commonFlags from '../common/flags';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import { resolveConfigFile } from '../common/config';
 
-export default class Unload extends Command {
+export class Unload extends Command {
   public static description = 'Unset the default definition file for a workspace (writes to .openapiconfig)';
 
   public static examples = [`$ openapi unload`];
@@ -12,8 +12,6 @@ export default class Unload extends Command {
   public static flags = {
     ...commonFlags.help(),
   };
-
-  public static args = [];
 
   public async run() {
     const configFile = resolveConfigFile();

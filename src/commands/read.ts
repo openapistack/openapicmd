@@ -1,9 +1,9 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import { parseDefinition, OutputFormat, stringifyDocument, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 
-export default class Read extends Command {
+export class Read extends Command {
   public static description = 'Read and manipulate definition files';
 
   public static examples = [
@@ -17,15 +17,14 @@ export default class Read extends Command {
     ...commonFlags.outputFormat(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
-      description: 'input definition file',
-    },
-  ];
+  public static args = {
+    definition: Args.string({
+      description: 'input definition file'
+    })
+  }
 
   public async run() {
-    const { args, flags } = this.parse(Read);
+    const { args, flags } = await this.parse(Read);
     const { dereference, validate, bundle, header, root } = flags;
 
     const definition = resolveDefinition(args.definition);

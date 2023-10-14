@@ -10,9 +10,9 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@koa/cors": "^4.0.0",
-    "@oclif/command": "^1.7.0",
-    "@oclif/config": "^1.12.9",
-    "@oclif/plugin-help": "^2.1.6",
+    "@oclif/core": "^3",
+    "@oclif/config": "^1.18.17",
+    "@oclif/plugin-plugins": "^3.9.1",
     "@types/inquirer": "^7.3.1",
     "ajv": "^8.12.0",
     "axios": "^1.3.4",
@@ -39,9 +39,10 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.26.9",
-    "@oclif/test": "^1.2.4",
+    "@oclif/test": "^3",
     "@oclif/tslint": "^3.1.1",
+    "@oclif/command": "^1.8.36",
+    "@oclif/dev-cli": "^1.26.10",
     "@types/debug": "^4.1.7",
     "@types/jest": "^29.5.1",
     "@types/koa": "^2.13.5",
@@ -55,6 +56,7 @@
     "nock": "^13.3.0",
     "openapi-client-axios-typegen": "*",
     "openapi-types": "^12.1.0",
+    "oclif": "^4.0.2",
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.0.5",
@@ -80,6 +82,7 @@
   "oclif": {
     "commands": "./lib/commands",
     "bin": "openapi",
+    "topicSeparator": " ",
     "plugins": [
       "@oclif/plugin-help"
     ]
@@ -88,7 +91,7 @@
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && npm run build && oclif-dev manifest && npm run readme",
-    "readme": "bin/run readme",
+    "readme": "oclif readme",
     "watch-build": "tsc -w",
     "build": "tsc -b",
     "test": "jest -i",

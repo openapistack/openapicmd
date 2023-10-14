@@ -1,4 +1,4 @@
-import { Command } from '@oclif/command';
+import { Command, Args } from '@oclif/core';
 import * as commonFlags from '../common/flags';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -6,7 +6,7 @@ import * as YAML from 'js-yaml';
 import { parseDefinition } from '../common/definition';
 import { CONFIG_FILENAME, resolveConfigFile } from '../common/config';
 
-export default class Load extends Command {
+export class Load extends Command {
   public static description = 'Set the default definition file for a workspace (writes to .openapiconfig)';
 
   public static examples = [
@@ -19,16 +19,16 @@ export default class Load extends Command {
     ...commonFlags.validate(),
   };
 
-  public static args = [
-    {
-      name: 'definition',
+  public static args = {
+    definition: Args.string({
       description: 'input definition file',
-      required: true,
-    },
-  ];
+      required: true
+    })
+  }
+
 
   public async run() {
-    const { args, flags } = this.parse(Load);
+    const { args, flags } = await this.parse(Load);
     const definition = args.definition;
 
     // check that definition can be parsed
