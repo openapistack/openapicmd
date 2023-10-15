@@ -12,7 +12,7 @@ import { parseHeaderFlag } from '../common/utils';
 import { RedocOpts, getRedocIndexHTML, serveRedoc } from '../common/redoc';
 
 export class Redoc extends Command {
-  public static description = 'Start or bundle a Redoc instance';
+  public static description = 'Start or bundle a ReDoc instance';
 
   public static examples = [
     '$ openapi redoc',
