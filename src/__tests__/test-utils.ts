@@ -6,5 +6,5 @@ export const resourcePath = (...subpath: string[]) => {
   return path.join(__dirname, '..', '..', '__tests__', 'resources', ...subpath);
 };
 
-export const testDefinition = YAML.load(fs.readFileSync(resourcePath('openapi.yml')));
-export const testDefinitionBroken = YAML.load(fs.readFileSync(resourcePath('openapi-broken.yml')));
+export const testDefinition = YAML.load(fs.readFileSync(resourcePath('openapi.yml')).toString());
+export const testDefinitionBroken = YAML.load(fs.readFileSync(resourcePath('openapi-broken.yml')).toString());

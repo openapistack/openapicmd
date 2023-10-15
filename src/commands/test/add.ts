@@ -1,5 +1,5 @@
 import { Command, Flags, Args } from '@oclif/core';
-import { CONFIG_FILENAME, resolveConfigFile } from '../../common/config';
+import { CONFIG_FILENAME, Config, resolveConfigFile } from '../../common/config';
 import { mock } from 'mock-json-schema';
 import * as YAML from 'js-yaml';
 import * as path from 'path';
@@ -278,7 +278,7 @@ export class TestAdd extends Command {
     const configFile = resolveConfigFile();
 
     // write to config file
-    const oldConfig: any = configFile ? YAML.load(fs.readFileSync(configFile).toString()) : {};
+    const oldConfig: Config = configFile ? YAML.load(fs.readFileSync(configFile).toString()) : {};
 
     const newConfig = {
       ...oldConfig,

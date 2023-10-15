@@ -1,4 +1,4 @@
-import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse, Operation } from "openapi-client-axios";
+import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse } from "openapi-client-axios";
 import { getConfigValue } from "../common/config";
 import { TestCheck, TestConfig } from "./tests";
 import { createSecurityRequestConfig } from '../common/security';

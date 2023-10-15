@@ -5,7 +5,6 @@ import { getConfigValue } from './config';
 import { Document } from '@apidevtools/swagger-parser';
 import { parseHeaderFlag } from './utils';
 import { maybePrompt } from './prompt';
-import { getContext } from './context';
 
 const debug = d('cmd');
 
@@ -105,8 +104,6 @@ export const getActiveSecuritySchemes = async (params: {
   password?: string;
   noInteractive?: boolean
 }) => {
-  const context = getContext();
-
   // choose security scheme
   const availableSecuritySchemes = getAvailableSecuritySchemes(params.document, params.operation);
   debug('availableSecuritySchemes %o', availableSecuritySchemes);

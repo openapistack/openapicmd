@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import { CONFIG_FILENAME, Config, resolveConfigFile } from '../common/config';
-import { createSecurityRequestConfigForScheme, getActiveSecuritySchemes, SecurityConfig } from '../common/security';
+import { createSecurityRequestConfigForScheme, getActiveSecuritySchemes } from '../common/security';
 import { OpenAPIV3 } from 'openapi-client-axios';
 
 export class Auth extends Command {

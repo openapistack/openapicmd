@@ -2,8 +2,6 @@ import { cloneDeep } from 'lodash'
 import { Document } from "@apidevtools/swagger-parser";
 import * as path from 'path'
 import * as fs from 'fs'
-import d from 'debug';
-const debug = d('cmd');
 
 /**
  * Context is a global shared object during the lifecycle of a command

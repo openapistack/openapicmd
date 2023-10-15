@@ -39,7 +39,7 @@ describe(COMMAND, () => {
       .stdout()
       .command([COMMAND, resourcePath('openapi.json'), '--server', 'http://localhost:9999'])
       .it('can add a server', (ctx) => {
-        const output = YAML.load(ctx.stdout);
+        const output = YAML.load(ctx.stdout) as SwaggerParser.Document;
         expect(output.servers[0].url).to.equal('http://localhost:9999');
       });
 
@@ -47,7 +47,7 @@ describe(COMMAND, () => {
       .stdout()
       .command([COMMAND, resourcePath('openapi.json'), '-S', 'http://localhost:9998', '-S', 'http://localhost:9999'])
       .it('can add multiple servers', (ctx) => {
-        const output = YAML.load(ctx.stdout);
+        const output = YAML.load(ctx.stdout) as SwaggerParser.Document;
         expect(output.servers[0].url).to.equal('http://localhost:9998');
         expect(output.servers[1].url).to.equal('http://localhost:9999');
       });
