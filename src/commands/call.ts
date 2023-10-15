@@ -110,6 +110,9 @@ export class Call extends Command {
     const api = new OpenAPIClientAxios({ definition: document });
     const client = await api.init();
 
+    // don't throw on error statuses
+    client.defaults.validateStatus = () => true;
+
     // select operation
     let operationId = flags.operation;
     if (!operationId) {

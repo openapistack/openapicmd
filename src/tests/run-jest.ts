@@ -1,4 +1,4 @@
-import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse } from "openapi-client-axios";
+import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse, OpenAPIClient, Operation } from "openapi-client-axios";
 import * as SwaggerParser from "@apidevtools/swagger-parser";
 import { matchers as jsonSchemaMatchers } from 'jest-json-schema';
 
@@ -8,6 +8,7 @@ import { createSecurityRequestConfig } from '../common/security';
 import { parseHeaderFlag } from '../common/utils';
 import { getContext } from "../common/context";
 import d from 'debug';
+import chalk = require("chalk");
 
 const debug = d('cmd');
 
@@ -29,16 +30,66 @@ for (const operationId of Object.keys(testConfig)) {
       describe(testName, () => {
         const testDefinition = testConfig[operationId][testName];
 
-        let res: AxiosResponse;
+        let request: AxiosRequestConfig;
+        let response: AxiosResponse;
+        let operation: Operation;
+        let client: OpenAPIClient;
+        let failed = false;
+
+        beforeAll(async () => {
+          operation = api.getOperation(operationId);
+          client = await getClientForTest({ operationId, requestConfig: testDefinition.request.config })
+          request = api.getAxiosConfigForOperation(operation, [testDefinition.request.params, testDefinition.request.data]);
+        })
+
+        afterEach(() => {
+          const currentTest = expect.getState();
+          debug('currentTest %o', currentTest)
+
+          if (!failed && currentTest.assertionCalls > currentTest.numPassingAsserts) {
+            failed = true;
+
+            verboseLog(`${chalk.bgRed(' FAILED ')} ${chalk.bold(operationId)} › ${testName}\n`);
+            verboseLog(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
+            verboseLog(request);
+
+            verboseLog(chalk.gray('RESPONSE META:'));
+            verboseLog({
+              code: response.status,
+              status: response.statusText,
+              headers: response.headers,
+            });
+            verboseLog(chalk.gray('RESPONSE BODY:'));
+            verboseLog(response.data || chalk.gray('(empty response)'), '\n');
+          } 
+        })
+
         test(`request ${operationId}`, async () => {
-          const client = await getClientForTest({ operationId, requestConfig: testDefinition.request.config })
-          res = await client[operationId](testDefinition.request.params, testDefinition.request.data);
+          debug('request %o', request);
+          if (context.flags.verbose) {
+            verboseLog(`${chalk.bold(operationId)} › ${testName}\n`);
+            verboseLog(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
+            verboseLog(request);
+          }
+
+          response = await client[operationId](testDefinition.request.params, testDefinition.request.data);
+
+          debug('res %o', { code: response.status, headers: response.headers, data: response.data });
+          if (context.flags.verbose) {
+            verboseLog(chalk.gray('RESPONSE META:'));
+            verboseLog({
+              code: response.status,
+              status: response.statusText,
+              headers: response.headers,
+            });
+            verboseLog(chalk.gray('RESPONSE BODY:'));
+            verboseLog(response.data || chalk.gray('(empty response)'), '\n');
+          }
         })
 
         if ((['Success2XX', 'default', 'all'] satisfies TestCheck[]).some((check) => testDefinition.checks.includes(check))) {
           test('should return 2XX response', async () => {
-            expect(res.status).toBeGreaterThanOrEqual(200);
-            expect(res.status).toBeLessThan(300);
+            expect(`${response.status}`).toMatch(/2\d\d/)
           })
         }
 
@@ -46,12 +97,12 @@ for (const operationId of Object.keys(testConfig)) {
           test('response body should match schema', async () => {
             const operation = api.getOperation(operationId);
             const responseObject =
-              operation.responses[res.status] ||
-              operation.responses[`${res.status}`] ||
+              operation.responses[response.status] ||
+              operation.responses[`${response.status}`] ||
               operation.responses.default ||
               operation.responses[Object.keys(operation.responses)[0]];
             const schema = responseObject?.['content']?.['application/json']?.schema;
-            expect(res.data).toMatchSchema(schema)
+            expect(response.data).toMatchSchema(schema)
           })
         }
       })
@@ -60,7 +111,7 @@ for (const operationId of Object.keys(testConfig)) {
 }
 
 const getClientForTest = async (params: { operationId: string, requestConfig: AxiosRequestConfig }) => {
-  const client = await api.getClient();
+  const client = await api.init();
 
   const securityRequestConfig = await createSecurityRequestConfig({
     document: context.document,
@@ -115,4 +166,10 @@ const getClientForTest = async (params: { operationId: string, requestConfig: Ax
   client.defaults.validateStatus = () => true;
 
   return client;
+}
+
+const verboseLog = (...messages: any[]) => {
+  const message = messages.map((m) => (typeof m === 'string' ? m : JSON.stringify(m, null, 2))).join(' ');
+
+  process.stderr.write(`${message}\n`);
 }

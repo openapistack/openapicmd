@@ -138,6 +138,7 @@ export class Test extends Command {
     const testFile = require.resolve('../../tests/run-jest');
     const testProjectDir = path.dirname(testFile)
 
+    jestArgv.noStackTrace = true;
     jestArgv.rootDir = testProjectDir;
     jestArgv.runTestsByPath = true;
     jestArgv.runInBand = true;
