@@ -6,6 +6,7 @@ import * as Router from 'koa-router';
 import * as serve from 'koa-static';
 import * as SwaggerUIDist from 'swagger-ui-dist';
 import { Document } from '@apidevtools/swagger-parser';
+import { html } from 'common-tags';
 
 export const swaggerUIRoot = SwaggerUIDist.getAbsoluteFSPath();
 
@@ -85,7 +86,7 @@ export function getSwaggerUIInitializerScript(opts: SwaggerUIOpts = {}) {
     ...opts,
   };
 
-  return `
+  return html`
     const config = JSON.parse(\`${JSON.stringify(config)}\`);
 
     window.onload = function() {

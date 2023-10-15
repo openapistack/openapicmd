@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "OpenAPI Command Line Tool",
-  "version": "2.0.0-rc15",
+  "version": "2.0.0-rc16",
   "author": "Viljami Kuosmanen <viljami@viljami.io>",
   "bin": {
     "openapi": "./bin/run.js"
@@ -21,6 +21,7 @@
     "axios": "^1.3.4",
     "chalk": "^4.0.0",
     "cli-ux": "^6.0.9",
+    "common-tags": "^1.8.2",
     "debug": "^4.1.1",
     "deepmerge": "^4.3.0",
     "get-port": "^5.0.0",
@@ -48,6 +49,7 @@
     "@oclif/dev-cli": "^1.26.10",
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^3",
+    "@types/common-tags": "^1.8.2",
     "@types/debug": "^4.1.7",
     "@types/jest": "^29.5.1",
     "@types/jest-json-schema": "^6.1.2",
