@@ -1,8 +1,10 @@
 <h1 align="center">OpenAPI Command Line Tool</h1>
 
 [![CI](https://github.com/openapistack/openapicmd/workflows/CI/badge.svg)](https://github.com/openapistack/openapicmd/actions?query=workflow%3ACI)
-[![npm version](https://img.shields.io/npm/v/openapicmd.svg)](https://www.npmjs.com/package/openapicmd)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapicmd/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/openapicmd.svg)](https://www.npmjs.com/package/openapicmd)
+[![npm downloads](https://img.shields.io/npm/dw/openapicmd.svg)](https://www.npmjs.com/package/openapicmd)
+![npm type definitions](https://img.shields.io/npm/types/openapicmd.svg)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 
 <p align="center">openapicmd - The CLI for all things OpenAPI and Swagger</p>
@@ -583,6 +585,10 @@ EXAMPLES
 
 _See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.0.0-rc14/src/commands/unload.ts)_
 <!-- commandsstop -->
+
+## Commercial support
+
+For assistance with integrating openapi-stack for your company, reach out at support@openapistack.co.
 
 ## Contributing
 
