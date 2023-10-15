@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
-import { CONFIG_FILENAME } from '../common/config';
+import { CONFIG_FILENAME, Config } from '../common/config';
 
 const COMMAND = 'unload';
 
@@ -29,7 +29,7 @@ describe(COMMAND, () => {
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
     .it(`removes the definition property from the config file`, (_ctx) => {
-      const config = YAML.load(fs.readFileSync(CONFIG_FILENAME));
+      const config = YAML.load(fs.readFileSync(CONFIG_FILENAME).toString()) as Config;
       expect(config.definition).to.not.exist;
     });
 });

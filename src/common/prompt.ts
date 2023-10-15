@@ -9,7 +9,17 @@ export const maybePrompt = async <T>(questions: inquirer.QuestionCollection<T>, 
     return inquirer.prompt<T>(questions, initialAnswers)
   }
 
-  return {} as T
+  // instead return default values without prompting
+  const defaultValues = {} as T;
+
+  const questionsArray = Array.isArray(questions) ? questions : [questions]
+  questionsArray.forEach((question) => {
+    if (question.name && question.default !== undefined) {
+      defaultValues[question.name] = question.default
+    }
+  })
+
+  return defaultValues;
 }
 
 export const maybeSimplePrompt = async (...args: Parameters<typeof cli.prompt>) => {
@@ -19,5 +29,5 @@ export const maybeSimplePrompt = async (...args: Parameters<typeof cli.prompt>) 
     return cli.prompt(...args)
   }
 
-  return undefined
+  return args[1]?.default ?? undefined
 }

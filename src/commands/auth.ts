@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import { parseDefinition, resolveDefinition } from '../common/definition';
-import { CONFIG_FILENAME, resolveConfigFile } from '../common/config';
+import { CONFIG_FILENAME, Config, resolveConfigFile } from '../common/config';
 import { createSecurityRequestConfigForScheme, getActiveSecuritySchemes, SecurityConfig } from '../common/security';
 import { OpenAPIV3 } from 'openapi-client-axios';
 
@@ -62,11 +62,11 @@ export class Auth extends Command {
     const writeTo = path.resolve(configFile || `./${CONFIG_FILENAME}`);
 
     // write to config file
-    const oldConfig = configFile ? YAML.load(fs.readFileSync(configFile)) : {};
+    const oldConfig: Config = configFile ? YAML.load(fs.readFileSync(configFile).toString()) : {};
     const newConfig = {
       ...oldConfig,
       definition,
-      security: { ...oldConfig.security } as SecurityConfig,
+      security: { ...oldConfig.security },
     };
 
     // choose security schemes

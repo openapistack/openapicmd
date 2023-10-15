@@ -3,7 +3,7 @@ import { expect, test } from '@oclif/test';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import 'chai';
-import { CONFIG_FILENAME } from '../common/config';
+import { CONFIG_FILENAME, Config } from '../common/config';
 import { resourcePath, testDefinition } from '../__tests__/test-utils';
 
 const COMMAND = 'load';
@@ -43,7 +43,7 @@ describe('load', () => {
     .stdout()
     .command([COMMAND, resourcePath('openapi.yml')])
     .it(`writes the definition path to the ${CONFIG_FILENAME} file`, (_ctx) => {
-      const config = YAML.load(fs.readFileSync(CONFIG_FILENAME));
+      const config: Config = YAML.load(fs.readFileSync(CONFIG_FILENAME).toString());
       expect(config.definition).to.match(new RegExp('openapi.yml'));
     });
 });

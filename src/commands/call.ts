@@ -153,10 +153,12 @@ export class Call extends Command {
 
     for (const p of operation.parameters || []) {
       const param = p as OpenAPIV3.ParameterObject;
-      const { name, required, example } = param;
+      const { name, required, example, schema } = param;
 
       if (!params[name] && required) {
-        const value = await maybeSimplePrompt(name, { required, default: example });
+        const mockedValue = schema ? mock(schema as OpenAPIV3.SchemaObject) : undefined;
+
+        const value = await maybeSimplePrompt(name, { required, default: example ?? mockedValue });
         params[name] = value;
       }
     }

@@ -2,14 +2,22 @@ import { homedir } from 'os';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
+import { SecurityConfig } from './security';
+import { TestConfig } from '../tests/tests';
 
 export const CONFIG_FILENAME = '.openapiconfig';
+
+export interface Config {
+  definition?: string;
+  security?: SecurityConfig;
+  tests?: TestConfig;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getConfigValue<T = any>(key: string, defaultValue?: T): T {
   const configFile = resolveConfigFile();
   if (configFile) {
-    const config = YAML.load(fs.readFileSync(configFile));
+    const config = YAML.load(fs.readFileSync(configFile).toString());
     return config[key] || defaultValue;
   }
   return defaultValue;

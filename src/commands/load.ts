@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as YAML from 'js-yaml';
 import { parseDefinition } from '../common/definition';
-import { CONFIG_FILENAME, resolveConfigFile } from '../common/config';
+import { CONFIG_FILENAME, Config, resolveConfigFile } from '../common/config';
 
 export class Load extends Command {
   public static description = 'Set the default definition file for a workspace (writes to .openapiconfig)';
@@ -42,16 +42,11 @@ export class Load extends Command {
     const configFile = resolveConfigFile();
 
     // write to config file
-    const oldConfig = configFile ? YAML.load(fs.readFileSync(configFile)) : {};
+    const oldConfig: Config = configFile ? YAML.load(fs.readFileSync(configFile).toString()) : {};
     const newConfig = {
       ...oldConfig,
       definition,
     };
-
-    // add server to config
-    if (flags.server) {
-      newConfig.server = flags.server[0];
-    }
 
     // default to current directory
     const writeTo = path.resolve(configFile || `./${CONFIG_FILENAME}`);
