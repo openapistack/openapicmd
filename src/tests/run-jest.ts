@@ -1,19 +1,24 @@
 import OpenAPIClientAxios, { AxiosRequestConfig, AxiosResponse } from "openapi-client-axios";
+import * as SwaggerParser from "@apidevtools/swagger-parser";
+import { matchers as jsonSchemaMatchers } from 'jest-json-schema';
+
 import { getConfigValue } from "../common/config";
 import { TestCheck, TestConfig } from "./tests";
 import { createSecurityRequestConfig } from '../common/security';
 import { parseHeaderFlag } from '../common/utils';
 import { getContext } from "../common/context";
-import { matchers as jsonSchemaMatchers } from 'jest-json-schema';
 import d from 'debug';
+
 const debug = d('cmd');
 
 expect.extend(jsonSchemaMatchers);
 
 const context = getContext()
-const api = new OpenAPIClientAxios({ definition: context.document });
+let api: OpenAPIClientAxios
 
 beforeAll(async () => {
+  const definition = await SwaggerParser.dereference(context.document);
+  api = new OpenAPIClientAxios({ definition });
   await api.init()
 });
 
@@ -40,7 +45,11 @@ for (const operationId of Object.keys(testConfig)) {
         if ((['ValidResponseBody', 'default', 'all'] satisfies TestCheck[]).some((check) => testDefinition.checks.includes(check))) {
           test('response body should match schema', async () => {
             const operation = api.getOperation(operationId);
-            const responseObject = operation.responses[res.status] || operation.responses[`${res.status}`] || operation.responses.default;
+            const responseObject =
+              operation.responses[res.status] ||
+              operation.responses[`${res.status}`] ||
+              operation.responses.default ||
+              operation.responses[Object.keys(operation.responses)[0]];
             const schema = responseObject?.['content']?.['application/json']?.schema;
             expect(res.data).toMatchSchema(schema)
           })
@@ -74,24 +83,33 @@ const getClientForTest = async (params: { operationId: string, requestConfig: Ax
     .join('; ');
 
   // add request headers
-  client.defaults.headers.common = {
+  const headers = {
     ...params.requestConfig.headers,
     ...securityRequestConfig.header,
     ...parseHeaderFlag(context.flags.header),
     ...(Boolean(cookieHeader) && { cookie: cookieHeader }),
   };
+  if (Object.keys(headers).length) {
+    client.defaults.headers.common = headers;
+  }
 
   // add query params
-  client.defaults.params = {
+  const queryParams = {
     ...params.requestConfig.params,
     ...securityRequestConfig.query,
   }
+  if (Object.keys(params).length) {
+    client.defaults.params = queryParams;
+  }
 
   // add basic auth
-  client.defaults.auth = {
+  const auth = {
     ...params.requestConfig.auth,
     ...securityRequestConfig.auth,
   };
+  if (Object.keys(auth).length) {
+    client.defaults.auth = auth;
+  }
 
   // don't throw on error statuses
   client.defaults.validateStatus = () => true;

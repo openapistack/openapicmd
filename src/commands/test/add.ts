@@ -233,6 +233,8 @@ export class TestAdd extends Command {
       });
       debug('securityRequestConfig %o', securityRequestConfig);
 
+      const config: AxiosRequestConfig = {};
+
       // add cookies
       const cookies = {
         ...securityRequestConfig.cookie,
@@ -242,22 +244,26 @@ export class TestAdd extends Command {
         .join('; ');
 
       // add request headers
-      const config: AxiosRequestConfig = {
-        headers: {
-          ...securityRequestConfig.header,
-          ...parseHeaderFlag(header),
-          ...(Boolean(cookieHeader) && { cookie: cookieHeader }),
-        },
-        params: {
-          ...securityRequestConfig.query,
-        },
-        auth: securityRequestConfig.auth,
+      config.headers = {
+        ...securityRequestConfig.header,
+        ...parseHeaderFlag(header),
+        ...(Boolean(cookieHeader) && { cookie: cookieHeader }),
       };
+
+      // add query params
+      if (Object.keys({ ...securityRequestConfig.query }).length) {
+        config.params = securityRequestConfig.query;
+      }
+
+      // add basic auth
+      if (Object.keys({ ...securityRequestConfig.auth }).length) {
+        config.auth = securityRequestConfig.auth;
+      }
 
       // set content type
       if (!config.headers['Content-Type'] && !config.headers['content-type']) {
         const operationRequestContentType = Object.keys(operation.requestBody?.['content'] ?? {})[0];
-        const defaultContentType = isValidJson(data) ? 'application/json' : 'text/plain';
+        const defaultContentType = isValidJson(data) ? 'application/json' : undefined;
         config.headers['Content-Type'] = operationRequestContentType ?? defaultContentType;
       }
 
