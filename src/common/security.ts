@@ -8,8 +8,6 @@ import { maybePrompt } from './prompt';
 
 const debug = d('cmd');
 
-export const security = () => ({});
-
 export interface SecurityConfig {
   [securityScheme: string]: RequestSecurityConfig;
 }

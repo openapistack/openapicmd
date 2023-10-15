@@ -1,4 +1,4 @@
-import inquirer = require("inquirer")
+import * as inquirer from 'inquirer'
 import { getContext } from "./context"
 import cli from 'cli-ux';
 
