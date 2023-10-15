@@ -18,13 +18,14 @@ openapi help
 
 # Features
 - [x] Read and convert local and remote JSON/YAML OpenAPI definition files
-- [x] Use as a CLI client to easily call API endpoints
 - [x] Generate TypeScript types from OpenAPI definitions
+- [x] Use as a CLI client to easily call API endpoints
 - [x] Run Local Mock APIs
+- [x] Automate API tests and validate specs
 - [x] Run [Swagger UI](https://github.com/swagger-api/swagger-ui) locally
 - [x] Bundle static [Swagger UI](https://github.com/swagger-api/swagger-ui) sites
 - [x] Run [Swagger Editor](https://github.com/swagger-api/swagger-editor) locally
-- [x] Convert Swagger 2.0 to OpenAPI 3.0.x
+- [x] Convert Swagger to OpenAPI 
 
 # Commands
 <!-- commands -->
