@@ -2,22 +2,18 @@ import { expect, test } from '@oclif/test';
 import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
 
-// tslint:disable: no-unused-expression
-
-const COMMAND = 'typegen';
-
 describe('typegen', () => {
   describe('output', () => {
     test
       .stdout()
-      .command([COMMAND, resourcePath('openapi.yml')])
+      .command(['typegen', resourcePath('openapi.yml')])
       .it('generates import statements', (ctx) => {
         expect(ctx.stdout).to.match(/import type/);
       });
 
     test
       .stdout()
-      .command([COMMAND, resourcePath('openapi.json')])
+      .command(['typegen', resourcePath('openapi.json')])
       .it('generates schemas', (ctx) => {
         expect(ctx.stdout).to.match(/Schemas/);
         expect(ctx.stdout).to.match(/Pet/);
@@ -25,7 +21,7 @@ describe('typegen', () => {
 
     test
       .stdout()
-      .command([COMMAND, resourcePath('openapi.json')])
+      .command(['typegen', resourcePath('openapi.json')])
       .it('generates operation paths', (ctx) => {
         expect(ctx.stdout).to.match(/Paths/);
         expect(ctx.stdout).to.match(/Responses/);
@@ -36,7 +32,7 @@ describe('typegen', () => {
 
     test
       .stdout()
-      .command([COMMAND, resourcePath('openapi.json')])
+      .command(['typegen', resourcePath('openapi.json')])
       .it('generates operation methods', (ctx) => {
         expect(ctx.stdout).to.match(/getPets/);
         expect(ctx.stdout).to.match(/createPet/);
@@ -45,7 +41,7 @@ describe('typegen', () => {
 
     test
       .stdout()
-      .command([COMMAND, resourcePath('openapi.json')])
+      .command(['typegen', resourcePath('openapi.json')])
       .it('exports client', (ctx) => {
         expect(ctx.stdout).to.match(/export type Client/);
       })

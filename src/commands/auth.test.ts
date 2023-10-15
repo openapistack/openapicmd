@@ -5,9 +5,7 @@ import 'chai';
 import { CONFIG_FILENAME } from '../common/config';
 import { resourcePath } from '../__tests__/test-utils';
 
-const COMMAND = 'auth';
-
-describe(COMMAND, () => {
+describe('auth', () => {
   beforeEach(() => {
     fs.unlink(CONFIG_FILENAME, (_err) => null);
   });
@@ -18,7 +16,7 @@ describe(COMMAND, () => {
 
   test
     .stdout()
-    .command([COMMAND, '--security', 'BearerAuth', '--token', 'asd123', resourcePath('openapi.yml')])
+    .command(['auth', '--security', 'BearerAuth', '--token', 'asd123', resourcePath('openapi.yml')])
     .it(`writes security config to the ${CONFIG_FILENAME} file`, (_ctx) => {
       const config = fs.readFileSync(CONFIG_FILENAME, 'utf8');
       expect(config).to.match(/security/);

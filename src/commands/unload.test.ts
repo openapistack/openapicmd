@@ -5,11 +5,7 @@ import { resourcePath } from '../__tests__/test-utils';
 import 'chai';
 import { CONFIG_FILENAME, Config } from '../common/config';
 
-const COMMAND = 'unload';
-
-// tslint:disable: no-unused-expression
-
-describe(COMMAND, () => {
+describe('unload', () => {
   beforeEach(() => {
     fs.writeFileSync(CONFIG_FILENAME, YAML.dump({ definition: 'openapi.json' }));
   });
@@ -20,14 +16,14 @@ describe(COMMAND, () => {
 
   test
     .stdout()
-    .command([COMMAND])
+    .command(['unload'])
     .it('unloads definition from config file', (ctx) => {
       expect(ctx.stdout).to.contain('Unloaded succesfully!');
     });
 
   test
     .stdout()
-    .command([COMMAND, resourcePath('openapi.yml')])
+    .command(['unload', resourcePath('openapi.yml')])
     .it(`removes the definition property from the config file`, (_ctx) => {
       const config = YAML.load(fs.readFileSync(CONFIG_FILENAME).toString()) as Config;
       expect(config.definition).to.not.exist;

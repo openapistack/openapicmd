@@ -8,7 +8,7 @@ import 'chai';
 
 const TEST_PORT = 5552;
 
-describe('swagger-ui', () => {
+describe('redoc', () => {
   describe('server', () => {
     afterEach(() => {
       // emit disconnect to stop the server
@@ -17,8 +17,8 @@ describe('swagger-ui', () => {
 
     test
       .stdout()
-      .command(['swagger-ui', resourcePath('openapi.yml'), '-p', `${TEST_PORT}`])
-      .it('runs swagger-ui', async (ctx) => {
+      .command(['redoc', resourcePath('openapi.yml'), '-p', `${TEST_PORT}`])
+      .it('runs local redoc server', async (ctx) => {
         await waitOn({ resources: [`tcp:localhost:${TEST_PORT}`] });
         expect(ctx.stdout).to.contain('running');
       });
@@ -31,12 +31,11 @@ describe('swagger-ui', () => {
     });
     test
       .stdout()
-      .command(['swagger-ui', resourcePath('openapi.yml'), '--bundle', bundleDir])
-      .it('bundles swagger-ui', (_ctx) => {
+      .command(['redoc', resourcePath('openapi.yml'), '--bundle', bundleDir])
+      .it('bundles redoc', (_ctx) => {
         expect(fs.existsSync(path.join(bundleDir))).to.equal(true);
         expect(fs.existsSync(path.join(bundleDir, 'index.html'))).to.equal(true);
         expect(fs.existsSync(path.join(bundleDir, 'openapi.json'))).to.equal(true);
-        expect(fs.existsSync(path.join(bundleDir, 'swagger-ui.js'))).to.equal(true);
       });
   });
 });
