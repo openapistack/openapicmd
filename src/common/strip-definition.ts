@@ -99,6 +99,7 @@ export const PRESETS = {
     ...ALL,
     removeServers: false, // openapi-client-axios uses servers
     firstServerOnly: true, // openapi-client-axios only uses first server
+    removeResponses: false,
   },
   openapi_backend: {
     ...METADATA_ONLY,
