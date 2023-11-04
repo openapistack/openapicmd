@@ -1,7 +1,7 @@
 {
   "name": "openapicmd",
   "description": "OpenAPI Command Line Tool",
-  "version": "2.0.0-rc17",
+  "version": "2.0.0",
   "author": "Viljami Kuosmanen <viljami@viljami.io>",
   "bin": {
     "openapi": "./bin/run.js"
@@ -39,6 +39,7 @@
     "koa-static": "^5.0.0",
     "openapi-backend": "^5.6.2",
     "openapi-client-axios": "^7.1.1",
+    "openapi-client-axios-typegen": "*",
     "swagger-editor-dist": "^4.11.2",
     "swagger-ui-dist": "^5.9.0",
     "swagger2openapi": "^7.0.8",
@@ -65,7 +66,6 @@
     "globby": "^11.0.0",
     "nock": "^13.3.0",
     "oclif": "^4.0.2",
-    "openapi-client-axios-typegen": "*",
     "openapi-types": "^12.1.0",
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
