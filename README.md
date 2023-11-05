@@ -625,9 +625,16 @@ EXAMPLES
 _See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.0.0-rc17/src/commands/unload.ts)_
 <!-- commandsstop -->
 
+## Sponsors
+
+The openapicmd project is supported by:
+
+<a href="https://www.devmark.ai/fern/?utm_source=openapistack-openapicmd&utm_loc=readme&utm_type=logo![image](https://github.com/openapistack/openapicmd/assets/6105650/b253d71f-1240-43ef-972a-75fb94333f13)
+"><img alt="Fern" src="https://github.com/openapistack/docs/blob/main/static/img/sponsors/fern_logo_tagline.png?raw=true" height="80"></a>
+
 ## Commercial support
 
-For assistance with integrating openapi-stack for your company, reach out at support@openapistack.co.
+For assistance with using openapicmd in your company, reach out at support@openapistack.co.
 
 ## Contributing
 
