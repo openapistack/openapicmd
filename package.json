@@ -110,7 +110,7 @@
     "build": "tsc -b",
     "test": "jest -i",
     "lint": "eslint . --ext .ts",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif readme && git add README.md"
   },
   "types": "lib/index.d.ts"
 }
