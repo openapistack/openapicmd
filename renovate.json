@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "assignees": [
+    "anttiviljami"
+  ],
+  "labels": [
+    "renovate"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": [
+      "schedule:daily"
+    ]
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest",
+        "lockFileMaintenance"
+      ],
+      "enabled": true,
+      "automerge": true
+    }
+  ]
+}
