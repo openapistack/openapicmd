@@ -45,6 +45,7 @@ export class Info extends Command {
         strip: flags.strip,
         servers: flags.server,
         inject: flags.inject,
+        excludeExt: flags?.['exclude-ext'],
         header,
       });
     } catch (err) {

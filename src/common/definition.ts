@@ -15,6 +15,7 @@ interface ParseOpts {
   servers?: string[];
   inject?: string[];
   strip?: string;
+  excludeExt?: string;
   header?: string[];
   root?: string;
   induceServers?: boolean;
@@ -26,6 +27,7 @@ export async function parseDefinition({
   bundle,
   servers,
   inject,
+  excludeExt,
   strip,
   header,
   root,
@@ -62,6 +64,75 @@ export async function parseDefinition({
         throw err;
       }
     }
+  }
+
+  if (excludeExt) {
+    const removeSpecifiedExtensions = (obj, parent = null, parentKey: string = '') => {
+      if (typeof obj !== 'object' || obj === null) return;
+
+      for (const key in obj) {
+        if (excludeExt == key && parent) {
+          // Remove the entire operation (e.g., get, post) if specified extension is found
+          delete parent[parentKey];
+          break; // Exit the loop as the entire operation has been removed
+        } else if (typeof obj[key] === 'object') {
+          removeSpecifiedExtensions(obj[key], obj, key);
+        }
+      }
+    };
+
+    // Start the traversal from the root of the document
+    removeSpecifiedExtensions(document);
+    // Remove empty paths
+    Object.keys(document.paths).forEach(path => {
+      if (Object.keys(document.paths[path]).length === 0) {
+        delete document.paths[path];
+      }
+    });
+
+    const collectReferencedComponents = (obj, referencedComponents: Set<string>) => {
+      if (obj && typeof obj === 'object') {
+        for (const key in obj) {
+          if (key === '$ref' && typeof obj[key] === 'string') {
+            const ref = obj[key].split('/').pop();
+            referencedComponents.add(ref);
+          } else {
+            collectReferencedComponents(obj[key], referencedComponents);
+          }
+        }
+      }
+    };
+
+    // Function to remove unreferenced components
+    const removeUnreferencedComponents = (document, referencedComponents: Set<string>) => {
+      for (const components of Object.entries(document.components)) {
+        const componentValue = components[1];
+        if (componentValue && typeof componentValue === 'object') {
+          for (const key in componentValue) {
+            if (!referencedComponents.has(key)) {
+              delete componentValue[key];
+            }
+          }
+        }
+      }
+    };
+
+    const referencedComponents = new Set<string>();
+    // Collect referenced components from the main document
+    collectReferencedComponents(document, referencedComponents);
+
+    // Collect security scheme references separately
+    if (document.security && Array.isArray(document.security)) {
+      document.security.forEach(securityRequirement => {
+        for (const securityScheme in securityRequirement) {
+          if (document.components && document.components.securitySchemes && document.components.securitySchemes[securityScheme]) {
+            referencedComponents.add(securityScheme);
+          }
+        }
+      });
+    }
+    // Removing unreferenced components
+    removeUnreferencedComponents(document, referencedComponents);
   }
 
   // strip optional metadata

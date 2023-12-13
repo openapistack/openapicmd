@@ -1,5 +1,5 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath, testDefinition } from '../__tests__/test-utils';
+import { resourcePath, testDefinition, testDefinitionWithoutInternal } from '../__tests__/test-utils';
 import * as SwaggerParser from '@apidevtools/swagger-parser';
 import * as YAML from 'js-yaml';
 import 'chai';
@@ -12,6 +12,14 @@ describe('read', () => {
       .it('reads yaml openapi spec', (ctx) => {
         const output = YAML.load(ctx.stdout);
         expect(output).to.deep.equal(testDefinition);
+      });
+
+    test
+      .stdout()
+      .command(['read', resourcePath('openapi-with-internal.yml'), '--exclude-ext', 'x-internal'])
+      .it('reads yaml openapi spec exluding operations and resources with x-internal', (ctx) => {
+        const output = YAML.load(ctx.stdout);
+        expect(output).to.deep.equal(testDefinitionWithoutInternal);
       });
 
     test

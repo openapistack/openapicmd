@@ -71,6 +71,7 @@ export class Call extends Command {
         servers: flags.server,
         inject: flags.inject,
         strip: flags.strip,
+        excludeExt: flags?.['exclude-ext'],
         header,
         induceServers: true,
       });
@@ -103,7 +104,7 @@ export class Call extends Command {
         this.error('no server URL provided, use --server or modify your API spec', { exit: 1 });
       }
     }
-      
+
     // store document in context
     setContext((ctx) => ({ ...ctx, document }))
 

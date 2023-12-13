@@ -32,6 +32,7 @@ export class SwaggerUI extends Command {
     ...commonFlags.servers(),
     ...commonFlags.inject(),
     ...commonFlags.strip(),
+    ...commonFlags.excludeExt(),
     ...commonFlags.swaggerUIOpts(),
     ...commonFlags.header(),
     ...commonFlags.apiRoot(),
@@ -75,6 +76,7 @@ export class SwaggerUI extends Command {
           servers: flags.server,
           inject: flags.inject,
           strip: flags.strip,
+          excludeExt: flags?.['exclude-ext'],
           header,
           root,
          });

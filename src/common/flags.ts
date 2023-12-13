@@ -31,6 +31,15 @@ export const inject = () => ({
   }),
 });
 
+export const excludeExt = () => ({
+  'exclude-ext': Flags.string({
+    char: 'E',
+    description: 'Exclude extension from definition',
+    helpValue: 'x-internal',
+    multiple: false,
+  }),
+});
+
 export const strip = () => ({
   strip: Flags.string({
     char: 'C',
@@ -59,6 +68,7 @@ export const parseOpts = () => ({
   ...validate(),
   ...servers(),
   ...inject(),
+  ...excludeExt(),
   ...strip(),
 });
 

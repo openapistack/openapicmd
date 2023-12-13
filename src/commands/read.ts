@@ -41,6 +41,7 @@ export class Read extends Command {
         validate,
         inject: flags.inject,
         strip: flags.strip,
+        excludeExt: flags?.['exclude-ext'],
         servers: flags.server,
         header,
         root,
