@@ -34,7 +34,7 @@ export const inject = () => ({
 export const excludeExt = () => ({
   'exclude-ext': Flags.string({
     char: 'E',
-    description: 'Exclude extension from definition',
+    description: 'Specify an openapi extension to exclude parts of the spec',
     helpValue: 'x-internal',
     multiple: false,
   }),
