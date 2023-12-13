@@ -90,17 +90,24 @@ export async function parseDefinition({
       }
     });
 
-    const collectReferencedComponents = (obj, referencedComponents: Set<string>) => {
-      if (obj && typeof obj === 'object') {
-        for (const key in obj) {
-          if (key === '$ref' && typeof obj[key] === 'string') {
-            const ref = obj[key].split('/').pop();
-            referencedComponents.add(ref);
-          } else {
-            collectReferencedComponents(obj[key], referencedComponents);
+    const collectReferencedComponents = (obj) => {
+      const referencedComponents = new Set<string>();
+
+      const collector = (obj) => {
+        if (obj && typeof obj === 'object') {
+          for (const key in obj) {
+            if (key === '$ref' && typeof obj[key] === 'string') {
+              const ref = obj[key].split('/').pop();
+              referencedComponents.add(ref);
+            } else {
+              collector(obj[key]);
+            }
           }
         }
-      }
+      };
+
+      collector(obj);
+      return referencedComponents;
     };
 
     // Function to remove unreferenced components
@@ -117,9 +124,9 @@ export async function parseDefinition({
       }
     };
 
-    const referencedComponents = new Set<string>();
+
     // Collect referenced components from the main document
-    collectReferencedComponents(document, referencedComponents);
+    const referencedComponents =  collectReferencedComponents(document);
 
     // Collect security scheme references separately
     if (document.security && Array.isArray(document.security)) {
