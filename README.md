@@ -65,6 +65,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -110,6 +111,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -208,6 +210,7 @@ USAGE
 
 FLAGS
   -I, --inject={"info":{"version":"1.0.0"}}...  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -S, --server=http://localhost:9000...         override servers definition
   -T, --title=<value>                           [default: My API] The title for the API
   -d, --description=<value>                     Description for the API
@@ -274,6 +277,7 @@ FLAGS
                                                                 descriptions from definition
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -U, --swagger-ui=docs                                         Swagger UI endpoint
@@ -312,6 +316,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -350,6 +355,7 @@ FLAGS
                                                                 descriptions from definition
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -h, --help                                                    Show CLI help.
@@ -416,6 +422,7 @@ FLAGS
                                                                 descriptions from definition
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -h, --help                                                    Show CLI help.
@@ -464,6 +471,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -498,6 +506,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -542,6 +551,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -590,6 +600,7 @@ FLAGS
   -D, --dereference                                             resolve $ref pointers
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema

@@ -31,6 +31,15 @@ export const inject = () => ({
   }),
 });
 
+export const excludeExt = () => ({
+  'exclude-ext': Flags.string({
+    char: 'E',
+    description: 'Specify an openapi extension to exclude parts of the spec',
+    helpValue: 'x-internal',
+    multiple: false,
+  }),
+});
+
 export const strip = () => ({
   strip: Flags.string({
     char: 'C',
@@ -59,6 +68,7 @@ export const parseOpts = () => ({
   ...validate(),
   ...servers(),
   ...inject(),
+  ...excludeExt(),
   ...strip(),
 });
 

@@ -39,6 +39,7 @@ export class Typegen extends Command {
         bundle,
         validate,
         inject: flags.inject,
+        excludeExt: flags?.['exclude-ext'],
         strip: flags.strip,
         servers: flags.server,
         header,
