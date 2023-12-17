@@ -247,14 +247,14 @@ export class Call extends Command {
 
     let res: AxiosResponse;
     try {
-      const request = api.getAxiosConfigForOperation(operation, [params, data, config]);
+      const request = api.getRequestConfigForOperation(operation, [params, data, config]);
       debug('request %o', request);
       if (flags.verbose) {
         console.warn(JSON.stringify(request, null, 2));
       }
       if (operationId) console.warn(chalk.bold(operationId));
       console.warn(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
-      res = await client[operationId](params, data, config);
+      res = await client[operationId](params, data, request);
     } catch (err) {
       if (err.response) {
         res = err.response;
