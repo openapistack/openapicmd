@@ -65,6 +65,7 @@ export class Redoc extends Command {
           servers: flags.server,
           inject: flags.inject,
           excludeExt: flags?.['exclude-ext'],
+          removeUnreferenced: flags?.['remove-unreferenced'],
           strip: flags.strip,
           header,
           root,

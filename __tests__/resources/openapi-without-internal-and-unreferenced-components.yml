@@ -32,14 +32,6 @@ components:
           type: string
           example: Odie
   responses:
-    ListPetsRes:
-      description: ok
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Pet'
     PetRes:
       description: ok
       content:

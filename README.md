@@ -66,6 +66,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -112,6 +113,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -211,6 +213,7 @@ USAGE
 FLAGS
   -I, --inject={"info":{"version":"1.0.0"}}...  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -S, --server=http://localhost:9000...         override servers definition
   -T, --title=<value>                           [default: My API] The title for the API
   -d, --description=<value>                     Description for the API
@@ -278,6 +281,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -U, --swagger-ui=docs                                         Swagger UI endpoint
@@ -317,6 +321,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -356,6 +361,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -h, --help                                                    Show CLI help.
@@ -423,6 +429,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -h, --help                                                    Show CLI help.
@@ -472,6 +479,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -507,6 +515,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -552,6 +561,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -601,6 +611,7 @@ FLAGS
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
+  -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
