@@ -67,6 +67,7 @@ FLAGS
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
+
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -90,7 +91,7 @@ EXAMPLES
   $ openapi auth --security BasicAuth --username admin --password password
 ```
 
-_See code: [src/commands/auth.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/auth.ts)_
+_See code: [src/commands/auth.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/auth.ts)_
 
 ## `openapi call [DEFINITION]`
 
@@ -141,7 +142,7 @@ EXAMPLES
   $ openapi call -o createPet -d '{ "name": "Garfield" }'
 ```
 
-_See code: [src/commands/call.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/call.ts)_
+_See code: [src/commands/call.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/call.ts)_
 
 ## `openapi help [COMMANDS]`
 
@@ -199,7 +200,7 @@ EXAMPLES
   $ openapi info ./openapi.yml
 ```
 
-_See code: [src/commands/info.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/info.ts)_
 
 ## `openapi init`
 
@@ -234,7 +235,7 @@ EXAMPLES
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/init.ts)_
 
 ## `openapi load DEFINITION`
 
@@ -261,7 +262,7 @@ EXAMPLES
   $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/load.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/load.ts)_
+_See code: [src/commands/load.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/load.ts)_
 
 ## `openapi mock [DEFINITION]`
 
@@ -299,7 +300,7 @@ EXAMPLES
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/mock.ts)_
 
 ## `openapi read [DEFINITION]`
 
@@ -340,7 +341,7 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/read.ts)_
 
 ## `openapi redoc [DEFINITION]`
 
@@ -379,7 +380,7 @@ EXAMPLES
   $ openapi redoc ./openapi.yml --bundle outDir
 ```
 
-_See code: [src/commands/redoc.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/redoc.ts)_
+_See code: [src/commands/redoc.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/redoc.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
@@ -407,7 +408,7 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
@@ -457,7 +458,7 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml --bundle outDir
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi [DEFINITION]`
 
@@ -496,7 +497,7 @@ EXAMPLES
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/swagger2openapi.ts)_
 
 ## `openapi test`
 
@@ -538,7 +539,7 @@ EXAMPLES
   $ openapi test -o getPets
 ```
 
-_See code: [src/commands/test/index.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/test/index.ts)_
+_See code: [src/commands/test/index.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/test/index.ts)_
 
 ## `openapi test add [DEFINITION]`
 
@@ -589,7 +590,7 @@ EXAMPLES
   $ openapi test add -o getPet --checks all
 ```
 
-_See code: [src/commands/test/add.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/test/add.ts)_
+_See code: [src/commands/test/add.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/test/add.ts)_
 
 ## `openapi typegen [DEFINITION]`
 
@@ -624,7 +625,7 @@ EXAMPLES
   $ openapi typegen ./openapi.yml > openapi.d.ts
 ```
 
-_See code: [src/commands/typegen.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/typegen.ts)_
+_See code: [src/commands/typegen.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/typegen.ts)_
 
 ## `openapi unload`
 
@@ -644,7 +645,7 @@ EXAMPLES
   $ openapi unload
 ```
 
-_See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.0.2/src/commands/unload.ts)_
+_See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/unload.ts)_
 <!-- commandsstop -->
 
 ## Sponsors
