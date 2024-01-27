@@ -52,8 +52,8 @@ Authenticate with apis (writes to .openapiconfig)
 
 ```
 USAGE
-  $ openapi auth [DEFINITION] [-h] [-V] [-D] [-B] [-R <value>] [-H <value>] [-S <value>] [-I <value>] [-C
-    <value>] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+  $ openapi auth [DEFINITION] [-h] [-V] [-D] [-B] [-R <value>] [-H <value>] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-P <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -63,14 +63,16 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
   -h, --help                                                    Show CLI help.
   -k, --apikey=<value>                                          set api key
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -96,9 +98,9 @@ Call API endpoints
 
 ```
 USAGE
-  $ openapi call [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [--interactive] [-o <value>] [-p <value>] [-d <value>] [-i] [-v] [-s <value>] [-k <value>] [-t <value>] [-u
-    <value>] [-p <value>]
+  $ openapi call [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [--interactive] [-o <value>] [-p <value>] [-d <value>] [-i] [-v] [-s <value>] [-k <value>] [-t
+    <value>] [-u <value>] [-P <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -108,8 +110,11 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -119,7 +124,6 @@ FLAGS
   -k, --apikey=<value>                                          set api key
   -o, --operation=operationId                                   operationId
   -p, --param=key=value...                                      parameter
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -165,8 +169,8 @@ Display API information
 
 ```
 USAGE
-  $ openapi info [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [--security] [--operations] [--schemas]
+  $ openapi info [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [--security] [--operations] [--schemas]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -176,6 +180,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -263,8 +269,8 @@ Start a local mock API server
 
 ```
 USAGE
-  $ openapi mock [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-H
-    <value>] [-R <value>] [-U <value>] [--validate]
+  $ openapi mock [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-E
+    <value>] [-H <value>] [-R <value>] [-U <value>] [--validate]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -272,6 +278,8 @@ ARGUMENTS
 FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -299,8 +307,8 @@ Read and manipulate definition files
 
 ```
 USAGE
-  $ openapi read [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [-f json|yaml|yml | --json | --yaml]
+  $ openapi read [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [-f json|yaml|yml | --json | --yaml]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -310,6 +318,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -338,8 +348,8 @@ Start or bundle a ReDoc instance
 
 ```
 USAGE
-  $ openapi redoc [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-H
-    <value>] [-R <value>] [-B <value>]
+  $ openapi redoc [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-E <value>] [-C
+    <value>] [-H <value>] [-R <value>] [-B <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -348,6 +358,8 @@ FLAGS
   -B, --bundle=outDir                                           bundle a static site to directory
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -403,9 +415,9 @@ Start or bundle a Swagger UI instance
 
 ```
 USAGE
-  $ openapi swagger-ui [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>]
-    [--expand full|list|none] [--operationids] [--filter] [--deeplinks] [--withcredentials] [--requestduration] [-H
-    <value>] [-R <value>] [--proxy | -B <value>]
+  $ openapi swagger-ui [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-E
+    <value>] [--expand full|list|none] [--operationids] [--filter] [--deeplinks] [--withcredentials] [--requestduration]
+    [-H <value>] [-R <value>] [--proxy | -B <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -414,6 +426,8 @@ FLAGS
   -B, --bundle=outDir                                           bundle a static site to directory
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -451,8 +465,8 @@ Convert Swagger 2.0 definitions to OpenAPI 3.0.x
 
 ```
 USAGE
-  $ openapi swagger2openapi [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [-f json|yaml|yml | --json | --yaml]
+  $ openapi swagger2openapi [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [-f json|yaml|yml | --json | --yaml]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -462,6 +476,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -488,23 +504,25 @@ Run automated tests against APIs
 
 ```
 USAGE
-  $ openapi test [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C <value>]
-    [--interactive] [-o <value>] [-v] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+  $ openapi test [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E <value>] [-C
+    <value>] [--interactive] [-o <value>] [-v] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-P <value>]
 
 FLAGS
   -B, --bundle                                                  resolve remote $ref pointers
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
   -h, --help                                                    Show CLI help.
   -k, --apikey=<value>                                          set api key
   -o, --operation=operationId...                                filter by operationId
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -528,9 +546,9 @@ Add automated tests for API operations
 
 ```
 USAGE
-  $ openapi test add [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [--auto] [-o <value>] [-n <value>] [-c all|default|Success2XX|ValidResponseBody] [-p <value>] [-d <value>]
-    [-v] [--interactive] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+  $ openapi test add [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [--auto] [-o <value>] [-n <value>] [-c all|default|Success2XX|ValidResponseBody] [-p <value>]
+    [-d <value>] [-v] [--interactive] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-P <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -540,8 +558,11 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -552,7 +573,6 @@ FLAGS
   -n, --name=my test                                            test name
   -o, --operation=operationId                                   operationId
   -p, --param=key=value...                                      parameter
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -577,8 +597,8 @@ Generate types from openapi definition
 
 ```
 USAGE
-  $ openapi typegen [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>]
+  $ openapi typegen [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -588,6 +608,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
