@@ -25,7 +25,7 @@ openapi help
 - [x] Run [Swagger UI](https://github.com/swagger-api/swagger-ui) or [ReDoc](https://github.com/Redocly/redoc) locally
 - [x] Bundle static [Swagger UI](https://github.com/swagger-api/swagger-ui) or [ReDoc](https://github.com/Redocly/redoc) sites
 - [x] Run [Swagger Editor](https://github.com/swagger-api/swagger-editor) locally
-- [x] Convert Swagger to OpenAPI 
+- [x] Convert Swagger to OpenAPI
 
 # Commands
 <!-- commands -->
@@ -624,13 +624,6 @@ EXAMPLES
 
 _See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/unload.ts)_
 <!-- commandsstop -->
-
-## Sponsors
-
-The openapicmd project is supported by:
-
-<a href="https://www.devmark.ai/fern/?utm_source=openapistack-openapicmd&utm_loc=readme&utm_type=logo![image](https://github.com/openapistack/openapicmd/assets/6105650/b253d71f-1240-43ef-972a-75fb94333f13)
-"><img alt="Fern" src="https://github.com/openapistack/docs/blob/main/static/img/sponsors/fern_logo_tagline.png?raw=true" height="80"></a>
 
 ## Commercial support
 
