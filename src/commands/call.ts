@@ -261,7 +261,6 @@ export class Call extends Command {
         this.log(chalk.gray('REQUEST META:'));
         this.logJson({ operationId, ...requestConfig });
       } else {
-        if (operationId) console.warn(chalk.bold(operationId));
         console.warn(`${chalk.green(request.method.toUpperCase())} ${requestConfig.url}`);
       }
 
@@ -283,12 +282,19 @@ export class Call extends Command {
         status: res.statusText,
         headers: res.headers,
       });
+    } else if (res?.status) {
+      if (res.status >= 400) {
+        console.warn(`${chalk.bgRed(res.status)} – ${res.statusText}`);
+      } else {
+        console.warn(`${chalk.bgGreen(res.status)} – ${res.statusText}`);
+      }
     }
 
     // output response body
     if (!_.isNil(res?.data)) {
       try {
         if (flags.verbose || flags.include) this.log(chalk.gray('RESPONSE BODY:'));
+
         this.logJson(res.data);
       } catch (e) {
         this.log(res.data);
