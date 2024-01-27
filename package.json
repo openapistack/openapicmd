@@ -9,7 +9,7 @@
   "bugs": "https://github.com/openapistack/openapicmd/issues",
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@koa/cors": "^4.0.0",
+    "@koa/cors": "^5.0.0",
     "@oclif/command": "^1.8.36",
     "@oclif/config": "^1.18.17",
     "@oclif/core": "^3",
