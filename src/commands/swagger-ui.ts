@@ -77,6 +77,7 @@ export class SwaggerUI extends Command {
           inject: flags.inject,
           strip: flags.strip,
           excludeExt: flags?.['exclude-ext'],
+          removeUnreferenced: flags?.['remove-unreferenced'],
           header,
           root,
          });

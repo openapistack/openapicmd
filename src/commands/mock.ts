@@ -59,6 +59,7 @@ export class Mock extends Command {
         inject: flags.inject,
         strip: flags.strip,
         excludeExt: flags?.['exclude-ext'],
+        removeUnreferenced: flags?.['remove-unreferenced'],
         header,
         root,
         induceServers: true,

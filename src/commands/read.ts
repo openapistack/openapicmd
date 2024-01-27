@@ -42,6 +42,7 @@ export class Read extends Command {
         inject: flags.inject,
         strip: flags.strip,
         excludeExt: flags?.['exclude-ext'],
+        removeUnreferenced: flags?.['remove-unreferenced'],
         servers: flags.server,
         header,
         root,

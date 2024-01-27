@@ -16,6 +16,7 @@ interface ParseOpts {
   inject?: string[];
   strip?: string;
   excludeExt?: string;
+  removeUnreferenced?: boolean;
   header?: string[];
   root?: string;
   induceServers?: boolean;
@@ -32,6 +33,7 @@ export async function parseDefinition({
   header,
   root,
   induceServers,
+  removeUnreferenced
 }: ParseOpts): Promise<SwaggerParser.Document> {
   let method = SwaggerParser.parse;
   if (bundle) {
@@ -90,6 +92,10 @@ export async function parseDefinition({
       }
     });
 
+  }
+
+  if (removeUnreferenced) {
+
     const collectReferencedComponents = (obj) => {
       const referencedComponents = new Set<string>();
 
@@ -116,7 +122,11 @@ export async function parseDefinition({
         const componentValue = components[1];
         if (componentValue && typeof componentValue === 'object') {
           for (const key in componentValue) {
-            if (!referencedComponents.has(key)) {
+
+            const component = componentValue[key];
+            const toBeRemoved = (component && typeof component === 'object' && component['x-openapicmd-keep'] !== true && !referencedComponents.has(key));
+
+            if (toBeRemoved) {
               delete componentValue[key];
             }
           }
@@ -124,9 +134,8 @@ export async function parseDefinition({
       }
     };
 
-
     // Collect referenced components from the main document
-    const referencedComponents =  collectReferencedComponents(document);
+    const referencedComponents = collectReferencedComponents(document);
 
     // Collect security scheme references separately
     if (document.security && Array.isArray(document.security)) {
@@ -138,6 +147,7 @@ export async function parseDefinition({
         }
       });
     }
+
     // Removing unreferenced components
     removeUnreferencedComponents(document, referencedComponents);
   }

@@ -40,6 +40,15 @@ export const excludeExt = () => ({
   }),
 });
 
+export const removeUnreferencedComponents = () => ({
+  'remove-unreferenced': Flags.boolean({
+    char: 'U',
+    description: 'Remove unreferenced components, you can skip individual component being removed by setting x-openapicmd-keep to true',
+    default: false,
+    allowNo: true,
+  }),
+});
+
 export const strip = () => ({
   strip: Flags.string({
     char: 'C',
@@ -70,6 +79,7 @@ export const parseOpts = () => ({
   ...inject(),
   ...excludeExt(),
   ...strip(),
+  ...removeUnreferencedComponents(),
 });
 
 export const serverOpts = () => ({

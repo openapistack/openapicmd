@@ -40,6 +40,7 @@ export class Typegen extends Command {
         validate,
         inject: flags.inject,
         excludeExt: flags?.['exclude-ext'],
+        removeUnreferenced: flags?.['remove-unreferenced'],
         strip: flags.strip,
         servers: flags.server,
         header,

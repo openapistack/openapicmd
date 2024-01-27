@@ -46,6 +46,7 @@ export class Info extends Command {
         servers: flags.server,
         inject: flags.inject,
         excludeExt: flags?.['exclude-ext'],
+        removeUnreferenced: flags?.['remove-unreferenced'],
         header,
       });
     } catch (err) {

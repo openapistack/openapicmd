@@ -43,6 +43,13 @@ components:
         name:
           type: string
           example: Odie
+    PetInput:
+      type: object
+      x-openapicmd-keep: true
+      properties:
+        name:
+          type: string
+          example: Odie
   responses:
     ListPetsRes:
       description: ok

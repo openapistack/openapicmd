@@ -1,5 +1,5 @@
 import { expect, test } from '@oclif/test';
-import { resourcePath, testDefinition, testDefinitionWithoutInternal } from '../__tests__/test-utils';
+import { resourcePath, testDefinition, testDefinitionWithoutInternal, testDefinitionWithoutInternalAndUnreferenced } from '../__tests__/test-utils';
 import * as SwaggerParser from '@apidevtools/swagger-parser';
 import * as YAML from 'js-yaml';
 import 'chai';
@@ -21,6 +21,15 @@ describe('read', () => {
         const output = YAML.load(ctx.stdout);
         expect(output).to.deep.equal(testDefinitionWithoutInternal);
       });
+
+
+    test
+    .stdout()
+    .command(['read', resourcePath('openapi-with-internal.yml'), '--exclude-ext', 'x-internal', '--remove-unreferenced'])
+    .it('reads yaml openapi spec exluding operations and resources with x-internal and also remove unreferenced components', (ctx) => {
+      const output = YAML.load(ctx.stdout);
+      expect(output).to.deep.equal(testDefinitionWithoutInternalAndUnreferenced);
+    });
 
     test
       .stdout()
