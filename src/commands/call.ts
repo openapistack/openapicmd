@@ -248,13 +248,24 @@ export class Call extends Command {
 
     let res: AxiosResponse;
     try {
+      debug('params %o', params);
+      debug('data %o', data);
+      debug('config %o', config);
+
+      const requestConfig = api.getRequestConfigForOperation(operation, [params, data, config]);
       const request = api.getAxiosConfigForOperation(operation, [params, data, config]);
-      debug('request %o', request);
+
+      debug('requestConfig %o', requestConfig);
+      debug('axiosConfig %o', request);
+
       if (flags.verbose) {
-        console.warn(JSON.stringify(request, null, 2));
+        this.log(chalk.gray('REQUEST META:'));
+        this.logJson({ operationId, ...requestConfig });
+      } else {
+        console.warn(`${chalk.green(request.method.toUpperCase())} ${requestConfig.url}`);
       }
-      if (operationId) console.warn(chalk.bold(operationId));
-      console.warn(`${chalk.green(request.method.toUpperCase())} ${request.url}`);
+
+      // call operation
       res = await client[operationId](params, data, config);
     } catch (err) {
       if (err.response) {
@@ -272,12 +283,19 @@ export class Call extends Command {
         status: res.statusText,
         headers: res.headers,
       });
-      this.log(chalk.gray('RESPONSE BODY:'));
+    } else if (res?.status) {
+      if (res.status >= 400) {
+        console.warn(`${chalk.bgRed(res.status)} – ${res.statusText}`);
+      } else {
+        console.warn(`${chalk.bgGreen(res.status)} – ${res.statusText}`);
+      }
     }
 
     // output response body
     if (!_.isNil(res?.data)) {
       try {
+        if (flags.verbose || flags.include) this.log(chalk.gray('RESPONSE BODY:'));
+
         this.logJson(res.data);
       } catch (e) {
         this.log(res.data);

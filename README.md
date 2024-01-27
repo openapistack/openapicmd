@@ -25,7 +25,7 @@ openapi help
 - [x] Run [Swagger UI](https://github.com/swagger-api/swagger-ui) or [ReDoc](https://github.com/Redocly/redoc) locally
 - [x] Bundle static [Swagger UI](https://github.com/swagger-api/swagger-ui) or [ReDoc](https://github.com/Redocly/redoc) sites
 - [x] Run [Swagger Editor](https://github.com/swagger-api/swagger-editor) locally
-- [x] Convert Swagger to OpenAPI 
+- [x] Convert Swagger to OpenAPI
 
 # Commands
 <!-- commands -->
@@ -52,8 +52,8 @@ Authenticate with apis (writes to .openapiconfig)
 
 ```
 USAGE
-  $ openapi auth [DEFINITION] [-h] [-V] [-D] [-B] [-R <value>] [-H <value>] [-S <value>] [-I <value>] [-C
-    <value>] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+  $ openapi auth [DEFINITION] [-h] [-V] [-D] [-B] [-R <value>] [-H <value>] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-P <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -63,17 +63,16 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
-  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
-
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
   -h, --help                                                    Show CLI help.
   -k, --apikey=<value>                                          set api key
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -91,7 +90,7 @@ EXAMPLES
   $ openapi auth --security BasicAuth --username admin --password password
 ```
 
-_See code: [src/commands/auth.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/auth.ts)_
+_See code: [src/commands/auth.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/auth.ts)_
 
 ## `openapi call [DEFINITION]`
 
@@ -99,9 +98,9 @@ Call API endpoints
 
 ```
 USAGE
-  $ openapi call [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [--interactive] [-o <value>] [-p <value>] [-d <value>] [-i] [-v] [-s <value>] [-k <value>] [-t <value>] [-u
-    <value>] [-p <value>]
+  $ openapi call [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [--interactive] [-o <value>] [-p <value>] [-d <value>] [-i] [-v] [-s <value>] [-k <value>] [-t
+    <value>] [-u <value>] [-P <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -111,10 +110,13 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -124,7 +126,6 @@ FLAGS
   -k, --apikey=<value>                                          set api key
   -o, --operation=operationId                                   operationId
   -p, --param=key=value...                                      parameter
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -142,7 +143,7 @@ EXAMPLES
   $ openapi call -o createPet -d '{ "name": "Garfield" }'
 ```
 
-_See code: [src/commands/call.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/call.ts)_
+_See code: [src/commands/call.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/call.ts)_
 
 ## `openapi help [COMMANDS]`
 
@@ -170,8 +171,8 @@ Display API information
 
 ```
 USAGE
-  $ openapi info [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [--security] [--operations] [--schemas]
+  $ openapi info [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [--security] [--operations] [--schemas]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -181,6 +182,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -R, --root=/                                                  override API root path
@@ -200,7 +203,7 @@ EXAMPLES
   $ openapi info ./openapi.yml
 ```
 
-_See code: [src/commands/info.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/info.ts)_
 
 ## `openapi init`
 
@@ -235,7 +238,7 @@ EXAMPLES
   $ openapi init --title 'My API' > openapi.yml
 ```
 
-_See code: [src/commands/init.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/init.ts)_
 
 ## `openapi load DEFINITION`
 
@@ -262,7 +265,7 @@ EXAMPLES
   $ openapi load https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/load.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/load.ts)_
+_See code: [src/commands/load.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/load.ts)_
 
 ## `openapi mock [DEFINITION]`
 
@@ -270,8 +273,8 @@ Start a local mock API server
 
 ```
 USAGE
-  $ openapi mock [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-H
-    <value>] [-R <value>] [-U <value>] [--validate]
+  $ openapi mock [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-E
+    <value>] [-H <value>] [-R <value>] [-U <value>] [--validate]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -279,6 +282,8 @@ ARGUMENTS
 FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
@@ -300,7 +305,7 @@ EXAMPLES
   $ openapi mock https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml
 ```
 
-_See code: [src/commands/mock.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/mock.ts)_
+_See code: [src/commands/mock.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/mock.ts)_
 
 ## `openapi read [DEFINITION]`
 
@@ -308,8 +313,8 @@ Read and manipulate definition files
 
 ```
 USAGE
-  $ openapi read [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [-f json|yaml|yml | --json | --yaml]
+  $ openapi read [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [-f json|yaml|yml | --json | --yaml]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -319,6 +324,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
@@ -341,7 +348,7 @@ EXAMPLES
   $ openapi read ./openapi.yml -f json > openapi.json
 ```
 
-_See code: [src/commands/read.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/read.ts)_
+_See code: [src/commands/read.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/read.ts)_
 
 ## `openapi redoc [DEFINITION]`
 
@@ -349,8 +356,8 @@ Start or bundle a ReDoc instance
 
 ```
 USAGE
-  $ openapi redoc [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-H
-    <value>] [-R <value>] [-B <value>]
+  $ openapi redoc [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-E <value>] [-C
+    <value>] [-H <value>] [-R <value>] [-B <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -359,6 +366,8 @@ FLAGS
   -B, --bundle=outDir                                           bundle a static site to directory
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
@@ -380,7 +389,7 @@ EXAMPLES
   $ openapi redoc ./openapi.yml --bundle outDir
 ```
 
-_See code: [src/commands/redoc.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/redoc.ts)_
+_See code: [src/commands/redoc.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/redoc.ts)_
 
 ## `openapi swagger-editor [DEFINITION]`
 
@@ -408,7 +417,7 @@ EXAMPLES
   $ openapi swagger-editor ./openapi.yml
 ```
 
-_See code: [src/commands/swagger-editor.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/swagger-editor.ts)_
+_See code: [src/commands/swagger-editor.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/swagger-editor.ts)_
 
 ## `openapi swagger-ui [DEFINITION]`
 
@@ -416,9 +425,9 @@ Start or bundle a Swagger UI instance
 
 ```
 USAGE
-  $ openapi swagger-ui [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>]
-    [--expand full|list|none] [--operationids] [--filter] [--deeplinks] [--withcredentials] [--requestduration] [-H
-    <value>] [-R <value>] [--proxy | -B <value>]
+  $ openapi swagger-ui [DEFINITION] [-h] [-p <value>] [--logger] [-S <value>] [-I <value>] [-C <value>] [-E
+    <value>] [--expand full|list|none] [--operationids] [--filter] [--deeplinks] [--withcredentials] [--requestduration]
+    [-H <value>] [-R <value>] [--proxy | -B <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -427,6 +436,8 @@ FLAGS
   -B, --bundle=outDir                                           bundle a static site to directory
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
@@ -458,7 +469,7 @@ EXAMPLES
   $ openapi swagger-ui ./openapi.yml --bundle outDir
 ```
 
-_See code: [src/commands/swagger-ui.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/swagger-ui.ts)_
+_See code: [src/commands/swagger-ui.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/swagger-ui.ts)_
 
 ## `openapi swagger2openapi [DEFINITION]`
 
@@ -466,8 +477,8 @@ Convert Swagger 2.0 definitions to OpenAPI 3.0.x
 
 ```
 USAGE
-  $ openapi swagger2openapi [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [-f json|yaml|yml | --json | --yaml]
+  $ openapi swagger2openapi [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [-f json|yaml|yml | --json | --yaml]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -477,6 +488,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
@@ -497,7 +510,7 @@ EXAMPLES
   $ openapi swagger2openapi --yaml ./swagger.json > openapi.yml
 ```
 
-_See code: [src/commands/swagger2openapi.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/swagger2openapi.ts)_
+_See code: [src/commands/swagger2openapi.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/swagger2openapi.ts)_
 
 ## `openapi test`
 
@@ -505,25 +518,27 @@ Run automated tests against APIs
 
 ```
 USAGE
-  $ openapi test [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C <value>]
-    [--interactive] [-o <value>] [-v] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+  $ openapi test [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E <value>] [-C
+    <value>] [--interactive] [-o <value>] [-v] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-P <value>]
 
 FLAGS
   -B, --bundle                                                  resolve remote $ref pointers
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
   -h, --help                                                    Show CLI help.
   -k, --apikey=<value>                                          set api key
   -o, --operation=operationId...                                filter by operationId
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -539,7 +554,7 @@ EXAMPLES
   $ openapi test -o getPets
 ```
 
-_See code: [src/commands/test/index.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/test/index.ts)_
+_See code: [src/commands/test/index.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/test/index.ts)_
 
 ## `openapi test add [DEFINITION]`
 
@@ -547,9 +562,9 @@ Add automated tests for API operations
 
 ```
 USAGE
-  $ openapi test add [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>] [--auto] [-o <value>] [-n <value>] [-c all|default|Success2XX|ValidResponseBody] [-p <value>] [-d <value>]
-    [-v] [--interactive] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-p <value>]
+  $ openapi test add [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>] [--auto] [-o <value>] [-n <value>] [-c all|default|Success2XX|ValidResponseBody] [-p <value>]
+    [-d <value>] [-v] [--interactive] [-s <value>] [-k <value>] [-t <value>] [-u <value>] [-P <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -559,10 +574,13 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
   -U, --remove-unreferenced                                     Remove unreferenced components, you can skip individual component being removed by setting `x-openapicmd-keep` to true
+  -P, --password=<value>                                        set basic auth password
   -R, --root=/                                                  override API root path
   -S, --server=http://localhost:9000...                         override servers definition
   -V, --validate                                                validate against openapi schema
@@ -573,7 +591,6 @@ FLAGS
   -n, --name=my test                                            test name
   -o, --operation=operationId                                   operationId
   -p, --param=key=value...                                      parameter
-  -p, --password=<value>                                        set basic auth password
   -s, --security=<value>...                                     use security scheme
   -t, --token=<value>                                           set bearer token
   -u, --username=<value>                                        set basic auth username
@@ -590,7 +607,7 @@ EXAMPLES
   $ openapi test add -o getPet --checks all
 ```
 
-_See code: [src/commands/test/add.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/test/add.ts)_
+_See code: [src/commands/test/add.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/test/add.ts)_
 
 ## `openapi typegen [DEFINITION]`
 
@@ -598,8 +615,8 @@ Generate types from openapi definition
 
 ```
 USAGE
-  $ openapi typegen [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-C
-    <value>]
+  $ openapi typegen [DEFINITION] [-h] [-D] [-B] [-R <value>] [-H <value>] [-V] [-S <value>] [-I <value>] [-E
+    <value>] [-C <value>]
 
 ARGUMENTS
   DEFINITION  input definition file
@@ -609,6 +626,8 @@ FLAGS
   -C, --strip=default|all|openapi_client_axios|openapi_backend  Strip optional metadata such as examples and
                                                                 descriptions from definition
   -D, --dereference                                             resolve $ref pointers
+  -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the
+                                                                spec
   -H, --header=<value>...                                       add request headers when calling remote urls
   -I, --inject={"info":{"version":"1.0.0"}}...                  inject JSON to definition with deep merge
   -E, --exclude-ext=x-internal                                  Specify an openapi extension to exclude parts of the spec
@@ -625,7 +644,7 @@ EXAMPLES
   $ openapi typegen ./openapi.yml > openapi.d.ts
 ```
 
-_See code: [src/commands/typegen.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/typegen.ts)_
+_See code: [src/commands/typegen.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/typegen.ts)_
 
 ## `openapi unload`
 
@@ -645,15 +664,8 @@ EXAMPLES
   $ openapi unload
 ```
 
-_See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.1.0/src/commands/unload.ts)_
+_See code: [src/commands/unload.ts](https://github.com/openapistack/openapicmd/blob/v2.2.1/src/commands/unload.ts)_
 <!-- commandsstop -->
-
-## Sponsors
-
-The openapicmd project is supported by:
-
-<a href="https://www.devmark.ai/fern/?utm_source=openapistack-openapicmd&utm_loc=readme&utm_type=logo![image](https://github.com/openapistack/openapicmd/assets/6105650/b253d71f-1240-43ef-972a-75fb94333f13)
-"><img alt="Fern" src="https://github.com/openapistack/docs/blob/main/static/img/sponsors/fern_logo_tagline.png?raw=true" height="80"></a>
 
 ## Commercial support
 

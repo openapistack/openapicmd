@@ -132,5 +132,5 @@ export const securityOpts = () => ({
   apikey: Flags.string({ char: 'k', description: 'set api key' }),
   token: Flags.string({ char: 't', description: 'set bearer token' }),
   username: Flags.string({ char: 'u', description: 'set basic auth username' }),
-  password: Flags.string({ char: 'p', description: 'set basic auth password' }),
+  password: Flags.string({ char: 'P', description: 'set basic auth password' }),
 });
