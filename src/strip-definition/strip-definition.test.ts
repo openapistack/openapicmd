@@ -1024,6 +1024,7 @@ describe('stripDefinition', () => {
       const document = testFixtures.createDefinition({
         paths: {
           '/path1': {
+            description: 'description',
             post: testFixtures.createOperation({
               responses: {
                 '201': {
