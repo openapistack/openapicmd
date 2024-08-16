@@ -5,7 +5,7 @@ import * as YAML from 'js-yaml';
 import { Command } from '@oclif/core';
 import { parseHeaderFlag } from './utils';
 import { getConfigValue } from './config';
-import { PRESETS, StripPreset, stripDefinition } from './strip-definition';
+import { PRESETS, stripDefinition, StripPreset } from '../strip-definition/strip-definition';
 
 interface ParseOpts {
   definition: string;

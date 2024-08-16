@@ -259,7 +259,9 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
       if (output.paths[path]) {
         for (const method in output.paths[path]) {
           if (output.paths[path][method]) {
-            output.paths[path][method].responses = {}
+            if(output.paths[path][method].responses) {
+              output.paths[path][method].responses = {}
+            }
           }
         }
       }
@@ -289,7 +291,7 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
       if (output.paths[path]) {
         delete output.paths[path].description
         delete output.paths[path].summary
-        
+
         // remove descriptions from path level servers
         if (output.paths[path].servers) {
           removeDescriptions(output.paths[path].servers)

@@ -14,7 +14,6 @@ describe('stripDefinition', () => {
     expect(output).not.toBe(document);
   })
 
-
   describe('opts.replaceInfo', () => {
     it('should replace info', () => {
       // given
@@ -1019,7 +1018,7 @@ describe('stripDefinition', () => {
     })
   })
 
-  describe('replaceResponses', () => {
+  describe('opts.replaceResponses', () => {
     it('should replace responses with minimal default response', () => {
       // given
       const document = testFixtures.createDefinition({
