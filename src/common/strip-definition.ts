@@ -287,6 +287,9 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
     // remove descriptions and summaries from operations
     for (const path in output.paths) {
       if (output.paths[path]) {
+        delete output.paths[path].description
+        delete output.paths[path].summary
+        
         // remove descriptions from path level servers
         if (output.paths[path].servers) {
           removeDescriptions(output.paths[path].servers)

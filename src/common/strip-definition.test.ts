@@ -94,6 +94,43 @@ describe('stripDefinition', () => {
       expect(output.info).not.toHaveProperty('description');
     })
 
+    it('should remove descriptions and summaries from path', () => {
+      //given
+      const document = testFixtures.createDefinition({
+        paths: {
+          '/path1': {
+            description: 'description',
+            post: testFixtures.createOperation({
+              requestBody: testFixtures.createRequestBody({
+                description: 'description',
+              }),
+            }),
+          },
+          '/path2': {
+            description: 'description',
+            summary: 'summary',
+            put: testFixtures.createOperation({
+              requestBody: testFixtures.createRequestBody({
+                description: 'description',
+              })
+            }),
+          },
+        },
+      })
+
+      // when
+      const output = stripDefinition(document, { removeDescriptions: true });
+
+      // then
+      expect(output.paths['/path1']).not.toHaveProperty('description');
+      expect(output.paths['/path1']).not.toHaveProperty('summary');
+      expect(output.paths['/path2']).not.toHaveProperty('description');
+      expect(output.paths['/path2']).not.toHaveProperty('summary');
+
+      expect(output.paths['/path1']).toHaveProperty('post');
+      expect(output.paths['/path2']).toHaveProperty('put');
+    })
+
     it('should remove descriptions and summaries from operations', () => {
       // given
       const document = testFixtures.createDefinition({
