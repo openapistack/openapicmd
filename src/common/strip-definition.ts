@@ -259,7 +259,9 @@ export const stripDefinition = (document: Definition, options: StripOptions & { 
       if (output.paths[path]) {
         for (const method in output.paths[path]) {
           if (output.paths[path][method]) {
-            output.paths[path][method].responses = {}
+            if(output.paths[path][method].responses) {
+              output.paths[path][method].responses = {}
+            }
           }
         }
       }
