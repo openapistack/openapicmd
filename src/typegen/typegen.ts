@@ -85,11 +85,12 @@ function generateBackendOperationMethodTypes(
     ...operationTypes.map((op) => indent(op, 2)),
     '}',
     '',
+    // evil typescript magic for nice typing of openapi-backend operation handlers
     'export type OperationContext<operationId extends keyof Operations> = Operations[operationId]["context"];',
-    'export type OperationResponseBody<operationId extends keyof Operations> = Operations[operationId]["response"];',
-    'export type TypedApiResponse<ResponseBody, ResponseModel = Record<string, any>> = ResponseModel & { _t?: ResponseBody };',
-    'export type OperationResponse<operationId extends keyof Operations> = TypedApiResponse<OperationResponseBody<operationId>>;',
-    'export type OperationHandler<operationId extends keyof Operations, HandlerArgs extends unknown[] = unknown[]> = (...params: [OperationContext<operationId>, ...HandlerArgs]) => Promise<OperationResponse<operationId>>;',
+    'export type OperationResponse<operationId extends keyof Operations> = Operations[operationId]["response"];',
+    'export type HandlerResponse<ResponseBody, ResponseModel = Record<string, any>> = ResponseModel & { _t?: ResponseBody };',
+    'export type OperationHandlerResponse<operationId extends keyof Operations> = HandlerResponse<OperationResponse<operationId>>;',
+    'export type OperationHandler<operationId extends keyof Operations, HandlerArgs extends unknown[] = unknown[]> = (...params: [OperationContext<operationId>, ...HandlerArgs]) => Promise<OperationHandlerResponse<operationId>>;',
   ].join('\n');
 }
 
