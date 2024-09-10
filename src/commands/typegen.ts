@@ -3,7 +3,9 @@ import { Command, Args } from '@oclif/core';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
-import { generateTypesForDocument } from 'openapi-client-axios-typegen'
+import { generateTypesForDocument } from '../typegen/typegen';
+
+type TypegenMode = 'client' | 'backend' | 'both';
 
 export class Typegen extends Command {
   public static description = 'Generate types from openapi definition';
@@ -18,6 +20,14 @@ export class Typegen extends Command {
     banner: Flags.string({ 
       char: 'b',
       description: 'include a banner comment at the top of the generated file' 
+    }),
+    client: Flags.boolean({ 
+      description: 'Generate types for openapi-client-axios (default)', 
+      default: false,
+    }),
+    backend: Flags.boolean({ 
+      description: 'Generate types for openapi-backend', 
+      default: false,
     }),
     ['type-aliases']: Flags.boolean({ 
       char: 'A',
@@ -61,20 +71,53 @@ export class Typegen extends Command {
       this.error(err, { exit: 1 });
     }
 
-    const [imports, schemaTypes, operationTypings, _banner, aliases] = await generateTypesForDocument(document, { transformOperationName: (name) => name });
+    const withTypeAliases = flags['type-aliases'];
+    const mode = this.mode(flags.client, flags.backend);
+    
+    await this.outputBanner(flags.banner);
+    await this.outputTypes(document, mode, withTypeAliases);
+  }
 
-    if (flags.banner) {
-      this.log(flags.banner + '\n');
+  private mode(client: boolean, backend: boolean): TypegenMode {
+    if (client && backend) {
+      return 'both';
+    } else if (backend) {
+      return 'backend';
+    } 
+      
+    // default to client
+    return 'client';
+  }
+  
+  private async outputBanner(banner: string) {
+    if (banner) {
+      this.log(banner + '\n');
+    }
+  }
+
+  private async outputTypes(document: Document, mode: TypegenMode, withTypeAliases: boolean) {
+    const { clientImports, backendImports, schemaTypes, clientOperationTypes, backendOperationTypes, rootLevelAliases } = await generateTypesForDocument(document, { transformOperationName: (name) => name });
+
+    if (['both', 'client'].includes(mode)) {
+      this.log(clientImports)
     }
 
-    this.log([
-      imports + '\n',
-      schemaTypes,
-      operationTypings,
-    ].join('\n'));
+    if (['both', 'backend'].includes(mode)) {
+      this.log(backendImports)
+    } 
+    
+    this.log(`\n${schemaTypes}`);
 
-    if (flags['type-aliases'] && aliases) {
-      this.log(`\n${aliases}`);
+    if (['both', 'client'].includes(mode)) {
+      this.log(clientOperationTypes);
+    }
+
+    if (['both', 'backend'].includes(mode)) {
+      this.log(backendOperationTypes);
+    }
+
+    if (withTypeAliases && rootLevelAliases) {
+      this.log(`\n${rootLevelAliases}`);
     }
   }
 }

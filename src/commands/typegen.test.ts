@@ -32,11 +32,47 @@ describe('typegen', () => {
 
     test
       .stdout()
-      .command(['typegen', resourcePath('openapi.json')])
-      .it('generates operation methods', (ctx) => {
+      .command(['typegen', resourcePath('openapi.json'), '--client'])
+      .it('exports operation methods', (ctx) => {
+        expect(ctx.stdout).to.match(/export interface OperationMethods/);
         expect(ctx.stdout).to.match(/getPets/);
         expect(ctx.stdout).to.match(/createPet/);
         expect(ctx.stdout).to.match(/getPetById/);
+      });
+
+    test
+      .stdout()
+      .command(['typegen', resourcePath('openapi.json'), '--client'])
+      .it('exports paths dictionary', (ctx) => {
+        expect(ctx.stdout).to.match(/export interface PathsDictionary/);
+        expect(ctx.stdout).to.match(/\/pets/);
+        expect(ctx.stdout).to.match(/\/pets\/\{id\}/);
+      });
+
+    test
+      .stdout()
+      .command(['typegen', resourcePath('openapi.json'), '--client'])
+      .it('exports Client type', (ctx) => {
+        expect(ctx.stdout).to.match(/export type Client/);
+      });
+
+    test
+      .stdout()
+      .command(['typegen', resourcePath('openapi.json'), '--backend'])
+      .it('exports Backend operations', (ctx) => {
+        expect(ctx.stdout).to.match(/export interface Operations/);
+        expect(ctx.stdout).to.match(/getPets/);
+        expect(ctx.stdout).to.match(/createPet/);
+        expect(ctx.stdout).to.match(/getPetById/);
+      });
+
+    test
+      .stdout()
+      .command(['typegen', resourcePath('openapi.json'), '--backend'])
+      .it('exports Backend types', (ctx) => {
+        expect(ctx.stdout).to.match(/export type OperationContext/);
+        expect(ctx.stdout).to.match(/export type OperationResponse/);
+        expect(ctx.stdout).to.match(/export type OperationHandler/);
       });
 
     test
@@ -55,9 +91,12 @@ describe('typegen', () => {
 
     test
       .stdout()
-      .command(['typegen', resourcePath('openapi.json')])
-      .it('exports client', (ctx) => {
+      .command(['typegen', resourcePath('openapi.json'), '--client', '--backend'])
+      .it('exports both client and backend', (ctx) => {
         expect(ctx.stdout).to.match(/export type Client/);
+        expect(ctx.stdout).to.match(/export type OperationHandler/);
+        expect(ctx.stdout).to.match(/export interface Operations/);
+        expect(ctx.stdout).to.match(/export interface OperationMethods/);
       })
   });
 });
