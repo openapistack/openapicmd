@@ -61,10 +61,10 @@ export class Typegen extends Command {
       this.error(err, { exit: 1 });
     }
 
-    const [imports, schemaTypes, operationTypings, banner, aliases] = await generateTypesForDocument(document, { transformOperationName: (name) => name });
+    const [imports, schemaTypes, operationTypings, _banner, aliases] = await generateTypesForDocument(document, { transformOperationName: (name) => name });
 
-    if (flags.banner && banner) {
-      this.log(banner + '\n');
+    if (flags.banner) {
+      this.log(flags.banner + '\n');
     }
 
     this.log([
