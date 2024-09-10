@@ -27,7 +27,7 @@ function convertKeyToTypeName(key: string): string {
     .replace(/[^0-9A-Za-z_$]+/g, '_');
 }
 
-export async function generateClientTypesForDocument(definition: Document, opts: TypegenOptions) {
+export async function generateTypesForDocument(definition: Document, opts: TypegenOptions) {
   const normalizedSchema = normalizeSchema(definition);
 
   const schema = parseSchema(normalizedSchema as JsonSchema);
@@ -40,10 +40,12 @@ export async function generateClientTypesForDocument(definition: Document, opts:
   const api = new OpenAPIClientAxios({ definition: normalizedSchema as Document });
   await api.init();
   
-  const operationTypings = generateClientOperationMethodTypings(api, exportedTypes, opts);
   const rootLevelAliases = generateRootLevelAliases(exportedTypes);
 
-  const imports = [
+  const clientOperationTypes = generateClientOperationMethodTypes(api, exportedTypes, opts);
+  const backendOperationTypes = generateBackendOperationMethodTypes(api, exportedTypes);
+
+  const clientImports = [
     'import type {',
     '  OpenAPIClient,',
     '  Parameters,',
@@ -53,10 +55,44 @@ export async function generateClientTypesForDocument(definition: Document, opts:
     `} from 'openapi-client-axios';`,
   ].join('\n');
 
-  return { imports, schemaTypes, operationTypings, rootLevelAliases };
+  const backendImports = [
+    'import type {',
+    '  Context,',
+    '  UnknownParams,',
+    `} from 'openapi-backend';`,
+  ].join('\n');
+
+  return { clientImports, backendImports, schemaTypes, rootLevelAliases, clientOperationTypes, backendOperationTypes};
 }
 
-function generateClientOperationMethodTypings(
+function generateBackendOperationMethodTypes(
+  api: OpenAPIClientAxios,
+  exportTypes: ExportedType[],
+) {
+  const operations = api.getOperations();
+
+  const operationTypes = operations
+    .map((op) => {
+      return op.operationId
+        ? generateHandlerOperationTypeForOperation(op, exportTypes)
+        : null;
+    })
+    .filter((op) => Boolean(op));
+
+
+  return [
+    'export interface Operations {',
+    ...operationTypes.map((op) => indent(op, 2)),
+    '}',
+    '',
+    'export type OperationContext<operationId extends keyof Operations> = Operations[operationId]["context"];',
+    'export type OperationResponse<operationId extends keyof Operations> = Operations[operationId]["response"];',
+    'export type OperationResponseCallback<operationId extends keyof Operations> = (response: OperationResponse<operationId>, ...args: unknown[]) => any;',
+    'export type OperationHandler<operationId extends keyof Operations, HandlerArgs extends unknown[] = unknown[]> = (...params: [OperationContext<operationId>, ...HandlerArgs]) => Promise<OperationResponseCallback<operationId> | OperationResponse<operationId>>;',
+  ].join('\n');
+}
+
+function generateClientOperationMethodTypes(
   api: OpenAPIClientAxios,
   exportTypes: ExportedType[],
   opts: TypegenOptions,
@@ -99,6 +135,39 @@ function generateClientOperationMethodTypings(
   ].join('\n');
 }
 
+function generateHandlerOperationTypeForOperation(
+  operation: Operation,
+  exportTypes: ExportedType[],
+) {
+  const operationId = operation.operationId;
+  const normalizedOperationId = convertKeyToTypeName(operationId);
+
+  const requestBodyType = _.find(exportTypes, { schemaRef: `#/paths/${normalizedOperationId}/requestBody` })?.path || 'any';
+  const pathParameterType = _.find(exportTypes, { schemaRef: `#/paths/${normalizedOperationId}/pathParameters` })?.path || 'UnknownParams';
+  const queryParameterType = _.find(exportTypes, { schemaRef: `#/paths/${normalizedOperationId}/queryParameters` })?.path || 'UnknownParams';
+  const headerParameterType = _.find(exportTypes, { schemaRef: `#/paths/${normalizedOperationId}/headerParameters` })?.path || 'UnknownParams';
+  const cookieParameterType = _.find(exportTypes, { schemaRef: `#/paths/${normalizedOperationId}/cookieParameters` })?.path || 'UnknownParams';
+
+  const responseTypePaths = exportTypes
+   .filter(({ schemaRef }) => schemaRef.startsWith(`#/paths/${normalizedOperationId}/responses/`))
+   .map(({ path }) => path)
+  const responseType = !_.isEmpty(responseTypePaths) ? responseTypePaths.join(' | ') : 'any';
+
+  return [
+    `/**`,
+    ` * ${operation.method.toUpperCase()} ${operation.path}`,
+    ` */`,
+    `['${normalizedOperationId}']: {`,
+    indent(`requestBody: ${requestBodyType};`, 2),
+    indent(`params: ${pathParameterType};`, 2),
+    indent(`query: ${queryParameterType};`, 2),
+    indent(`headers: ${headerParameterType};`, 2),
+    indent(`cookies: ${cookieParameterType};`, 2),
+    indent(`context: Context<${requestBodyType}, ${pathParameterType}, ${queryParameterType}, ${headerParameterType}, ${cookieParameterType}>;`, 2),
+    indent(`response: ${responseType};`, 2),
+    '}',
+  ].join('\n');
+}
 
 function generateMethodForClientOperation(
   methodName: string,

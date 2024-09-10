@@ -3,7 +3,7 @@ import { Command, Args } from '@oclif/core';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
-import { generateClientTypesForDocument } from '../typegen/client-typegen';
+import { generateTypesForDocument } from '../typegen/typegen';
 
 export class Typegen extends Command {
   public static description = 'Generate types from openapi definition';
@@ -18,6 +18,14 @@ export class Typegen extends Command {
     banner: Flags.string({ 
       char: 'b',
       description: 'include a banner comment at the top of the generated file' 
+    }),
+    client: Flags.boolean({ 
+      description: 'Generate types for openapi-client-axios', 
+      default: true,
+    }),
+    backend: Flags.boolean({ 
+      description: 'Generate types for openapi-backend (overrides --client)', 
+      default: false,
     }),
     ['type-aliases']: Flags.boolean({ 
       char: 'A',
@@ -61,17 +69,25 @@ export class Typegen extends Command {
       this.error(err, { exit: 1 });
     }
 
-    const { imports, schemaTypes, operationTypings, rootLevelAliases } = await generateClientTypesForDocument(document, { transformOperationName: (name) => name });
+    const { clientImports, backendImports, schemaTypes, clientOperationTypes, backendOperationTypes, rootLevelAliases } = await generateTypesForDocument(document, { transformOperationName: (name) => name });
 
     if (flags.banner) {
       this.log(flags.banner + '\n');
     }
 
-    this.log([
-      imports + '\n',
-      schemaTypes,
-      operationTypings,
-    ].join('\n'));
+    if (flags.backend) {
+      this.log([
+        backendImports + '\n',
+        schemaTypes,
+        backendOperationTypes,
+      ].join('\n'));
+    } else {
+      this.log([
+        clientImports + '\n',
+        schemaTypes,
+        clientOperationTypes,
+      ].join('\n'));
+    }
 
     if (flags['type-aliases'] && rootLevelAliases) {
       this.log(`\n${rootLevelAliases}`);
