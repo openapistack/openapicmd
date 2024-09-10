@@ -68,7 +68,7 @@ export class Typegen extends Command {
     }
 
     this.log([
-      imports,
+      imports + '\n',
       schemaTypes,
       operationTypings,
     ].join('\n'));
