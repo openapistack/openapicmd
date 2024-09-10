@@ -5,6 +5,8 @@ import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
 import { generateTypesForDocument } from '../typegen/typegen';
 
+type TypegenMode = 'client' | 'backend' | 'both';
+
 export class Typegen extends Command {
   public static description = 'Generate types from openapi definition';
 
@@ -20,11 +22,11 @@ export class Typegen extends Command {
       description: 'include a banner comment at the top of the generated file' 
     }),
     client: Flags.boolean({ 
-      description: 'Generate types for openapi-client-axios', 
-      default: true,
+      description: 'Generate types for openapi-client-axios (default)', 
+      default: false,
     }),
     backend: Flags.boolean({ 
-      description: 'Generate types for openapi-backend (overrides --client)', 
+      description: 'Generate types for openapi-backend', 
       default: false,
     }),
     ['type-aliases']: Flags.boolean({ 
@@ -69,27 +71,52 @@ export class Typegen extends Command {
       this.error(err, { exit: 1 });
     }
 
+    const withTypeAliases = flags['type-aliases'];
+    const mode = this.mode(flags.client, flags.backend);
+    
+    await this.outputBanner(flags.banner);
+    await this.outputTypes(document, mode, withTypeAliases);
+  }
+
+  private mode(client: boolean, backend: boolean): TypegenMode {
+    if (client && backend) {
+      return 'both';
+    } else if (backend) {
+      return 'backend';
+    } 
+      
+    // default to client
+    return 'client';
+  }
+  
+  private async outputBanner(banner: string) {
+    if (banner) {
+      this.log(banner + '\n');
+    }
+  }
+
+  private async outputTypes(document: Document, mode: TypegenMode, withTypeAliases: boolean) {
     const { clientImports, backendImports, schemaTypes, clientOperationTypes, backendOperationTypes, rootLevelAliases } = await generateTypesForDocument(document, { transformOperationName: (name) => name });
 
-    if (flags.banner) {
-      this.log(flags.banner + '\n');
+    if (['both', 'client'].includes(mode)) {
+      this.log(clientImports)
     }
 
-    if (flags.backend) {
-      this.log([
-        backendImports + '\n',
-        schemaTypes,
-        backendOperationTypes,
-      ].join('\n'));
-    } else {
-      this.log([
-        clientImports + '\n',
-        schemaTypes,
-        clientOperationTypes,
-      ].join('\n'));
+    if (['both', 'backend'].includes(mode)) {
+      this.log(backendImports)
+    } 
+    
+    this.log(`\n${schemaTypes}`);
+
+    if (['both', 'client'].includes(mode)) {
+      this.log(clientOperationTypes);
     }
 
-    if (flags['type-aliases'] && rootLevelAliases) {
+    if (['both', 'backend'].includes(mode)) {
+      this.log(backendOperationTypes);
+    }
+
+    if (withTypeAliases && rootLevelAliases) {
       this.log(`\n${rootLevelAliases}`);
     }
   }
