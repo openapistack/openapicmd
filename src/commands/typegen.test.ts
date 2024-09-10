@@ -41,6 +41,13 @@ describe('typegen', () => {
 
     test
       .stdout()
+      .command(['typegen', resourcePath('openapi.json'), '-A'])
+      .it('generates module level schema aliases', (ctx) => {
+        expect(ctx.stdout).to.match(/export type Pet = Components.Schemas.Pet/);
+      });
+
+    test
+      .stdout()
       .command(['typegen', resourcePath('openapi.json')])
       .it('exports client', (ctx) => {
         expect(ctx.stdout).to.match(/export type Client/);

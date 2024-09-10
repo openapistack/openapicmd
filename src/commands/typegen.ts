@@ -1,3 +1,4 @@
+import { Flags } from '@oclif/core';
 import { Command, Args } from '@oclif/core';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
@@ -14,6 +15,16 @@ export class Typegen extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
+    banner: Flags.string({ 
+      char: 'b',
+      description: 'include a banner comment at the top of the generated file' 
+    }),
+    ['type-aliases']: Flags.boolean({ 
+      char: 'A',
+      description: 'Generate module level type aliases for schema components defined in spec', 
+      default: true,
+      allowNo: true,
+    }),
   };
 
   public static args = {
@@ -50,11 +61,20 @@ export class Typegen extends Command {
       this.error(err, { exit: 1 });
     }
 
-    const [imports, ...restTypes] = await generateTypesForDocument(document, { transformOperationName: (name) => name });
+    const [imports, schemaTypes, operationTypings, banner, aliases] = await generateTypesForDocument(document, { transformOperationName: (name) => name });
+
+    if (flags.banner && banner) {
+      this.log(banner + '\n');
+    }
 
     this.log([
-      imports + '\n',
-      ...restTypes,
+      imports,
+      schemaTypes,
+      operationTypings,
     ].join('\n'));
+
+    if (flags['type-aliases'] && aliases) {
+      this.log(`\n${aliases}`);
+    }
   }
 }
