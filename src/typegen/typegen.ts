@@ -86,9 +86,10 @@ function generateBackendOperationMethodTypes(
     '}',
     '',
     'export type OperationContext<operationId extends keyof Operations> = Operations[operationId]["context"];',
-    'export type OperationResponse<operationId extends keyof Operations> = Operations[operationId]["response"];',
-    'export type OperationResponseCallback<operationId extends keyof Operations> = (response: OperationResponse<operationId>, ...args: unknown[]) => any;',
-    'export type OperationHandler<operationId extends keyof Operations, HandlerArgs extends unknown[] = unknown[]> = (...params: [OperationContext<operationId>, ...HandlerArgs]) => Promise<OperationResponseCallback<operationId> | OperationResponse<operationId>>;',
+    'export type OperationResponseBody<operationId extends keyof Operations> = Operations[operationId]["response"];',
+    'export type TypedApiResponse<ResponseBody, ResponseModel = Record<string, any>> = ResponseModel & { _t?: ResponseBody };',
+    'export type OperationResponse<operationId extends keyof Operations> = TypedApiResponse<OperationResponseBody<operationId>>;',
+    'export type OperationHandler<operationId extends keyof Operations, HandlerArgs extends unknown[] = unknown[]> = (...params: [OperationContext<operationId>, ...HandlerArgs]) => Promise<OperationResponse<operationId>>;',
   ].join('\n');
 }
 
