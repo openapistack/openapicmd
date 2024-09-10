@@ -3,7 +3,7 @@ import { Command, Args } from '@oclif/core';
 import { parseDefinition, resolveDefinition } from '../common/definition';
 import * as commonFlags from '../common/flags';
 import { Document } from '@apidevtools/swagger-parser';
-import { generateTypesForDocument } from 'openapi-client-axios-typegen'
+import { generateClientTypesForDocument } from '../typegen/client-typegen';
 
 export class Typegen extends Command {
   public static description = 'Generate types from openapi definition';
@@ -61,7 +61,7 @@ export class Typegen extends Command {
       this.error(err, { exit: 1 });
     }
 
-    const [imports, schemaTypes, operationTypings, _banner, aliases] = await generateTypesForDocument(document, { transformOperationName: (name) => name });
+    const { imports, schemaTypes, operationTypings, rootLevelAliases } = await generateClientTypesForDocument(document, { transformOperationName: (name) => name });
 
     if (flags.banner) {
       this.log(flags.banner + '\n');
@@ -73,8 +73,8 @@ export class Typegen extends Command {
       operationTypings,
     ].join('\n'));
 
-    if (flags['type-aliases'] && aliases) {
-      this.log(`\n${aliases}`);
+    if (flags['type-aliases'] && rootLevelAliases) {
+      this.log(`\n${rootLevelAliases}`);
     }
   }
 }

@@ -8,6 +8,7 @@
   },
   "bugs": "https://github.com/openapistack/openapicmd/issues",
   "dependencies": {
+    "@anttiviljami/dtsgenerator": "^3.20.0",
     "@apidevtools/swagger-parser": "^10.1.0",
     "@koa/cors": "^5.0.0",
     "@oclif/command": "^1.8.36",
@@ -39,7 +40,6 @@
     "koa-static": "^5.0.0",
     "openapi-backend": "^5.6.2",
     "openapi-client-axios": "^7.5.5",
-    "openapi-client-axios-typegen": "^7.7.0",
     "swagger-editor-dist": "^4.11.2",
     "swagger-ui-dist": "^5.9.0",
     "swagger2openapi": "^7.0.8",
