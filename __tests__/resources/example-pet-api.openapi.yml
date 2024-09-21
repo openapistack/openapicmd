@@ -19,6 +19,8 @@ paths:
       responses:
         '200':
           description: List of pets in database
+        default:
+          description: unexpected error
       parameters:
         - name: limit
           in: query

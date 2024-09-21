@@ -217,7 +217,7 @@ function generateMethodForClientOperation(
 
   // return type
   const responseTypePaths = _.chain(exportTypes)
-    .filter(({ schemaRef }) => schemaRef.startsWith(`#/paths/${normalizedOperationId}/responses/2`))
+    .filter(({ schemaRef }) => schemaRef.startsWith(`#/paths/${normalizedOperationId}/responses/2`) || schemaRef.startsWith(`#/paths/${normalizedOperationId}/responses/default`))
     .map(({ path }) => path)
     .value();
   const responseType = !_.isEmpty(responseTypePaths) ? responseTypePaths.join(' | ') : 'any';

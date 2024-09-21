@@ -62,7 +62,7 @@ describe('generateTypesForDocument', () => {
     });
 
     test('types responses', () => {
-      expect(clientOperationTypes).toMatch(`OperationResponse<Paths.GetPets.Responses.$200>`);
+      expect(clientOperationTypes).toMatch(`OperationResponse<Paths.GetPets.Responses.$200 | Paths.GetPets.Responses.Default>`);
       expect(clientOperationTypes).toMatch('OperationResponse<Paths.CreatePet.Responses.$201>');
       expect(clientOperationTypes).toMatch('OperationResponse<Paths.GetPetById.Responses.$200>');
       expect(clientOperationTypes).toMatch('OperationResponse<Paths.ReplacePetById.Responses.$200>');
