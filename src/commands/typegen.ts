@@ -17,21 +17,21 @@ export class Typegen extends Command {
   public static flags = {
     ...commonFlags.help(),
     ...commonFlags.parseOpts(),
-    banner: Flags.string({ 
+    banner: Flags.string({
       char: 'b',
-      description: 'include a banner comment at the top of the generated file' 
+      description: 'include a banner comment at the top of the generated file'
     }),
-    client: Flags.boolean({ 
-      description: 'Generate types for openapi-client-axios (default)', 
+    client: Flags.boolean({
+      description: 'Generate types for openapi-client-axios (default)',
       default: false,
     }),
-    backend: Flags.boolean({ 
-      description: 'Generate types for openapi-backend', 
+    backend: Flags.boolean({
+      description: 'Generate types for openapi-backend',
       default: false,
     }),
-    ['type-aliases']: Flags.boolean({ 
+    ['type-aliases']: Flags.boolean({
       char: 'A',
-      description: 'Generate module level type aliases for schema components defined in spec', 
+      description: 'Generate module level type aliases for schema components defined in spec',
       default: true,
       allowNo: true,
     }),
@@ -73,7 +73,7 @@ export class Typegen extends Command {
 
     const withTypeAliases = flags['type-aliases'];
     const mode = this.mode(flags.client, flags.backend);
-    
+
     await this.outputBanner(flags.banner);
     await this.outputTypes(document, mode, withTypeAliases);
   }
@@ -83,12 +83,12 @@ export class Typegen extends Command {
       return 'both';
     } else if (backend) {
       return 'backend';
-    } 
-      
+    }
+
     // default to client
     return 'client';
   }
-  
+
   private async outputBanner(banner: string) {
     if (banner) {
       this.log(banner + '\n');
@@ -104,16 +104,16 @@ export class Typegen extends Command {
 
     if (['both', 'backend'].includes(mode)) {
       this.log(backendImports)
-    } 
-    
+    }
+
     this.log(`\n${schemaTypes}`);
 
     if (['both', 'client'].includes(mode)) {
-      this.log(clientOperationTypes);
+      this.log(`\n${clientOperationTypes}`);
     }
 
     if (['both', 'backend'].includes(mode)) {
-      this.log(backendOperationTypes);
+      this.log(`\n${backendOperationTypes}`);
     }
 
     if (withTypeAliases && rootLevelAliases) {

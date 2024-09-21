@@ -39,7 +39,7 @@ export async function generateTypesForDocument(definition: Document, opts: Typeg
 
   const api = new OpenAPIClientAxios({ definition: normalizedSchema as Document });
   await api.init();
-  
+
   const rootLevelAliases = generateRootLevelAliases(exportedTypes);
 
   const clientOperationTypes = generateClientOperationMethodTypes(api, exportedTypes, opts);
@@ -253,7 +253,7 @@ const generateRootLevelAliases = (exportedTypes: ExportedType[]) => {
     }
   }
 
-  return aliases.join('\n');
+  return '\n'+aliases.join('\n');
 };
 
 const normalizeSchema = (schema: Document): Document => {
