@@ -23,10 +23,16 @@ describe('swagger-ui', () => {
       .it('runs swagger-ui', async (ctx) => {
         await waitOn({ resources: [`tcp:localhost:${TEST_PORT}`] });
         expect(ctx.stdout).to.contain('Swagger UI running');
-      });
+      })
   });
 
   describe('--proxy', () => {
+    afterEach(() => {
+      // emit disconnect to stop the server
+      process.emit('disconnect');
+    });
+
+
     let endpointCalled: boolean;
     const setEndpointCalled = (val: boolean) => (endpointCalled = Boolean(val));
 
