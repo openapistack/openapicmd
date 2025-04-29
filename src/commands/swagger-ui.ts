@@ -175,7 +175,7 @@ export class SwaggerUI extends Command {
       }
 
       // serve swagger ui
-      app.use(mount('/', serveSwaggerUI({ url: documentPath, ...swaggerUIOpts })));
+      app.use(mount(serveSwaggerUI({ url: documentPath, ...swaggerUIOpts })));
 
       // start server
       const { port: portRunning } = await startServer({ app, port });
