@@ -4,8 +4,9 @@ import { set, uniqBy } from 'lodash';
 import * as YAML from 'js-yaml';
 import { Command } from '@oclif/core';
 import { parseHeaderFlag } from './utils';
-import { getConfigValue } from './config';
+import { getConfigValue, resolveConfigFile } from './config';
 import { PRESETS, StripPreset, stripDefinition } from './strip-definition';
+import path = require('path');
 
 interface ParseOpts {
   definition: string;
@@ -239,7 +240,23 @@ export function resolveDefinition(definitionArg: string) {
     return process.env.OPENAPI_DEFINITION;
   }
 
-  return getConfigValue('definition');
+  const definitionConfig = getConfigValue('definition');
+
+  if (definitionConfig) {
+    // if config value is a relative path, resolve it relative to the config directory
+    const isUrl = definitionConfig.startsWith('http');
+    const isAbsolute = definitionConfig.startsWith('/');
+    const isRelative = !isAbsolute && !isUrl;
+
+    if (isRelative) {
+      const configFilePath = resolveConfigFile();
+      const configDir = path.dirname(configFilePath);
+
+      return path.join(configDir, definitionConfig);
+    }
+
+    return definitionConfig;
+  }
 }
 
 export function printInfo(document: SwaggerParser.Document, ctx: Command) {
