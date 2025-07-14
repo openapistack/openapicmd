@@ -241,14 +241,25 @@ function generateMethodForClientOperation(
   return [comment, operationMethod].join('\n');
 }
 
+// generates valid typescript type names.
+// typescript identifiers may contain alphanumeric characters including unicode letters like ä or 漢, digits, underscores, and dollar signs.
+// they may not start with a digit.
+const escapeTypeName = (name: string) => {
+  return name
+    .replace(/\[\]/g, "Array") // handle this special case more semantically
+    .replace(/[^\p{L}\p{N}\$]+/gu, "_") // replace invalid characters with underscores
+    .replace(/^\d+/g, "_"); // replace leading digits with underscores
+}
+
 const generateRootLevelAliases = (exportedTypes: ExportedType[]) => {
   const aliases: string[] = [];
 
   for (const exportedType of exportedTypes) {
     if (exportedType.schemaRef.startsWith('#/components/schemas/')) {
       const name = exportedType.schemaRef.replace('#/components/schemas/', '');
+      const escapedName = escapeTypeName(name);
       aliases.push([
-        `export type ${name} = ${exportedType.path};`,
+        `export type ${escapedName} = ${exportedType.path};`,
       ].join('\n'));
     }
   }
