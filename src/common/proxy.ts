@@ -8,7 +8,7 @@ interface ProxyOptions {
 }
 
 export function createProxy(options: ProxyOptions) {
-  return async (ctx: Context, next: Next) => {
+  return async (ctx: Context, _next: Next) => {
     const targetPath = options.map ? options.map(ctx.path) : ctx.path;
     const targetUrl = `${options.host}${targetPath}${ctx.querystring ? '?' + ctx.querystring : ''}`;
 
