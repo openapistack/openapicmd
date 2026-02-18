@@ -2,7 +2,7 @@ import { Command, Flags, Args } from '@oclif/core';
 import { URL } from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as proxy from 'koa-proxy';
+import { createProxy } from '../common/proxy';
 import * as mount from 'koa-mount';
 import * as commonFlags from '../common/flags';
 import { parseDefinition, resolveDefinition } from '../common/definition';
@@ -137,7 +137,7 @@ export class Redoc extends Command {
               ...ctx.request.header,
               ...parseHeaderFlag(header),
             };
-            return proxy(proxyOpts)(ctx, next);
+            return createProxy(proxyOpts)(ctx, next);
           }),
         );
         document.servers = [{ url: proxyPath }, ...document.servers];
