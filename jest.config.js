@@ -6,4 +6,6 @@ module.exports = {
   testTimeout: 15000,
   verbose: true,
   silent: true,
+  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
+  forceExit: true,
 };
