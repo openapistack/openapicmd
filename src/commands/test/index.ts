@@ -1,4 +1,3 @@
-import { runCLI } from '@jest/core';
 import { Document } from '@apidevtools/swagger-parser';
 import type { Config } from '@jest/types';
 import { Command, Flags } from '@oclif/core';
@@ -34,6 +33,17 @@ export class Test extends Command {
   };
 
   public async run() {
+    let jestCore: typeof import('@jest/core');
+    try {
+      jestCore = await import('@jest/core');
+      await import('jest-json-schema');
+    } catch {
+      this.error(
+        'The "openapi test" command requires jest and jest-json-schema to be installed.\nRun: npm install jest jest-json-schema',
+        { exit: 1 },
+      );
+    }
+
     const { args, flags } = await this.parse(Test);
     const { dereference, validate, bundle, header } = flags;
     
@@ -148,6 +158,7 @@ export class Test extends Command {
     setContext((ctx) => ({ ...ctx, flags: { ...ctx.flags, interactive: false } }))
 
     debug('jestArgv', jestArgv);
+    const { runCLI } = jestCore;
     await runCLI(jestArgv, [testProjectDir]);
   }
 }
