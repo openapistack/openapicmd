@@ -53,10 +53,11 @@ describe('generateTypesForDocument', () => {
     });
 
     test('types parameters', () => {
-      expect(clientOperationTypes).toMatch(`parameters: Parameters<Paths.GetPetById.PathParameters>`);
-      expect(clientOperationTypes).toMatch(`parameters: Parameters<Paths.ReplacePetById.PathParameters>`);
-      expect(clientOperationTypes).toMatch(`parameters: Parameters<Paths.UpdatePetById.PathParameters>`);
-      expect(clientOperationTypes).toMatch(`parameters: Parameters<Paths.DeletePetById.PathParameters>`);
+      expect(clientOperationTypes).toMatch(`Paths.Pets$Id.HeaderParameters`);
+      expect(clientOperationTypes).toMatch(`Paths.GetPetById.PathParameters`);
+      expect(clientOperationTypes).toMatch(`Paths.ReplacePetById.PathParameters`);
+      expect(clientOperationTypes).toMatch(`Paths.UpdatePetById.PathParameters`);
+      expect(clientOperationTypes).toMatch(`Paths.DeletePetById.PathParameters`);
       expect(clientOperationTypes).toMatch(`parameters: Parameters<Paths.GetOwnerByPetId.PathParameters>`);
       expect(clientOperationTypes).toMatch(`parameters: Parameters<Paths.GetPetOwner.PathParameters>`);
     });

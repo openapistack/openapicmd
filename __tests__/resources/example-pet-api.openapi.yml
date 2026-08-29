@@ -47,6 +47,13 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/PetPayload'
   '/pets/{id}':
+    parameters:
+      - name: x-tenant-id
+        in: header
+        description: Tenant identifier required for all operations on this path
+        required: true
+        schema:
+          type: string
     get:
       operationId: getPetById
       summary: Get a pet

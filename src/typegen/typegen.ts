@@ -262,10 +262,19 @@ const normalizeSchema = (schema: Document): Document => {
   // dtsgenerator doesn't generate parameters correctly if they are $refs to Parameter Objects
   // so we resolve them here
   for (const path in clonedSchema.paths ?? {}) {
-    const pathItem = clonedSchema.paths[path];
+    const pathItem = clonedSchema.paths?.[path] ?? {};
+    const pathLevelParameters = pathItem.parameters ?? [];
+
     for (const method in pathItem) {
       const operation = pathItem[method as HttpMethod];
-      if (operation.parameters) {
+      if (operation) {
+        // Merge path-level parameters with operation-level parameters
+        const operationParams = operation.parameters ?? [];
+        operation.parameters = [
+          ...pathLevelParameters,
+          ...operationParams
+        ];
+
         operation.parameters = operation.parameters.map((parameter) => {
           if ('$ref' in parameter) {
             const refPath = parameter.$ref.replace('#/', '').replace(/\//g, '.');
